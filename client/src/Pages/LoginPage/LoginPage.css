@@ -1,0 +1,22 @@
+.login-page{
+    display: flex;
+   justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.input-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width:100%;
+    margin-top: 10px;
+}
+
+
+.logo img {
+    max-width: 100px; /* Adjust the size as needed */
+    height: auto;
+  }
+

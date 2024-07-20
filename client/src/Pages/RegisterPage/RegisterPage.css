@@ -1,0 +1,21 @@
+.register-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.input-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+
+.logo img {
+    max-width: 100px; /* Adjust the size as needed */
+    height: auto;
+  }
+

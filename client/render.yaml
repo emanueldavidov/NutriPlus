@@ -1,0 +1,12 @@
+services:
+- type: web
+  name: nutriplus-frontend
+  env: static
+  region: oregon
+  plan: free
+  buildCommand: yarn install && npm run build
+  staticPublishPath: dist
+  routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

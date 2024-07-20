@@ -1,0 +1,29 @@
+
+
+.shopping-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .shopping-container .MuiList-root {
+    width: 100%;
+  }
+  
+  /* Override default ListItem styles */
+  .shopping-container .MuiListItem-root {
+    border: none; /* Remove the border */
+    margin-bottom: 10px;
+  }
+  
+  .shopping-container .MuiListItemText-root {
+    color: black; /* Adjust text color as needed */
+  }
+  
+  .shopping-carousel{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
