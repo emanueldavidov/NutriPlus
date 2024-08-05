@@ -13,57 +13,31 @@ import { Link as RouterLink } from 'react-router-dom'; // Import RouterLink from
 function Media(props) {
   const { loading = false, data } = props;
 
-  return (
-    <Grid container spacing={2}> {/* Added spacing={2} for grid spacing */}
+ return (
+    <div className="flex flex-wrap -mx-2">
       {(loading ? Array.from(new Array(3)) : data).map((item, index) => (
-        <Grid item key={index} xs={6} sx={{ display: "flex", justifyContent: "center" }}>
-          <Card
-            sx={{
-              width: '250px',
-              textAlign: 'center',
-              cursor: 'pointer',
-              transition: 'transform 0.3s ease-in-out', // Add transition for hover effect
-              '&:hover': {
-                transform: 'scale(1.05)', // Scale card on hover
-              },
-            }}
-          >
+        <div key={index} className="w-1/2 px-2 mb-4 flex justify-center">
+          <div className="w-64 text-center cursor-pointer transform transition-transform duration-300 hover:scale-105">
             {item ? (
-              <Link
-                component={RouterLink} // Use RouterLink from react-router-dom
-                to={item.link} // Navigate to item.link
-                color="primary"
-                underline="hover"
-                sx={{ textDecoration: 'none' }} // Ensure no underline on hover
-              >
-                <CardMedia
-                  component="img"
+              <RouterLink to={item.link} className="no-underline">
+                <img
                   alt={item.title}
                   src={item.src}
-                  sx={{
-                    width: '100%',
-                    height: 150,
-                    objectFit: 'cover',
-                    borderRadius: '8px',
-                    transition: 'transform 0.3s ease-in-out', // Add transition for hover effect
-                    '&:hover': {
-                      transform: 'scale(1.05)', // Scale image on hover
-                    },
-                  }}
+                  className="w-full h-40 object-cover rounded-lg transform transition-transform duration-300 hover:scale-105"
                 />
-              </Link>
+              </RouterLink>
             ) : (
-              <Skeleton variant="rectangular" width={'100%'} height={150} sx={{ borderRadius: '8px' }} />
+              <div className="w-full h-40 bg-gray-200 rounded-lg animate-pulse"></div>
             )}
-            <CardContent>
-              <Typography sx={{ fontWeight: 'bold' }}>
-                {item ? item.title : <Skeleton variant="text" width={'80%'} />}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+            <div className="p-4">
+              <p className="font-bold">
+                {item ? item.title : <div className="w-4/5 h-4 bg-gray-200 rounded animate-pulse"></div>}
+              </p>
+            </div>
+          </div>
+        </div>
       ))}
-    </Grid>
+    </div>
   );
 }
 
@@ -80,11 +54,12 @@ Media.propTypes = {
 
 function CustomMedia({ data }) {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Box sx={{ width: '100%', maxWidth: 800 }}>
-        <Media loading={data ? false : true} data={data || []} />
-      </Box>
-    </Box>
+ <div className="flex justify-center">
+  <div className="w-full max-w-screen-lg">
+    <Media loading={data ? false : true} data={data || []} />
+  </div>
+</div>
+
   );
 }
 

@@ -10,17 +10,14 @@ import Typography from "@mui/material/Typography";
 
 export default function CustomCard({ title, text, children,color }) {
   return (
-    <Card  sx={{ width:"300px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",border:1,borderRadius: '16px'}}>
-      <CardContent  sx={{ width:"300px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-        <Typography variant="h4" component="div">
-          {title}
-        </Typography>
-        <Typography  sx={{ textAlign: "center",color:color}}>{text}</Typography>
-        {children}
-        
-      </CardContent>
-      <CardActions>
-      </CardActions>
-    </Card>
+  <div className="flex flex-col items-center justify-center border rounded-2xl w-72">
+  <div className="flex flex-col items-center justify-center w-72 p-4">
+    <h4 className="text-2xl">{title}</h4>
+    <p className={`text-center ${color}`}>{text}</p>
+    {children}
+  </div>
+  <div className="card-actions"></div>
+</div>
+
   );
 }

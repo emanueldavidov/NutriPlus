@@ -55,66 +55,65 @@ export default function ShoppingCard({ shoppingItem }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  return (
-    <Card
-      sx={{
-        maxWidth: 700,
-        minWidth: 350,
-        background: "transparent",
-      }}
-    >
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: "#B81D33" }} aria-label="shopping">
-            {shoppingItem?.name?.charAt(0)}
-          </Avatar>
-        }
-        action={
-          <div className="actions">
-            <IconButton sx={{ color: "#B81D33" }} aria-label="edit">
-              <EditIcon onClick={handleUpdate} />
-            </IconButton>
-
-            <IconButton sx={{ color: "#B81D33" }} aria-label="delete">
-              <DeleteIcon onClick={handleDelete} />
-            </IconButton>
-          </div>
-        }
-        title={shoppingItem?.name}
-      />
-
-      
-      <CardActions
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Typography>Show Ingredients</Typography>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
+return (
+  <div className="max-w-md min-w-[350px] bg-transparent border border-gray-200 rounded-lg shadow-sm">
+    <div className="flex items-center p-4 border-b border-gray-200">
+      <div className="flex-shrink-0">
+        <div
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-[#B81D33] text-white text-lg font-bold"
+          aria-label="shopping"
         >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-      <CardContent>
+          {shoppingItem?.name?.charAt(0)}
+        </div>
+      </div>
+      <div className="flex-grow pl-4">
+        <div className="text-lg font-semibold">{shoppingItem?.name}</div>
+      </div>
+      <div className="flex space-x-2">
+        <button
+          className="text-[#B81D33] hover:text-[#B81D33]"
+          aria-label="edit"
+          onClick={handleUpdate}
+        >
+          <EditIcon />
+        </button>
+        <button
+          className="text-[#B81D33] hover:text-[#B81D33]"
+          aria-label="delete"
+          onClick={handleDelete}
+        >
+          <DeleteIcon />
+        </button>
+      </div>
+    </div>
+
+    <div className="flex items-center justify-center p-4 border-b border-gray-200">
+      <Typography>Show Ingredients</Typography>
+      <button
+        className="ml-2 p-2 text-[#B81D33] hover:text-[#B81D33]"
+        onClick={handleExpandClick}
+        aria-expanded={expanded}
+        aria-label="show more"
+      >
+        <ExpandMoreIcon />
+      </button>
+    </div>
+    
+    <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <div className="p-4 border-b border-gray-200">
         <ShoppingsList items={shoppingItem?.items} />
-      </CardContent>
-        </Collapse>
-      {updateModal && (
-        <UpdateShopping
-          shopping={shoppingItem}
-          openModal={updateModal}
-          handleModalClose={() => {
-            setUpdateModal(!updateModal);
-          }}
-        />
-      )}
-    </Card>
-  );
+      </div>
+    </Collapse>
+
+    {updateModal && (
+      <UpdateShopping
+        shopping={shoppingItem}
+        openModal={updateModal}
+        handleModalClose={() => setUpdateModal(!updateModal)}
+      />
+    )}
+  </div>
+);
+
+
 }

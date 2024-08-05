@@ -2,61 +2,29 @@ import React from 'react';
 import { List, ListItem, ListItemText, Typography } from '@mui/material';
 
 function NutritionList({ item }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary={"Fats"}
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: "inline" }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                {item.fat}
-              </Typography>
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary={"Protein"}
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: "inline" }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                {item.protein}
-              </Typography>
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary={"Calories"}
-          secondary={
-            <React.Fragment>
-              <Typography
-                sx={{ display: "inline" }}
-                component="span"
-                variant="body2"
-                color="text.primary"
-              >
-                {item.calories}
-              </Typography>
-            </React.Fragment>
-          }
-        />
-      </ListItem>
+return (
+  <div className="flex flex-row flex-wrap">
+    <div className="p-4">
+      <div className="text-gray-900 text-lg font-semibold">Fats</div>
+      <div className="text-gray-600 text-base">
+        <span className="text-black">{item.fat}</span>
+      </div>
     </div>
-  );
+    <div className="p-4">
+      <div className="text-gray-900 text-lg font-semibold">Protein</div>
+      <div className="text-gray-600 text-base">
+        <span className="text-black">{item.protein}</span>
+      </div>
+    </div>
+    <div className="p-4">
+      <div className="text-gray-900 text-lg font-semibold">Calories</div>
+      <div className="text-gray-600 text-base">
+        <span className="text-black">{item.calories}</span>
+      </div>
+    </div>
+  </div>
+);
+
 }
 
 export default NutritionList;

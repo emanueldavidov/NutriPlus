@@ -85,152 +85,121 @@ const NutritiCalc = () => {
     // Clear form fields after adding to the list
   };
 
-  return (
-    <div>
-      <div className="nutri-calc">
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{
-            marginTop: "10px",
-            marginBottom: "10px",
-            backgroundColor: "#B81D33",
-            "&:hover": {
-              backgroundColor: "#B81D33",
-            },
-          }}
-          onClick={handleModalOpen}
+return (
+  <div className="flex flex-col items-center h-screen">
+    <div className="flex flex-col items-center">
+      <button
+        type="submit"
+        className="mt-2 mb-2 bg-[#B81D33] text-white py-2 px-4 rounded hover:bg-[#B81D33]"
+        onClick={handleModalOpen}
+      >
+        Add Nutrition
+      </button>
+
+      {openModal && (
+        <Modal
+          open={openModal}
+          onClose={handleModalClose}
+          aria-labelledby="food-details-modal"
+          aria-describedby="modal-for-entering-food-details"
         >
-          Add Nutrition
-        </Button>
-
-        {openModal && (
-          <Modal
-            open={openModal}
-            onClose={handleModalClose}
-            aria-labelledby="food-details-modal"
-            aria-describedby="modal-for-entering-food-details"
+          <div
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 shadow-lg ${
+              darkMode ? "bg-black text-white" : "bg-white text-black"
+            }`}
           >
-            <div
-              className="modal-content"
-              style={{
-                backgroundColor:darkMode?"black":"white",
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                boxShadow: 24,
-                p: 4,
-              }}
+            <Typography
+              variant="h6"
+              component="h2"
+              gutterBottom
+              className="font-bold text-center"
             >
-              <Typography
-                variant="h6"
-                component="h2"
-                gutterBottom
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  fontWeight: "bold",
-                }}
+              Enter Nutritional Details
+            </Typography>
+            {errorMessage && (
+              <Alert severity="error" onClose={() => setErrorMessage("")}>
+                {errorMessage}
+              </Alert>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <FormControl fullWidth variant="outlined" required>
+                <InputLabel id="food-label">Select Food</InputLabel>
+                <Select
+                  labelId="food-label"
+                  id="food"
+                  label="Select Food"
+                  value={selectedFood}
+                  onChange={(e) =>
+                    parseInt(e.target.value) >= 0 || e.target.value === ""
+                      ? setSelectedFood(e.target.value)
+                      : null
+                  }
+                >
+                  {recipes?.length > 0 &&
+                    recipes.map((r) => (
+                      <MenuItem key={r._id} value={r._id}>
+                        {r.recipeName}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+              <TextField
+                type="number"
+                value={calories}
+                onChange={(e) =>
+                  parseInt(e.target.value) >= 0 || e.target.value === ""
+                    ? setCalories(e.target.value)
+                    : null
+                }
+                label="Calories"
+                fullWidth
+                variant="outlined"
+                required
+              />
+              <TextField
+                type="number"
+                value={totalFat}
+                onChange={(e) =>
+                  parseInt(e.target.value) >= 0 || e.target.value === ""
+                    ? setTotalFat(e.target.value)
+                    : null
+                }
+                label="Total Fat"
+                fullWidth
+                variant="outlined"
+                required
+              />
+              <TextField
+                type="number"
+                value={protein}
+                onChange={(e) =>
+                  parseInt(e.target.value) >= 0 || e.target.value === ""
+                    ? setProtein(e.target.value)
+                    : null
+                }
+                label="Protein"
+                fullWidth
+                variant="outlined"
+                required
+              />
+              <button
+                type="submit"
+                className="mt-2 mb-2 bg-[#B81D33] text-white py-2 px-4 rounded hover:bg-[#B81D33]"
               >
-                Enter Nutritional Details
-              </Typography>
-              {errorMessage && (
-                <Alert severity="error" onClose={() => setErrorMessage("")}>
-                  {errorMessage}
-                </Alert>
-              )}
-              <form onSubmit={handleSubmit}>
-                <FormControl
-                  fullWidth
-                  variant="outlined"
-                  margin="normal"
-                  required
-                >
-                  <InputLabel id="food-label">Select Food</InputLabel>
-                  <Select
-                    labelId="food-label"
-                    id="food"
-                    label="Select Food"
-                    value={selectedFood}
-                    onChange={(e) => {if(parseInt(e.target.value) >=0 || e.target.value=="")setSelectedFood(e.target.value)}}
-                   
-                  >
-                    {recipes?.length > 0 &&
-                      recipes.map((r) => {
-                        return (
-                          <MenuItem key={r._id} value={r._id}>
-                            {r.recipeName}
-                          </MenuItem>
-                        );
-                      })}
-                  </Select>
-                </FormControl>
-                <TextField
-                  type="number"
-                  value={calories}
-                  onChange={(e) => {if(parseInt(e.target.value) >=0 || e.target.value=="")setCalories(e.target.value)}}
-                  label="Calories"
-                  fullWidth
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  
-                />
-                <TextField
-                  type="number"
-                  value={totalFat}
-                  onChange={(e) => {if(parseInt(e.target.value) >=0 || e.target.value=="")setTotalFat(e.target.value)}}
-                  label="Total Fat"
-                  fullWidth
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  
-                />
-                <TextField
-                  type="number"
-                  value={protein}
-                  onChange={(e) => {if(parseInt(e.target.value) >=0 || e.target.value=="")setProtein(e.target.value)}}
-                  label="Protein"
-                  fullWidth
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  
-                />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    marginTop: "10px",
-                    marginBottom: "10px",
-                    backgroundColor: "#B81D33",
-                    "&:hover": {
-                      backgroundColor: "#B81D33",
-                    },
-                  }}
-                >
-                  Add Nutrition
-                </Button>
-              </form>
-            </div>
-          </Modal>
-        )}
+                Add Nutrition
+              </button>
+            </form>
+          </div>
+        </Modal>
+      )}
 
-        
-
-        <div className="nutrition-list">
-          <NutritionCarousel />
-        
-
-        </div>
+      <div className="w-full flex flex-wrap justify-center items-center">
+        <NutritionCarousel />
       </div>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default NutritiCalc;

@@ -59,48 +59,42 @@ export default function MealCard({ meal }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  return (
-    <>
-    <Card
-      sx={{
-        maxWidth: isMobile ? 400 : 700,
-        minWidth: isMobile ? 400 : 700,
-        background:"transparent",
-      }}
+return (
+  <>
+    <div
+      className={`max-w-${isMobile ? '400px' : '700px'} min-w-${isMobile ? '400px' : '700px'} bg-transparent`}
     >
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: "#B81D33" }} aria-label="meal">
+      <div className="flex items-center justify-between p-4">
+        <div className="flex items-center">
+          <div className="bg-[#B81D33] text-white rounded-full w-10 h-10 flex items-center justify-center">
             {meal.name.charAt(0)}
-          </Avatar>
-        }
-        action={
-          <div className="actions">
-            <IconButton sx={{ color: "#B81D33" }} aria-label="edit">
-              <EditIcon onClick={handleUpdate}/>
-            </IconButton>
-
-            <IconButton sx={{ color: "#B81D33" }} aria-label="delete">
-              <DeleteIcon onClick={handleDelete} />
-            </IconButton>
           </div>
-        }
-        title={meal.name}
-      />
-        
-      <CardContent>
+          <h2 className="ml-4">{meal.name}</h2>
+        </div>
+        <div className="flex">
+          <button className="text-[#B81D33] p-2" aria-label="edit" onClick={handleUpdate}>
+            <EditIcon />
+          </button>
+          <button className="text-[#B81D33] p-2" aria-label="delete" onClick={handleDelete}>
+            <DeleteIcon />
+          </button>
+        </div>
+      </div>
+
+      <div className="p-4">
         <MealsList dishes={meal} />
-      </CardContent>
-    </Card>
-      {updateModal && (
-        <UpdateMeal
-          meal={meal}
-          openModal={updateModal}
-          handleModalClose={() => {
-            setUpdateModal(!updateModal);
-          }}
-        />
-      )}
-</>
-  );
+      </div>
+    </div>
+    {updateModal && (
+      <UpdateMeal
+        meal={meal}
+        openModal={updateModal}
+        handleModalClose={() => {
+          setUpdateModal(!updateModal);
+        }}
+      />
+    )}
+  </>
+);
+
 }

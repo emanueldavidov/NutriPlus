@@ -48,90 +48,63 @@ export function ShoppingCarousel() {
     setActiveStep(step);
   };
 
-  return (
-    <Box
-      sx={{
-        maxWidth: isMobile ? 350 : 700,
-        flexGrow: 1,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        margin: "auto", // Center the box horizontally
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          maxWidth: isMobile ? 350 : 700,
-          marginBottom: 2, // Add some margin between the buttons and the carousel
-        }}
+return (
+  <div
+    className={`flex flex-col items-center justify-center mx-auto ${
+      isMobile ? "max-w-[350px]" : "max-w-[700px]"
+    }`}
+  >
+    <div className="flex justify-between w-full mb-2">
+      <button
+        className="text-[#B81D33] disabled:opacity-50"
+        onClick={handleBack}
+        disabled={activeStep === 0}
       >
-        <Button
-          sx={{ color: "#B81D33" }}
-          size="small"
-          onClick={handleBack}
-          disabled={activeStep === 0}
-        >
-          {theme.direction === "rtl" ? (
-            <KeyboardArrowRight />
-          ) : (
-            <KeyboardArrowLeft />
-          )}
-          Back
-        </Button>
-        <Button
-          sx={{ color: "#B81D33" }}
-          size="small"
-          onClick={handleNext}
-          disabled={activeStep === maxSteps - 1}
-        >
-          Next
-          {theme.direction === "rtl" ? (
-            <KeyboardArrowLeft />
-          ) : (
-            <KeyboardArrowRight />
-          )}
-        </Button>
-      </Box>
-      
-      {shoppings?.length > 0 && (
-        <SwipeableViews
-          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-          index={activeStep}
-          onChangeIndex={handleStepChange}
-          enableMouseEvents
-          sx={{
-            maxWidth: 600,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor:"transparent",
-          }}
-          style={{
-            background:"transparent",
-          }}
-        >
-          {shoppings.map((shoppingItem, index) => (
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }} key={index}>
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+        Back
+      </button>
+      <button
+        className="text-[#B81D33] disabled:opacity-50"
+        onClick={handleNext}
+        disabled={activeStep === maxSteps - 1}
+      >
+        Next
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </button>
+    </div>
 
-              {Math.abs(activeStep - index) <= 2 ? (
-                <ShoppingCard
-                shoppingItem={shoppingItem}
-                />
-              ) : null}
-            </div>
-          ))}
-        </SwipeableViews>
-      )}
-    </Box>
-  );
+    {shoppings?.length > 0 && (
+      <SwipeableViews
+        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+        index={activeStep}
+        onChangeIndex={handleStepChange}
+        enableMouseEvents
+        className="flex justify-center items-center"
+      >
+        {shoppings.map((shoppingItem, index) => (
+          <div
+            className={`flex justify-center items-center ${
+              Math.abs(activeStep - index) <= 2 ? "" : "hidden"
+            }`}
+            key={index}
+          >
+            <ShoppingCard shoppingItem={shoppingItem} />
+          </div>
+        ))}
+      </SwipeableViews>
+    )}
+  </div>
+);
+
+
 }
 
 export default ShoppingCarousel;

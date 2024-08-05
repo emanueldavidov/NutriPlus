@@ -71,13 +71,12 @@ const user=useSelector((state)=>state.auth.user)
       ];
   return (
     <>
-    <div className='greeting'>
-      Hello {user.username}!
-    </div>
-    <div className="logo">
-          <img src="/logo.png" alt="Logo" />
-        </div>
-        
+     <div className="flex justify-center mt-5 font-bold">
+        Hello {user.username}!
+      </div>
+      <div className="logo flex justify-center">
+        <img src="/logo.png" alt="Logo" />
+      </div>
    <CustomMedia data={data}/>
     </>
   )

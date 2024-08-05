@@ -47,93 +47,64 @@ export function MealCarousel({ meals }) {
     setActiveStep(step);
   };
 
-  return (
-    <Box
-      sx={{
-        maxWidth: isMobile ? 350 : 700,
-        width: "100%",
-        flexGrow: 1,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        margin: "auto", // Center the box horizontally
-      }}
+return (
+  <div
+    className={`max-w-${isMobile ? '350px' : '700px'} w-full flex flex-grow justify-center items-center flex-col mx-auto`}
+  >
+    <div
+      className="flex justify-between w-full max-w-[700px] mb-2"
     >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          // maxWidth: isMobile?350:700,
-          maxWidth: 700,
-          marginBottom: 2, // Add some margin between the buttons and the carousel
-        }}
+      <button
+        className="text-[#B81D33] p-2"
+        size="small"
+        onClick={handleBack}
+        disabled={activeStep === 0}
       >
-        <Button
-          sx={{ color: "#B81D33" }}
-          size="small"
-          onClick={handleBack}
-          disabled={activeStep === 0}
-        >
-          {theme.direction === "rtl" ? (
-            <KeyboardArrowRight />
-          ) : (
-            <KeyboardArrowLeft />
-          )}
-          Back
-        </Button>
-        <Button
-          sx={{ color: "#B81D33" }}
-          size="small"
-          onClick={handleNext}
-          disabled={activeStep === maxSteps - 1}
-        >
-          Next
-          {theme.direction === "rtl" ? (
-            <KeyboardArrowLeft />
-          ) : (
-            <KeyboardArrowRight />
-          )}
-        </Button>
-      </Box>
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+        Back
+      </button>
+      <button
+        className="text-[#B81D33] p-2"
+        size="small"
+        onClick={handleNext}
+        disabled={activeStep === maxSteps - 1}
+      >
+        Next
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </button>
+    </div>
 
-      {meals?.length > 0 && (
-        <SwipeableViews
-          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-          index={activeStep}
-          onChangeIndex={handleStepChange}
-          enableMouseEvents
-          sx={{
-            // maxWidth: isMobile?350:600,
-            maxWidth: 600,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "transparent",
-          }}
-          style={{
-            background: "transparent",
-          }}
-        >
-          {meals.map((meal, index) => (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              key={index}
-            >
-              {Math.abs(activeStep - index) <= 2 ? (
-                <MealCard meal={meal} />
-              ) : null}
-            </div>
-          ))}
-        </SwipeableViews>
-      )}
-    </Box>
-  );
+    {meals?.length > 0 && (
+      <SwipeableViews
+        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+        index={activeStep}
+        onChangeIndex={handleStepChange}
+        enableMouseEvents
+        className="max-w-[600px] flex justify-center items-center bg-transparent"
+      >
+        {meals.map((meal, index) => (
+          <div
+            className="flex justify-center items-center"
+            key={index}
+          >
+            {Math.abs(activeStep - index) <= 2 ? (
+              <MealCard meal={meal} />
+            ) : null}
+          </div>
+        ))}
+      </SwipeableViews>
+    )}
+  </div>
+);
+
 }
 
 export default MealCarousel;

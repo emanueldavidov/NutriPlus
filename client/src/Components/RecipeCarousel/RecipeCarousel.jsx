@@ -51,85 +51,60 @@ export function RecipeCarousel({ recipes }) {
     setExpandedState(false); // Collapse details on scroll
   };
 
-  return (
-    <Box
-      sx={{
-        maxWidth: isMobile ? 350 : 700,
-        flexGrow: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        margin: 'auto', // Center the box horizontally
-      }}
+return (
+  <div className="flex flex-col items-center justify-center max-w-[350px md:max-w-[700px]] flex-grow m-auto">
+    <div className="flex justify-between w-full max-w-[350px md:max-w-[700px]] mb-2">
+      <button
+        className="text-[#B81D33] text-sm"
+        onClick={handleBack}
+        disabled={activeStep === 0}
+      >
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+        Back
+      </button>
+      <button
+        className="text-[#B81D33] text-sm"
+        onClick={handleNext}
+        disabled={activeStep === maxSteps - 1}
+      >
+        Next
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </button>
+    </div>
+
+    <SwipeableViews
+      axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+      index={activeStep}
+      onChangeIndex={handleStepChange}
+      enableMouseEvents
+      className="bg-transparent flex items-center justify-center"
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          width: '100%',
-          maxWidth: isMobile ? 350 : 700,
-          marginBottom: 2, // Add some margin between the buttons and the carousel
-        }}
-      >
-        <Button
-          sx={{ color: "#B81D33" }}
-          size="small"
-          onClick={handleBack}
-          disabled={activeStep === 0}
+      {recipes.map((recipe, index) => (
+        <div
+          key={index}
+          className="flex items-center justify-center"
         >
-          {theme.direction === 'rtl' ? (
-            <KeyboardArrowRight />
-          ) : (
-            <KeyboardArrowLeft />
-          )}
-          Back
-        </Button>
-        <Button
-          sx={{ color: "#B81D33" }}
-          size="small"
-          onClick={handleNext}
-          disabled={activeStep === maxSteps - 1}
-        >
-          Next
-          {theme.direction === 'rtl' ? (
-            <KeyboardArrowLeft />
-          ) : (
-            <KeyboardArrowRight />
-          )}
-        </Button>
-      </Box>
-     
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-        sx={{
-          backgroundColor:"transparent",
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {recipes.map((recipe, index) => (
-          <div style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }} key={index}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <RecipeCard
-                recipe={recipe}
-                expanded={expandedState}
-                setExpanded={setExpandedState}
-              />
-            ) : null}
-          </div>
-        ))}
-      </SwipeableViews>
-    </Box>
-  );
+          {Math.abs(activeStep - index) <= 2 ? (
+            <RecipeCard
+              recipe={recipe}
+              expanded={expandedState}
+              setExpanded={setExpandedState}
+            />
+          ) : null}
+        </div>
+      ))}
+    </SwipeableViews>
+  </div>
+);
+
 }
 
 export default RecipeCarousel;

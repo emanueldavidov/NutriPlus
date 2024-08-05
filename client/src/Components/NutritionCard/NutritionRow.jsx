@@ -47,43 +47,96 @@ export default function NutritionRow({ nutritionItem }) {
     }
   };
   const handleUpdate = () => setUpdateModal(true);
-  return (
-    <>
-      <tr style={{ color: darkMode ? "white" : "black" }}>
-        <td data-label="Recipe"> {nutritionItem.food.recipeName}</td>
-        <td data-label="Fats"> {nutritionItem.fat}g</td>
-        <td data-label="Protein"> {nutritionItem.protein}g</td>
-        <td data-label="Calories"> {nutritionItem.calories}</td>
-        <td data-label="Actions">
-          <div className="actions">
-            <IconButton
-              onClick={handleUpdate}
-              sx={{ color: "#B81D33" }}
-              aria-label="edit"
-            >
-              <EditIcon />
-            </IconButton>
+return (
+  <Modal
+    open={openModal}
+    onClose={handleModalClose}
+    aria-labelledby="food-details-modal"
+    aria-describedby="modal-for-entering-food-details"
+    BackdropProps={{
+      invisible: false, // Keep the backdrop visible
+    }}
+  >
+    <div
+      className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 shadow-lg ${
+        darkMode ? "bg-black text-white" : "bg-white text-black"
+      }`}
+    >
+      <h2 className="font-bold text-center mb-4 text-xl">
+        Update Nutritional Details
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="w-full">
+          <label id="food-label" className="block text-sm font-medium">
+            Food
+          </label>
+          <select
+            disabled
+            id="food"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            value={selectedFood}
+            onChange={(e) => {
+              if (parseInt(e.target.value) >= 0 || e.target.value === "")
+                setSelectedFood(e.target.value);
+            }}
+          >
+            {recipes?.length > 0 &&
+              recipes.map((r) => (
+                <option key={r._id} value={r._id}>
+                  {r.recipeName}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className="w-full">
+          <label className="block text-sm font-medium">Calories</label>
+          <input
+            type="number"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            value={calories}
+            onChange={(e) => {
+              if (parseInt(e.target.value) >= 0 || e.target.value === "")
+                setCalories(e.target.value);
+            }}
+            required
+            min="0"
+          />
+        </div>
+        <div className="w-full">
+          <label className="block text-sm font-medium">Total Fat</label>
+          <input
+            type="number"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            value={totalFat}
+            onChange={(e) => {
+              if (parseInt(e.target.value) >= 0 || e.target.value === "")
+                setTotalFat(e.target.value);
+            }}
+            required
+          />
+        </div>
+        <div className="w-full">
+          <label className="block text-sm font-medium">Protein</label>
+          <input
+            type="number"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            value={protein}
+            onChange={(e) => {
+              if (parseInt(e.target.value) >= 0) setProtein(e.target.value);
+            }}
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          className="mt-2 mb-2 bg-[#B81D33] text-white py-2 px-4 rounded hover:bg-[#B81D33]"
+        >
+          Update Nutrition
+        </button>
+      </form>
+    </div>
+  </Modal>
+);
 
-            <IconButton
-              onClick={handleDelete}
-              sx={{ color: "#B81D33" }}
-              aria-label="delete"
-            >
-              <DeleteIcon />
-            </IconButton>
-          </div>
-        </td>
-      </tr>
 
-      {updateModal && (
-        <UpdateNutrition
-          nutrition={nutritionItem}
-          openModal={updateModal}
-          handleModalClose={() => {
-            setUpdateModal(!updateModal);
-          }}
-        />
-      )}
-    </>
-  );
 }

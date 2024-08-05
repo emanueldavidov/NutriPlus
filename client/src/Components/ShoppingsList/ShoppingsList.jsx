@@ -17,46 +17,39 @@ export default function ShoppingsList({ items }) {
 
 
   return (
-    <div>
-      {/* Ingredients List */}
-      {items.length > 0 && (
-        <>
-          <List sx={{ width: "100%",  }}>
-            {items.map((ingredient, index) => (
-              <React.Fragment key={ingredient._id}>
-                <ListItem alignItems="flex-start">
-                 
-                  <ListItemText
-                    primary={ingredient.ingredient}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {ingredient.quantity} {ingredient.unit}
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-                {index < ingredient.length - 1 && (
-                  <Divider variant="inset" component="li" />
-                )}
-              </React.Fragment>
-            ))}
-          </List>
-        </>
-      )}
+  <div>
+  {/* Ingredients List */}
+  {items.length > 0 && (
+    <ul className="w-full list-none p-0 m-0">
+      {items.map((ingredient, index) => (
+        <React.Fragment key={ingredient._id}>
+          <li className="flex items-start border-b border-gray-200 py-2 px-4">
+            <div className="flex-1">
+              <div className="font-bold">{ingredient.ingredient}</div>
+              <div className="text-gray-600">
+                {ingredient.quantity} {ingredient.unit}
+              </div>
+            </div>
+            {/* Adding a margin right if needed */}
+            {index < items.length - 1 && <hr className="border-gray-300 mt-2 mb-2" />}
+          </li>
+        </React.Fragment>
+      ))}
+    </ul>
+  )}
 
-
-      {error && (
-        <Alert severity="error" onClose={() => setErrorMessage("")}>
-          {error}
-        </Alert>
-      )}
+  {error && (
+    <div className="bg-red-100 text-red-800 p-4 rounded flex items-center">
+      <span className="flex-1">{error}</span>
+      <button
+        className="ml-2 text-red-600 hover:text-red-800"
+        onClick={() => setErrorMessage("")}
+      >
+        Close
+      </button>
     </div>
+  )}
+</div>
+
   );
 }

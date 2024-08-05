@@ -61,114 +61,102 @@ export default function RecipeCard({ recipe, expanded, setExpanded }) {
   const handleEdit = (id) => {
     setOpenModal(true);
   };
-  return (
-    <>
-      <Card
-        sx={{
-          maxWidth: isMobile ? 400 : 700,
-          minWidth: isMobile ? 400 : 700,
-          backgroundColor: "transparent",
-        }}
-      >
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: "#B81D33" }} aria-label="recipe">
-              {recipe.recipeName.charAt(0)} 
-            </Avatar>
-          }
-          action={
-            user._id === recipe?.user?._id && (
-              <div className="actions">
-                <IconButton sx={{ color: "#B81D33" }} aria-label="edit">
-                  <EditIcon onClick={handleEdit} />
-                </IconButton>
-
-                <IconButton
-                  onClick={handleDelete}
-                  sx={{ color: "#B81D33" }}
-                  aria-label="delete"
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </div>
-            )
-          }
-          title={recipe.recipeName}
-        />
-        <CardMedia
-          component="img"
-          height="350"
-          image={recipe.image} // Assuming recipe.image is the URL string
+return (
+  <>
+    <div
+      className={`max-w-${isMobile ? "400px" : "700px"} min-w-${
+        isMobile ? "400px" : "700px"
+      } bg-transparent m-2 p-4 shadow-lg rounded-lg`}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <div className="bg-[#B81D33] text-white rounded-full h-10 w-10 flex items-center justify-center">
+            {recipe.recipeName.charAt(0)}
+          </div>
+          <div className="ml-4 text-lg font-semibold">{recipe.recipeName}</div>
+        </div>
+        {user._id === recipe?.user?._id && (
+          <div className="flex space-x-2">
+            <button
+              onClick={handleEdit}
+              className="text-[#B81D33] hover:text-red-700"
+              aria-label="edit"
+            >
+              <EditIcon />
+            </button>
+            <button
+              onClick={handleDelete}
+              className="text-[#B81D33] hover:text-red-700"
+              aria-label="delete"
+            >
+              <DeleteIcon />
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="my-4">
+        <img
+          src={recipe.image}
           alt={recipe.name}
-          sx={{
-            width: isMobile ? "400px": "700px", // Set your desired width
-            objectFit: 'cover', // Ensures the image covers the area without distortion
-          }}
+          className={`w-${isMobile ? "400px" : "700px"} h-80 object-cover rounded`}
         />
-        <CardContent>
-          <Typography variant="body2">{recipe.description}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {recipe.category}
-          </Typography>
-        </CardContent>
-        <CardActions
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+      </div>
+      <div>
+        <p className="text-base">{recipe.description}</p>
+        <p className="text-gray-600">{recipe.category}</p>
+      </div>
+      <div className="flex items-center justify-center my-4">
+        <p className="mr-2">Show More Details</p>
+        <button
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+          className={`transform transition-transform ${
+            expanded ? "rotate-180" : ""
+          }`}
         >
-          <Typography>Show More Details</Typography>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Ingredients:</Typography>
-            <ul>
+          <ExpandMoreIcon />
+        </button>
+      </div>
+      {expanded && (
+        <div>
+          <div className="my-4">
+            <p className="font-semibold">Ingredients:</p>
+            <ul className="list-disc list-inside">
               {recipe?.ingredients?.map((ingredient, index) => (
-                <li key={index}>
-                  <Typography variant="body2" color="text.secondary">
-                    {ingredient.ingredient} {ingredient.quantity} (
-                    {ingredient.unit})
-                  </Typography>
+                <li key={index} className="text-gray-600">
+                  {ingredient.ingredient} {ingredient.quantity} (
+                  {ingredient.unit})
                 </li>
               ))}
             </ul>
-            <Typography paragraph>Instructions:</Typography>
-            <ol>
+          </div>
+          <div className="my-4">
+            <p className="font-semibold">Instructions:</p>
+            <ol className="list-decimal list-inside">
               {recipe.instructions.map((instruction, index) => (
-                <li key={index}>
-                  <Typography paragraph variant="body2" color="text.secondary">
-                    {instruction}
-                  </Typography>
+                <li key={index} className="text-gray-600">
+                  {instruction}
                 </li>
               ))}
             </ol>
-            <Typography paragraph>Created By:</Typography>
-            <ol>
-            <Typography paragraph variant="body2" color="text.secondary">
-                    {recipe?.user?.username}
-                  </Typography>
-              
-            </ol>
-          </CardContent>
-        </Collapse>
-      </Card>
-      {openModal && (
-        <UpdateRecipe
-          recipe={recipe}
-          resetRecipe
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-        />
+          </div>
+          <div className="my-4">
+            <p className="font-semibold">Created By:</p>
+            <p className="text-gray-600">{recipe?.user?.username}</p>
+          </div>
+        </div>
       )}
-    </>
-  );
+    </div>
+    {openModal && (
+      <UpdateRecipe
+        recipe={recipe}
+        resetRecipe
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
+    )}
+  </>
+);
+
 }

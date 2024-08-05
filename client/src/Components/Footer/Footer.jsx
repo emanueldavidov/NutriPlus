@@ -4,23 +4,20 @@ import './Footer.css';
 
 const Footer = () => {
   return (
-    <footer className="sticky-footer">
-      <Container>
-        <div className="footer-content">
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="body1">Created by:</Typography>
-              <Typography variant="body2">
-                Emanuel Davidov - <Link href="mailto:Davidova@example.com" color="inherit">Davidova@example.com</Link>
-              </Typography>
-              <Typography variant="body2">
-                Jane Smith - <Link href="mailto:jane.smith@example.com" color="inherit">jane.smith@example.com</Link>
-              </Typography>
-            </Grid>
-          </Grid>
+    <footer className="fixed bottom-0 left-0 w-full text-white py-2 text-sm">
+      <div className="text-center py-2">
+        <div className="space-y-2">
+          <p className="text-base">Created by:</p>
+          <p>
+            Emanuel Davidov -{' '}
+            <a href="mailto:Davidova@example.com" className="text-white hover:text-red-600">Davidova@example.com</a>
+          </p>
+          <p>
+            Jane Smith -{' '}
+            <a href="mailto:jane.smith@example.com" className="text-white hover:text-red-600">jane.smith@example.com</a>
+          </p>
         </div>
-        <Divider />
-      </Container>
+      </div>
     </footer>
   );
 }

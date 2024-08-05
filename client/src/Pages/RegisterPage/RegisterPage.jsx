@@ -76,170 +76,170 @@ const RegisterPage = () => {
     }
   };
 
-  return (
-    <div className="register-page">
-      <div className="logo">
-        <img src="/logo.png" alt="Logo" />
-      </div>
-
-      <CustomCard
-        title="Register"
-        text="Enter your information to register"
-        color={"black"}
-      >
-        <Box component="form" noValidate autoComplete="off">
-          <div className="input-group">
-            <TextField
-              id="username"
-              label="Username"
-              variant="outlined"
-              required
-              onChange={(e) => setUsername(e.target.value)}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "black",
-                  fontWeight: "bold",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                },
-              }}
-            />
-            <TextField
-              id="password"
-              type="password"
-              label="Password"
-              required
-              variant="outlined"
-              onChange={(e) => setPassword(e.target.value)}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "black",
-                  fontWeight: "bold",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                },
-              }}
-            />
-            <TextField
-              id="passwordConfirm"
-              type="password"
-              label="Repeat Password"
-              variant="outlined"
-              required
-              onChange={(e) => setPasswordConfirm(e.target.value)}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "black",
-                  fontWeight: "bold",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                },
-              }}
-            />
-            <TextField
-              id="email"
-              type="email"
-              label="Email"
-              variant="outlined"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              required
-              sx={{
-                marginBottom: "10px",
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "black",
-                  fontWeight: "bold",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                },
-              }}
-            />
-            {errors.length > 0 &&
-              errors.map((error, index) => (
-                <Alert
-                  key={index}
-                  severity="error"
-                  onClose={() => {
-                    let newErrors = [...errors];
-                    newErrors.splice(index, 1);
-                    setErrors(newErrors);
-                  }}
-                >
-                  {error}
-                </Alert>
-              ))}
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              onClick={handleRegister}
-              sx={{
-                marginTop: "10px",
-                marginBottom: "10px",
-                backgroundColor: "#B81D33",
-                "&:hover": {
-                  backgroundColor: "#B81D33",
-                },
-              }}
-              disabled={loading}
-              endIcon={
-                loading ? (
-                  <CircularProgress sx={{ color: "white" }} size={24} />
-                ) : null
-              }
-            >
-              {loading ? "Loading..." : "Register"}
-            </Button>
-
-            {success && (
-              <Alert severity={"success"}>Registered Successfully. Redirecting to login page...</Alert>
-            )}
-          </div>
-          <Link to="/">Already registered? Go to Login!</Link>
-        </Box>
-      </CustomCard>
+return (
+  <div className="register-page flex justify-center items-center flex-col">
+    <div className="logo">
+      <img src="/logo.png" alt="Logo" />
     </div>
-  );
+
+    <CustomCard
+      title="Register"
+      text="Enter your information to register"
+      color={"black"}
+    >
+      <form className="flex flex-col items-center" noValidate autoComplete="off">
+        <div className="input-group flex flex-col items-center mt-2">
+          <TextField
+            id="username"
+            label="Username"
+            variant="outlined"
+            required
+            onChange={(e) => setUsername(e.target.value)}
+            sx={{
+              marginBottom: "10px",
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "black",
+                fontWeight: "bold",
+              },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#B81D33",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#B81D33",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#B81D33",
+                },
+              },
+            }}
+          />
+          <TextField
+            id="password"
+            type="password"
+            label="Password"
+            required
+            variant="outlined"
+            onChange={(e) => setPassword(e.target.value)}
+            sx={{
+              marginBottom: "10px",
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "black",
+                fontWeight: "bold",
+              },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#B81D33",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#B81D33",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#B81D33",
+                },
+              },
+            }}
+          />
+          <TextField
+            id="passwordConfirm"
+            type="password"
+            label="Repeat Password"
+            variant="outlined"
+            required
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            sx={{
+              marginBottom: "10px",
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "black",
+                fontWeight: "bold",
+              },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#B81D33",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#B81D33",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#B81D33",
+                },
+              },
+            }}
+          />
+          <TextField
+            id="email"
+            type="email"
+            label="Email"
+            variant="outlined"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            required
+            sx={{
+              marginBottom: "10px",
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "black",
+                fontWeight: "bold",
+              },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#B81D33",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#B81D33",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#B81D33",
+                },
+              },
+            }}
+          />
+          {errors.length > 0 &&
+            errors.map((error, index) => (
+              <Alert
+                key={index}
+                severity="error"
+                onClose={() => {
+                  let newErrors = [...errors];
+                  newErrors.splice(index, 1);
+                  setErrors(newErrors);
+                }}
+              >
+                {error}
+              </Alert>
+            ))}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={handleRegister}
+            sx={{
+              marginTop: "10px",
+              marginBottom: "10px",
+              backgroundColor: "#B81D33",
+              "&:hover": {
+                backgroundColor: "#B81D33",
+              },
+            }}
+            disabled={loading}
+            endIcon={
+              loading ? (
+                <CircularProgress sx={{ color: "white" }} size={24} />
+              ) : null
+            }
+          >
+            {loading ? "Loading..." : "Register"}
+          </Button>
+
+          {success && (
+            <Alert severity={"success"}>Registered Successfully. Redirecting to login page...</Alert>
+          )}
+        </div>
+        <Link to="/">Already registered? Go to Login!</Link>
+      </form>
+    </CustomCard>
+  </div>
+);
 };
 
 export default RegisterPage;

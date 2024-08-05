@@ -109,236 +109,217 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
   const darkMode = useSelector((state) => state.darkMode.darkMode);
 
   return (
-    <Modal
-      open={openModal}
-      onClose={handleModalClose}
-      aria-labelledby="recipe-details-modal"
-      aria-describedby="modal-for-entering-recipe-details"
-      BackdropProps={{
-        invisible: false, // Hides the backdrop
-      }}
+<Modal
+  open={openModal}
+  onClose={handleModalClose}
+  aria-labelledby="recipe-details-modal"
+  aria-describedby="modal-for-entering-recipe-details"
+  BackdropProps={{
+    invisible: false, // Hides the backdrop
+  }}
+>
+  <div
+    className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl p-4 border-2 rounded-lg ${
+      darkMode ? 'bg-black text-white border-[#B81D33]' : 'bg-white text-black border-[#B81D33]'
+    } max-h-[90vh] min-h-[300px] overflow-y-auto`}
+  >
+    <Typography
+      variant="h6"
+      component="h2"
+      gutterBottom
+      className="text-[#B81D33] text-center mb-5"
     >
-      <div
-        className="modal-content"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: darkMode ? "black" : "white",
-          boxShadow: 24,
-          p: 4,
-        }}
-      >
-        <Typography
-          variant="h6"
-          component="h2"
-          gutterBottom
-          className="modal-title"
-        >
-          Update Recipe Details
-        </Typography>
-        {errorMessage && (
-          <Alert severity="error" onClose={() => setErrorMessage("")}>
-            {errorMessage}
-          </Alert>
-        )}
-        <FormikProvider value={formik}>
-          <Form>
-            <FormikTextField name="recipeName" label="Recipe Name" required />
-            <FormikTextField name="image" required label="Recipe Image URL" />
-            <FormikTextField
-              name="description"
-              required
-              label="Recipe Description"
-            />
-            <FormikSelect
-              name="category"
-              label="Category"
-              options={["starter", "main course", "dessert"]}
-            />
+      Update Recipe Details
+    </Typography>
+    {errorMessage && (
+      <Alert severity="error" onClose={() => setErrorMessage("")}>
+        {errorMessage}
+      </Alert>
+    )}
+    <FormikProvider value={formik}>
+      <Form>
+        <FormikTextField
+          name="recipeName"
+          label="Recipe Name"
+          required
+          className="mb-2"
+        />
+        <FormikTextField
+          name="image"
+          label="Recipe Image URL"
+          required
+          className="mb-2"
+        />
+        <FormikTextField
+          name="description"
+          label="Recipe Description"
+          required
+          className="mb-2"
+        />
+        <FormikSelect
+          name="category"
+          label="Category"
+          options={["starter", "main course", "dessert"]}
+          className="mb-2"
+        />
 
-            <div className="ingredient-input">
-              <FieldArray name="ingredients">
-                {({ push, remove }) => (
-                  <>
-                    {formik.values.ingredients.map((ing, index) => (
-                      <Grid container spacing={2}>
-                        <Grid item xs={4} key={index}>
-                          <Field
-                            required
-                            component={TextField}
-                            type="text"
-                            name={`ingredients[${index}].ingredient`}
-                            value={ing.ingredient}
-                            onChange={(e) =>
-                              formik.setFieldValue(
-                                `ingredients[${index}].ingredient`,
-                                e.target.value
-                              )
-                            }
-                            label="Ingredient"
-                            fullWidth
-                            variant="outlined"
-                            margin="normal"
-                            className="input-field"
-                            sx={{
-                              marginBottom: "10px",
-                            }}
-                          />
-                        </Grid>
-                        <Grid item xs={3}>
-                          <FormControl
-                            required
-                            fullWidth
-                            variant="outlined"
-                            margin="normal"
-                            sx={{}}
-                          >
-                            <InputLabel id="unit-label">Unit</InputLabel>
-                            <Select
-                              labelId="unit-label"
-                              id="unit"
-                              label="Unit"
-                              name={`ingredients[${index}].unit`}
-                              value={ing.unit}
-                              onChange={(e) =>
-                                formik.setFieldValue(
-                                  `ingredients[${index}].unit`,
-                                  e.target.value
-                                )
-                              }
-                            >
-                              <MenuItem value="piece(s)">piece(s)</MenuItem>
-                              <MenuItem value="g">g</MenuItem>
-                              <MenuItem value="kg">kg</MenuItem>
-                              <MenuItem value="ml">ml</MenuItem>
-                              <MenuItem value="l">l</MenuItem>
-                              <MenuItem value="pcs">pcs</MenuItem>
-                              <MenuItem value="tsp">tsp</MenuItem>
-                              <MenuItem value="tbsp">tbsp</MenuItem>
-                              <MenuItem value="cup">cup</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Field
-                            required
-                            component={TextField}
-                            type="number"
-                            name={`ingredients[${index}].quantity`}
-                            value={ing.quantity}
-                            onChange={(e) =>{
-                              if(parseInt(e.target.value) >=0 || e.target.value=="")
-                              formik.setFieldValue(
-                                `ingredients[${index}].quantity`,
-                                parseInt(e.target.value)
-                              )}
-                            }
-                            label="Quantity"
-                            fullWidth
-                            variant="outlined"
-                            margin="normal"
-                            className="input-field"
-                            sx={{
-                              marginBottom: "10px",
-                            }}
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <IconButton onClick={() => remove(index)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    ))}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() =>
-                        push({ ingredient: "", unit: "", quantity: "" })
-                      }
-                      sx={{
-                        marginBottom: "10px",
-                        marginTop: "20px",
-                        backgroundColor: "#B81D33",
-                        "&:hover": {
-                          backgroundColor: "#B81D33",
-                        },
-                      }}
-                    >
-                      Add Ingredient
-                    </Button>
-                  </>
-                )}
-              </FieldArray>
-            </div>
-            <FieldArray name="instructions">
-              {({ push, remove }) => (
-                <>
-                  {formik.values.instructions.map((inst, index) => (
-                    <Grid container spacing={2}>
-                      <Grid item xs={10} marginBottom={2}>
-                        <TextField
-                          required
-                          type="text"
-                          value={inst}
+        <div className="space-y-2">
+          <FieldArray name="ingredients">
+            {({ push, remove }) => (
+              <>
+                {formik.values.ingredients.map((ing, index) => (
+                  <Grid container spacing={2} key={index}>
+                    <Grid item xs={4}>
+                      <Field
+                        required
+                        component={TextField}
+                        type="text"
+                        name={`ingredients[${index}].ingredient`}
+                        value={ing.ingredient}
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            `ingredients[${index}].ingredient`,
+                            e.target.value
+                          )
+                        }
+                        label="Ingredient"
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        className="mb-2"
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <FormControl
+                        required
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                      >
+                        <InputLabel id="unit-label">Unit</InputLabel>
+                        <Select
+                          labelId="unit-label"
+                          id="unit"
+                          label="Unit"
+                          name={`ingredients[${index}].unit`}
+                          value={ing.unit}
                           onChange={(e) =>
                             formik.setFieldValue(
-                              `instructions[${index}]`,
+                              `ingredients[${index}].unit`,
                               e.target.value
                             )
                           }
-                          label="Instruction"
-                          name={`instructions[${index}]`}
-                        />
-                      </Grid>
-                      <Grid item xs={2}>
-                        <IconButton onClick={() => remove(index)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Grid>
+                        >
+                          <MenuItem value="piece(s)">piece(s)</MenuItem>
+                          <MenuItem value="g">g</MenuItem>
+                          <MenuItem value="kg">kg</MenuItem>
+                          <MenuItem value="ml">ml</MenuItem>
+                          <MenuItem value="l">l</MenuItem>
+                          <MenuItem value="pcs">pcs</MenuItem>
+                          <MenuItem value="tsp">tsp</MenuItem>
+                          <MenuItem value="tbsp">tbsp</MenuItem>
+                          <MenuItem value="cup">cup</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Grid>
-                  ))}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => push("")}
-                    sx={{
-                      marginTop: "10px",
-                      marginBottom: "10px",
-                      backgroundColor: "#B81D33",
-                      "&:hover": {
-                        backgroundColor: "#B81D33",
-                      },
-                    }}
-                  >
-                    Add Instruction
-                  </Button>
-                </>
-              )}
-            </FieldArray>
+                    <Grid item xs={3}>
+                      <Field
+                        required
+                        component={TextField}
+                        type="number"
+                        name={`ingredients[${index}].quantity`}
+                        value={ing.quantity}
+                        onChange={(e) => {
+                          if (parseInt(e.target.value) >= 0 || e.target.value === "")
+                            formik.setFieldValue(
+                              `ingredients[${index}].quantity`,
+                              parseInt(e.target.value)
+                            );
+                        }}
+                        label="Quantity"
+                        fullWidth
+                        variant="outlined"
+                        margin="normal"
+                        className="mb-2"
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <IconButton onClick={() => remove(index)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                ))}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    push({ ingredient: "", unit: "", quantity: "" })
+                  }
+                  className="mt-5 mb-2 bg-[#B81D33] hover:bg-[#B81D33]"
+                >
+                  Add Ingredient
+                </Button>
+              </>
+            )}
+          </FieldArray>
+        </div>
 
-            <div>
+        <FieldArray name="instructions">
+          {({ push, remove }) => (
+            <>
+              {formik.values.instructions.map((inst, index) => (
+                <Grid container spacing={2} key={index}>
+                  <Grid item xs={10} className="mb-2">
+                    <TextField
+                      required
+                      type="text"
+                      value={inst}
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          `instructions[${index}]`,
+                          e.target.value
+                        )
+                      }
+                      label="Instruction"
+                      name={`instructions[${index}]`}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <IconButton onClick={() => remove(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              ))}
               <Button
-                type="submit"
                 variant="contained"
                 color="primary"
-                sx={{
-                  marginTop: "10px",
-                  backgroundColor: "#B81D33",
-                  "&:hover": {
-                    backgroundColor: "#B81D33",
-                  },
-                }}
+                onClick={() => push("")}
+                className="mt-5 mb-2 bg-[#B81D33] hover:bg-[#B81D33]"
               >
-                Update Recipe
+                Add Instruction
               </Button>
-            </div>
-          </Form>
-        </FormikProvider>
-      </div>
-    </Modal>
+            </>
+          )}
+        </FieldArray>
+
+        <div>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className="mt-5 bg-[#B81D33] hover:bg-[#B81D33]"
+          >
+            Update Recipe
+          </Button>
+        </div>
+      </Form>
+    </FormikProvider>
+  </div>
+</Modal>
+
   );
 };
 

@@ -40,53 +40,53 @@ export default function NutritionCard({ nutritionItem }) {
     }
   };
   const handleUpdate = () => setUpdateModal(true);
-  return (
-    <>
-      <Grid container  spacing={2} sx={{ marginBottom: 1 }}>
-        <Grid item xs={2}>
-          <Typography variant="body1">
-            {nutritionItem.food.recipeName}
-          </Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <Typography variant="body1">{nutritionItem.fat}g</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <Typography variant="body1">{nutritionItem.protein}g</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <Typography variant="body1">{nutritionItem.calories}</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <div className="actions">
-            <IconButton
-              onClick={handleUpdate}
-              sx={{ color: "#B81D33" }}
-              aria-label="edit"
-            >
-              <EditIcon />
-            </IconButton>
+return (
+  <>
+    <div className="grid grid-cols-12 gap-2 mb-1">
+      <div className="col-span-2">
+        <p className="text-base">
+          {nutritionItem.food.recipeName}
+        </p>
+      </div>
+      <div className="col-span-2">
+        <p className="text-base">{nutritionItem.fat}g</p>
+      </div>
+      <div className="col-span-2">
+        <p className="text-base">{nutritionItem.protein}g</p>
+      </div>
+      <div className="col-span-2">
+        <p className="text-base">{nutritionItem.calories}</p>
+      </div>
+      <div className="col-span-2 flex">
+        <div className="actions flex">
+          <button
+            onClick={handleUpdate}
+            style={{ color: "#B81D33" }}
+            aria-label="edit"
+          >
+            <EditIcon />
+          </button>
+          <button
+            onClick={handleDelete}
+            style={{ color: "#B81D33" }}
+            aria-label="delete"
+          >
+            <DeleteIcon />
+          </button>
+        </div>
+      </div>
+    </div>
 
-            <IconButton
-              onClick={handleDelete}
-              sx={{ color: "#B81D33" }}
-              aria-label="delete"
-            >
-              <DeleteIcon />
-            </IconButton>
-          </div>
-        </Grid>
-      </Grid>
+    {updateModal && (
+      <UpdateNutrition
+        nutrition={nutritionItem}
+        openModal={updateModal}
+        handleModalClose={() => {
+          setUpdateModal(!updateModal);
+        }}
+      />
+    )}
+  </>
+);
 
-      {updateModal && (
-        <UpdateNutrition
-          nutrition={nutritionItem}
-          openModal={updateModal}
-          handleModalClose={() => {
-            setUpdateModal(!updateModal);
-          }}
-        />
-      )}
-    </>
-  );
 }
