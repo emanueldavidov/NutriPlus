@@ -11,10 +11,10 @@ const Footer = () => {
             <Grid item xs={12}>
               <Typography variant="body1">Created by:</Typography>
               <Typography variant="body2">
-                Emanuel, Raz, Yossi, Shai, Itay
+                Emanuel Davidov - <Link href="mailto:Davidova@example.com" color="inherit">Davidova@example.com</Link>
               </Typography>
               <Typography variant="body2">
-                NutriPlus Team - <Link href="mailto:@example.com" color="inherit">Support@NutriPlus.com</Link>
+                Jane Smith - <Link href="mailto:jane.smith@example.com" color="inherit">jane.smith@example.com</Link>
               </Typography>
             </Grid>
           </Grid>
