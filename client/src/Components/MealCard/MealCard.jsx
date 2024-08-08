@@ -17,7 +17,7 @@ import { Collapse, styled, Typography, useMediaQuery } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { deleteMeal, fetchAllMeals } from "../../Pages/store/slices/mealSlice";
 import axios from "axios";
-import MealList from "../MealList/MealList";
+
 import MealsList from "../MealsList/MealsList";
 import UpdateMeal from "../../Pages/Meal/UpdateMeal";
 import { BACKEND_URL } from "../../config/config";

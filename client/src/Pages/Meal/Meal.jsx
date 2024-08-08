@@ -18,7 +18,6 @@ import {
   Alert,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import MealList from "../../Components/MealList/MealList";
 import "./Meal.css";
 import MealCarousel from "../../Components/MealCarousel/MealCarousel";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
@@ -92,130 +91,136 @@ const Meal = () => {
     setSelectedDish(selectedRecipe);
   };
   const handleDeleteRecipe = (index) => {
-    const tempFood = [ ...recipes ];
+    const tempFood = [...recipes];
     tempFood.splice(index, 1);
     setRecipes(tempFood);
   };
   const handleAddNewRecipe = () => {
-    if(!selectedRecipe)return;
+    if (!selectedRecipe) return;
     const rec = dishes.find((r) => r._id === selectedRecipe);
     setRecipes([...recipes, rec]);
   };
 
   return (
-<div className="meal-container flex flex-col items-center justify-center p-5">
-<Button
-  type="button"
-  variant="contained"
-  color="primary"
-  style={{
-    marginTop: "0.5rem",
-    marginBottom: "0.5rem",
-    backgroundColor: "#B81D33",
-    color: "#fff", // Ensure text color is visible
-  }}
-  onClick={handleModalOpen}
->
-  Add Meal
-</Button>
-
-  <Modal
-    open={openModal}
-    onClose={handleModalClose}
-    aria-labelledby="food-details-modal"
-    aria-describedby="modal-for-entering-food-details"
-    BackdropProps={{
-      invisible: true, // Hides the backdrop
-    }}
-  >
-    <div
-      className={`absolute w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 shadow-xl rounded-lg ${
-        darkMode ? "bg-black text-white" : "bg-white text-black"
-      } max-h-[90vh] min-h-[300px] overflow-y-auto border-2 border-[#B81D33]`}
-    >
-      <Typography
-        variant="h6"
-        component="h2"
-        gutterBottom
-        className="text-[#B81D33] text-center mb-5"
+    <div className="meal-container flex flex-col items-center justify-center p-5">
+      <Button
+        type="button"
+        variant="contained"
+        color="primary"
+        style={{
+          marginTop: "0.5rem",
+          marginBottom: "0.5rem",
+          backgroundColor: "#B81D33",
+          color: "#fff", // Ensure text color is visible
+        }}
+        onClick={handleModalOpen}
       >
         Add Meal
-      </Typography>
-      {errorMessage && (
-        <Alert severity="error" onClose={() => setErrorMessage("")}>
-          {errorMessage}
-        </Alert>
-      )}
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label="Meal Name"
-          value={foodName ?? ""}
-          onChange={(e) => setFoodName(e.target.value)}
-          fullWidth
-          className="mb-2"
-        />
-        <div className="flex items-center mb-2">
-          <FormControl fullWidth variant="outlined" margin="normal">
-            <InputLabel id="food-name-label">Add Recipe</InputLabel>
-            <Select
-              value={selectedRecipe}
-              onChange={(e) => setSelectedRecipe(e.target.value)}
-              labelId="food-name-label"
-              label="Food Name"
-              required
+      </Button>
+
+      <Modal
+        open={openModal}
+        onClose={handleModalClose}
+        aria-labelledby="food-details-modal"
+        aria-describedby="modal-for-entering-food-details"
+        BackdropProps={{
+          invisible: true, // Hides the backdrop
+        }}
+      >
+        <div
+          className={`absolute w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 shadow-xl rounded-lg ${
+            darkMode ? "bg-black text-white" : "bg-white text-black"
+          } max-h-[90vh] min-h-[300px] overflow-y-auto border-2 border-[#B81D33]`}
+        >
+          <Typography
+            variant="h6"
+            component="h2"
+            gutterBottom
+            className="text-[#B81D33] text-center mb-5"
+          >
+            Add Meal
+          </Typography>
+          {errorMessage && (
+            <Alert severity="error" onClose={() => setErrorMessage("")}>
+              {errorMessage}
+            </Alert>
+          )}
+          <form onSubmit={handleSubmit}>
+            <TextField
+              label="Meal Name"
+              value={foodName ?? ""}
+              onChange={(e) => setFoodName(e.target.value)}
+              fullWidth
+              className="mb-2"
+            />
+            <div className="flex items-center mb-2">
+              <FormControl fullWidth variant="outlined" margin="normal">
+                <InputLabel id="food-name-label">Add Recipe</InputLabel>
+                <Select
+                  value={selectedRecipe}
+                  onChange={(e) => setSelectedRecipe(e.target.value)}
+                  labelId="food-name-label"
+                  label="Food Name"
+                  required
+                >
+                  {dishes.map((dish) => (
+                    <MenuItem key={dish._id} value={dish._id}>
+                      {dish.recipeName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <AddIcon
+                fontSize="large"
+                onClick={handleAddNewRecipe}
+                className="ml-2"
+              />
+            </div>
+            <List className="w-full">
+              {recipes?.length > 0 &&
+                recipes.map((dish, index) => (
+                  <React.Fragment key={index}>
+                    <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar alt={dish.recipeName} src={dish.image} />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={dish.recipeName}
+                        secondary={
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className="text-primary"
+                          >
+                            {dish.description}
+                          </Typography>
+                        }
+                      />
+                      <CloseIcon
+                        onClick={() => handleDeleteRecipe(index)}
+                        className="cursor-pointer"
+                      />
+                    </ListItem>
+                  </React.Fragment>
+                ))}
+            </List>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className="mt-2 mb-2 bg-custom-red hover:bg-custom-red text-white"
+              // onClick={handleModalOpen}
             >
-              {dishes.map((dish) => (
-                <MenuItem key={dish._id} value={dish._id}>
-                  {dish.recipeName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <AddIcon fontSize="large" onClick={handleAddNewRecipe} className="ml-2" />
+              Add Meal
+            </Button>
+          </form>
         </div>
-        <List className="w-full">
-          {recipes?.length > 0 &&
-            recipes.map((dish, index) => (
-              <React.Fragment key={index}>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar alt={dish.recipeName} src={dish.image} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={dish.recipeName}
-                    secondary={
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        className="text-primary"
-                      >
-                        {dish.description}
-                      </Typography>
-                    }
-                  />
-                  <CloseIcon onClick={() => handleDeleteRecipe(index)} className="cursor-pointer" />
-                </ListItem>
-              </React.Fragment>
-            ))}
-        </List>
-  <Button
-  type="submit"
-  variant="contained"
-  color="primary"
-  className="mt-2 mb-2 bg-custom-red hover:bg-custom-red text-white"
-  // onClick={handleModalOpen}
->
-  Add Meal
-</Button>
-      </form>
+      </Modal>
+
+      <div className="meal-list">
+        <MealCarousel meals={meals} />
+      </div>
     </div>
-  </Modal>
-
-  <div className="meal-list">
-    <MealCarousel meals={meals} />
-  </div>
-</div>
-
   );
 };
 
