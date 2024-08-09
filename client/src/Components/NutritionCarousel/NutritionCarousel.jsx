@@ -68,16 +68,16 @@ return (
   <div className={`min-w-${isMobile ? "full" : "675px"} max-w-${isMobile ? "full" : "800px"} m-2 p-4 border rounded shadow-lg`}>
     <div>
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+        <thead className="">
           <tr>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recipe</th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fats</th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Protein</th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Calories</th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Recipe</th>
+            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Fats</th>
+            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Protein</th>
+            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Calories</th>
+            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className=" divide-y divide-gray-200">
           {nutrition.map((nutritionItem, index) => (
             <NutritionRow
               key={index}

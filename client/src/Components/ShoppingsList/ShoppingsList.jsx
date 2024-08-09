@@ -26,7 +26,7 @@ export default function ShoppingsList({ items }) {
           <li className="flex items-start border-b border-gray-200 py-2 px-4">
             <div className="flex-1">
               <div className="font-bold">{ingredient.ingredient}</div>
-              <div className="text-gray-600">
+              <div className="">
                 {ingredient.quantity} {ingredient.unit}
               </div>
             </div>

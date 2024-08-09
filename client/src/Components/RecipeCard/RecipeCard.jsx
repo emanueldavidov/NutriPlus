@@ -102,7 +102,7 @@ return (
   </div>
   <div>
     <p className="text-base">{recipe.description}</p>
-    <p className="text-gray-600">{recipe.category}</p>
+    <p className="">{recipe.category}</p>
   </div>
   <div className="flex items-center justify-center my-4">
     <p className="mr-2">Show More Details</p>
@@ -123,7 +123,7 @@ return (
         <p className="font-semibold">Ingredients:</p>
         <ul className="list-disc list-inside">
           {recipe?.ingredients?.map((ingredient, index) => (
-            <li key={index} className="text-gray-600">
+            <li key={index} className="">
               {ingredient.ingredient} {ingredient.quantity} ({ingredient.unit})
             </li>
           ))}
@@ -133,7 +133,7 @@ return (
         <p className="font-semibold">Instructions:</p>
         <ol className="list-decimal list-inside">
           {recipe.instructions.map((instruction, index) => (
-            <li key={index} className="text-gray-600">
+            <li key={index} className="">
               {instruction}
             </li>
           ))}
@@ -141,7 +141,7 @@ return (
       </div>
       <div className="my-4">
         <p className="font-semibold">Created By:</p>
-        <p className="text-gray-600">{recipe?.user?.username}</p>
+        <p className="">{recipe?.user?.username}</p>
       </div>
     </div>
   )}

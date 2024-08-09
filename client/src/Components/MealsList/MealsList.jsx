@@ -67,7 +67,7 @@ return (
                 </div>
                 <div>
                   <p className="text-lg font-medium">{dish.recipeName}</p>
-                  <p className="text-sm text-gray-700">{dish.description}</p>
+                  <p className="text-sm ">{dish.description}</p>
                 </div>
               </li>
               {index < starters.length - 1 && (
@@ -96,7 +96,7 @@ return (
                 </div>
                 <div>
                   <p className="text-lg font-medium">{dish.recipeName}</p>
-                  <p className="text-sm text-gray-700">{dish.description}</p>
+                  <p className="text-sm ">{dish.description}</p>
                 </div>
               </li>
               {index < mainCourse.length - 1 && (
@@ -125,7 +125,7 @@ return (
                 </div>
                 <div>
                   <p className="text-lg font-medium">{dish.recipeName}</p>
-                  <p className="text-sm text-gray-700">{dish.description}</p>
+                  <p className="text-sm ">{dish.description}</p>
                 </div>
               </li>
               {index < dessert.length - 1 && (
