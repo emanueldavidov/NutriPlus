@@ -256,7 +256,8 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
                   onClick={() =>
                     push({ ingredient: "", unit: "", quantity: "" })
                   }
-                  className="mt-5 mb-2 bg-[#B81D33] hover:bg-[#B81D33]"
+                  className="mt-5 mb-2 "
+                  style={{ backgroundColor: "#B81D33" }}
                 >
                   Add Ingredient
                 </Button>
@@ -297,7 +298,8 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
                 variant="contained"
                 color="primary"
                 onClick={() => push("")}
-                className="mt-5 mb-2 bg-[#B81D33] hover:bg-[#B81D33]"
+                className="my-5 mb-2 "
+                style={{ backgroundColor: "#B81D33" }}
               >
                 Add Instruction
               </Button>
@@ -310,7 +312,8 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
             type="submit"
             variant="contained"
             color="primary"
-            className="mt-5 bg-[#B81D33] hover:bg-[#B81D33]"
+            className="my-5 "
+            style={{ backgroundColor: "#B81D33" }}
           >
             Update Recipe
           </Button>

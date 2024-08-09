@@ -50,10 +50,10 @@ export default function NutritionRow({ nutritionItem }) {
   return (
     <>
       <tr style={{ color: darkMode ? "white" : "black" }}>
-        <td data-label="Recipe"> {nutritionItem.food.recipeName}</td>
-        <td data-label="Fats"> {nutritionItem.fat}g</td>
-        <td data-label="Protein"> {nutritionItem.protein}g</td>
-        <td data-label="Calories"> {nutritionItem.calories}</td>
+        <td data-label="Recipe"> {nutritionItem?.food?.recipeName}</td>
+        <td data-label="Fats"> {nutritionItem?.fat}g</td>
+        <td data-label="Protein"> {nutritionItem?.protein}g</td>
+        <td data-label="Calories"> {nutritionItem?.calories}</td>
         <td data-label="Actions">
           <div className="actions">
             <IconButton

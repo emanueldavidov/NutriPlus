@@ -186,7 +186,7 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
               },
             }}
           >
-            Update Food
+            Update Meal
           </Button>
         </form>
       </div>

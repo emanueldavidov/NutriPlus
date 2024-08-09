@@ -19,8 +19,12 @@ const CustomDrawer = ({ list, links }) => {
   const dispatch = useDispatch();
   const darkMode = useSelector((state) => state.darkMode.darkMode);
 
-  const toggleDrawer = (newOpen) => () => {
+  const toggleDrawer = (newOpen)=>()  => {
     setOpen(newOpen);
+    console.log("hi")
+  };
+  const openDrawer = ()  => {
+    setOpen(true);
   };
 
   const toggleDarkMode = () => {
@@ -79,24 +83,30 @@ const CustomDrawer = ({ list, links }) => {
     </Box>
   );
 
-  return (
-    <div>
-      {!darkMode && (
-        <IconButton onClick={toggleDrawer(true)}>
-          <MenuIcon sx={{ color: "black" }} />
-        </IconButton>
-      )}
-      {darkMode && (
-        <IconButton onClick={toggleDrawer(true)}>
-          <MenuIcon sx={{ color: "white" }} />
-        </IconButton>
-      )}
+return (
+  <div>
+    {!darkMode && (
+      <button
+      className="p-2 rounded focus:outline-none"
+      onClick={openDrawer}
+      >
+        <MenuIcon onClick={openDrawer} style={{ color: "black" }} />
+      </button>
+    )}
+    {darkMode && (
+      <button
+        onClick={openDrawer}
+        className="p-2 rounded focus:outline-none"
+      >
+        <MenuIcon onClick={openDrawer} style={{ color: "white" }} />
+      </button>
+    )}
 
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
-    </div>
-  );
+  </div>
+);
 };
 
 export default CustomDrawer;

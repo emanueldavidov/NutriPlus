@@ -58,6 +58,9 @@ footer a:hover {
   color: #ed1b24;
 }
 
+.carousel-width{
+  max-width: 700px;
+}
 /* Responsive styles for the entire application */
 @media (max-width: 1200px) {
   body {
@@ -74,6 +77,10 @@ footer a:hover {
 @media (max-width: 768px) {
   body {
     font-size: 12px;
+  }
+
+  .carousel-width{
+    max-width: 350px;
   }
 }
 

@@ -275,7 +275,8 @@ const Recipe = () => {
             variant="contained"
             color="primary"
             onClick={handleAddIngredient}
-            className="mb-2 mt-5 bg-[#B81D33] hover:bg-[#B81D33]"
+            className="mb-2 mt-5"
+            style={{ backgroundColor: "#B81D33" }}
             disabled={quantity==="" || ingredient==="" || unit===""}
           >
             Add Ingredient
@@ -312,7 +313,8 @@ const Recipe = () => {
           variant="contained"
           color="primary"
           onClick={handleAddInstruction}
-          className="mb-2 bg-[#B81D33] hover:bg-[#B81D33]"
+          className="mb-2"
+          style={{ backgroundColor: "#B81D33" }}
           disabled={instruction===""}
         >
           Add Instruction
@@ -337,7 +339,8 @@ const Recipe = () => {
           type="submit"
           variant="contained"
           color="primary"
-          className="mt-2 bg-[#B81D33] hover:bg-[#B81D33]"
+          className="mt-2"
+          style={{ backgroundColor: "#B81D33" }}
         >
           Save Recipe
         </Button>

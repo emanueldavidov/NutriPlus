@@ -210,9 +210,11 @@ const Meal = () => {
               color="primary"
               className="mt-2 mb-2 bg-custom-red hover:bg-custom-red text-white"
               // onClick={handleModalOpen}
+              style={{ backgroundColor: "#B81D33" }}
             >
               Add Meal
             </Button>
+            
           </form>
         </div>
       </Modal>
