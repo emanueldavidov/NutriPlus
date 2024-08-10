@@ -67,6 +67,7 @@ const LoginPage = () => {
           title="Login"
           text="Please enter your credentials"
           color={"black"}
+          wrapperClasses="bg-white"
         >
           <Box
             component="form"

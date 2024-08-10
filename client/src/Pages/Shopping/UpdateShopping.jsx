@@ -122,7 +122,7 @@ return (
     }}
   >
     <div
-      className="modal-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-black shadow-lg p-4"
+      className={`modal-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${darkMode?"bg-black":"bg-white"} shadow-lg p-4`}
     >
       <Typography
         variant="h6"
@@ -226,7 +226,14 @@ return (
           type="submit"
           variant="contained"
           color="primary"
-          className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33]"
+          sx={{
+            marginTop: "10px",
+            marginBottom: "10px",
+            backgroundColor: "#B81D33",
+            "&:hover": {
+              backgroundColor: "#B81D33",
+            },
+          }}
         >
           Update Shopping List
         </Button>

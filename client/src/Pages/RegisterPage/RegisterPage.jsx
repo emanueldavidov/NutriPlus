@@ -86,6 +86,7 @@ return (
       title="Register"
       text="Enter your information to register"
       color={"black"}
+       wrapperClasses="bg-white"
     >
       <form className="flex flex-col items-center" noValidate autoComplete="off">
         <div className="input-group flex flex-col items-center mt-2">
