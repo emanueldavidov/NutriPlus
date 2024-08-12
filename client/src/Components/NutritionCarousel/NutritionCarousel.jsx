@@ -34,15 +34,13 @@ export function NutritionCarousel() {
   useEffect(() => {
     setActiveStep(0);
   }, [nutrition]);
-  const maxSteps = nutrition.length; // Corrected to use nutrition.length instead of recipes.length
+  const maxSteps = nutrition.length;
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => {
-      // Check if there's a next card to move to
       if (prevActiveStep + 1 < maxSteps && nutrition[prevActiveStep + 1]) {
         return prevActiveStep + 1;
       } else {
-        // Move to the previous card if next is undefined
         return Math.max(prevActiveStep - 1, 0);
       }
     });
@@ -50,11 +48,9 @@ export function NutritionCarousel() {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => {
-      // Check if there's a previous card to move to
       if (prevActiveStep - 1 >= 0 && nutrition[prevActiveStep - 1]) {
         return prevActiveStep - 1;
       } else {
-        // Move to the next card if previous is undefined
         return Math.min(prevActiveStep + 1, maxSteps - 1);
       }
     });
@@ -63,47 +59,92 @@ export function NutritionCarousel() {
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-return (
-  <div className={`min-w-${isMobile ? "full" : "675px"} max-w-${isMobile ? "full" : "800px"} m-2 p-4 border rounded shadow-lg`}>
-    <div>
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="">
-          <tr>
-            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Recipe</th>
-            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Fats</th>
-            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Protein</th>
-            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Calories</th>
-            <th scope="col" className="px-6 py-3  text-xs font-medium  uppercase tracking-wider">Actions</th>
-          </tr>
-        </thead>
-        <tbody className=" divide-y divide-gray-200">
-          {nutrition.map((nutritionItem, index) => (
-            <NutritionRow
-              key={index}
-              nutritionItem={nutritionItem} // Correct prop name to meal instead of nutrition
-            />
-          ))}
-        </tbody>
-      </table>
 
-      <div
-        className={`mt-5 flex ${isMobile ? "flex-col" : "flex-row"} justify-between ${isMobile ? "items-start" : "items-center"}`}
-      >
-        <div className={`chip bg-primary text-white px-2 py-1 rounded ${isMobile ? "my-2" : "my-0"}`}>
-          Total Fats: {totals.totalFats}g
-        </div>
-        <div className={`chip bg-primary text-white px-2 py-1 rounded ${isMobile ? "my-2" : "my-0"}`}>
-          Total Protein: {totals.totalProtein}g
-        </div>
-        <div className={`chip bg-primary text-white px-2 py-1 rounded ${isMobile ? "my-2" : "my-0"}`}>
-          Total Calories: {totals.totalCalories}
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const textColor = theme.palette.mode === "dark" ? "text-white" : "text-black";
+
+  return (
+    <div
+      className={`min-w-${isMobile ? "full" : "675px"} max-w-${
+        isMobile ? "full" : "800px"
+      } m-2 p-4 border rounded shadow-lg`}
+    >
+      <div>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3  text-xs font-medium  uppercase tracking-wider"
+              >
+                Recipe
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3  text-xs font-medium  uppercase tracking-wider"
+              >
+                Fats
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3  text-xs font-medium  uppercase tracking-wider"
+              >
+                Protein
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3  text-xs font-medium  uppercase tracking-wider"
+              >
+                Calories
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3  text-xs font-medium  uppercase tracking-wider"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className=" divide-y divide-gray-200">
+            {nutrition.map((nutritionItem, index) => (
+              <NutritionRow
+                key={index}
+                nutritionItem={nutritionItem}
+              />
+            ))}
+          </tbody>
+        </table>
+
+        <div
+          className={`mt-5 flex ${
+            isMobile ? "flex-col" : "flex-row"
+          } justify-between ${isMobile ? "items-start" : "items-center"}`}
+        >
+          <div
+            className={`chip bg-primary px-2 py-1 rounded ${textColor} ${
+              isMobile ? "my-2" : "my-0"
+            }`}
+          >
+            Total Fats: {totals.totalFats}g
+          </div>
+          <div
+            className={`chip bg-primary px-2 py-1 rounded ${textColor} ${
+              isMobile ? "my-2" : "my-0"
+            }`}
+          >
+            Total Protein: {totals.totalProtein}g
+          </div>
+          <div
+            className={`chip bg-primary px-2 py-1 rounded ${textColor} ${
+              isMobile ? "my-2" : "my-0"
+            }`}
+          >
+            Total Calories: {totals.totalCalories}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
-
+  );
 }
 
 export default NutritionCarousel;

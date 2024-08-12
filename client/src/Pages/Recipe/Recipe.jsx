@@ -135,7 +135,7 @@ const Recipe = () => {
   };
 
   return (
-<div className=" flex flex-col items-center justify-center">
+<div className="recipe-container flex flex-col items-center justify-center">
   <Button
     type="button"
     variant="contained"
