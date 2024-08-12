@@ -1,1 +1,1 @@
-export const connectionString = "mongodb+srv://emanuel:123123Aa@cluster0.z3dylws.mongodb.net/nutriplus";
+export const connectionString = process.env.MONGODB_URI;

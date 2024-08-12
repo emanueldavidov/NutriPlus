@@ -1,6 +1,4 @@
 import React from 'react';
-
-
 const Footer = () => {
   return (
     <footer className="bg-[#b81d33] text-center mt-auto fixed bottom-0 left-0 w-full text-white py-2 text-sm">
@@ -8,17 +6,15 @@ const Footer = () => {
         <div className="space-y-2">
           <p className="text-base">Created by:</p>
           <p>
-            Emanuel Davidov -{' '}
-            <a href="mailto:Davidova@example.com" className="text-white hover:text-red-600">Davidova@example.com</a>
+            Emanuel, Raz, Yossi, Shai, Itay
           </p>
           <p>
-            Jane Smith -{' '}
-            <a href="mailto:jane.smith@example.com" className="text-white hover:text-red-600">jane.smith@example.com</a>
+            NutriPlus Team -{' '}
+            <a href="mailto:Support@NutriPlus.com" className="text-white hover:text-red-600">Support@NutriPlus.com</a>
           </p>
         </div>
       </div>
     </footer>
   );
 }
-
 export default Footer;

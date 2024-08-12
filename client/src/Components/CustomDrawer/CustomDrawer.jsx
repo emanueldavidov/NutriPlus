@@ -18,31 +18,26 @@ const CustomDrawer = ({ list, links }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const darkMode = useSelector((state) => state.darkMode.darkMode);
-
   const toggleDrawer = (newOpen)=>()  => {
     setOpen(newOpen);
-    console.log("hi")
   };
   const openDrawer = ()  => {
     setOpen(true);
   };
-
   const toggleDarkMode = () => {
     dispatch(toggleDarkModeState());
   };
-
   const handleLogout = () => {
     dispatch(logout()); // Dispatch the logout action
     setOpen(false); // Close the drawer after logout
     if (darkMode) dispatch(toggleDarkModeState());
   };
-
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <Button sx={{ marginTop: "10px", color: !darkMode ? "black" : "white" }}>
         {darkMode ? (
           <IconButton onClick={toggleDarkMode}>
-            <LightModeIcon />{" "}
+            <LightModeIcon />{" "}  
           </IconButton>
         ) : (
           <IconButton onClick={toggleDarkMode}>
@@ -82,7 +77,6 @@ const CustomDrawer = ({ list, links }) => {
       </List>
     </Box>
   );
-
 return (
   <div>
     {!darkMode && (
@@ -90,7 +84,7 @@ return (
       className="p-2 rounded focus:outline-none"
       onClick={openDrawer}
       >
-        <MenuIcon onClick={openDrawer} style={{ color: "black" }} />
+        <MenuIcon className="fixed top-4 left-4 z-50" onClick={openDrawer} style={{ color: "black" }} />
       </button>
     )}
     {darkMode && (
@@ -98,15 +92,13 @@ return (
         onClick={openDrawer}
         className="p-2 rounded focus:outline-none"
       >
-        <MenuIcon onClick={openDrawer} style={{ color: "white" }} />
+        <MenuIcon className="fixed top-4 left-4 z-50"  onClick={openDrawer} style={{ color: "white" }} />
       </button>
     )}
-
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
   </div>
 );
 };
-
 export default CustomDrawer;

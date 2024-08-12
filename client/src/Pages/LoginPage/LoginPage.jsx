@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CustomCard from "../../Components/CustomCard/CustomCard";
-import { Alert, Box, Button,  TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/slices/authSlice";
@@ -24,7 +24,7 @@ const LoginPage = () => {
       setLoading(true)
       const response = await axios.post(
         `${BACKEND_URL}/api/user/login`,
-        { username:username.toLowerCase(), password },
+        { username: username.toLowerCase(), password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -44,14 +44,14 @@ const LoginPage = () => {
         if (error.response.status === 401) {
           setErrorMessage("Invalid password. Please try again.");
         } else if (error.response.status === 404) {
-         setErrorMessage("User not found. Please try again.");
+          setErrorMessage("User not found. Please try again.");
         } else {
           setErrorMessage("An error occurred. Please try again later.");
         }
       } else {
         setErrorMessage("An error occurred. Please try again later.");
       }
-    }finally{
+    } finally {
       setLoading(false)
     }
   };
@@ -76,7 +76,7 @@ const LoginPage = () => {
           >
             <div className="flex justify-center items-center flex-col w-full mt-2">
               <TextField
-              required
+                required
                 id="username"
                 label="Username"
                 variant="outlined"
@@ -127,11 +127,11 @@ const LoginPage = () => {
                   },
                 }}
               />
-                 {error && (
-            <Alert severity="error" onClose={() => setErrorMessage("")}>
-              {error}
-            </Alert>
-          )}
+              {error && (
+                <Alert severity="error" onClose={() => setErrorMessage("")}>
+                  {error}
+                </Alert>
+              )}
               <Button
                 type="submit"
                 variant="contained"
@@ -144,13 +144,29 @@ const LoginPage = () => {
                     backgroundColor: "#B81D33",
                   },
                 }}
-                endIcon={loading ? <CircularProgress sx={{color:"white"}} size={24} /> : null}
+                endIcon={loading ? <CircularProgress sx={{ color: "white" }} size={24} /> : null}
                 disabled={loading}
               >
-                {loading?"Loading ...":"Login"}
+                {loading ? "Loading ..." : "Login"}
               </Button>
             </div>
-            <Link to="/register">Not registered yet? Go to Register!</Link>
+            <Link to="/register" style={{ textDecoration: "none" }}>
+              Not registered yet?{" "}
+              <span
+                style={{
+                  color: "#B81D33", // Your desired color
+                  fontWeight: "bold",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.textDecoration = "underline";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.textDecoration = "none";
+                }}
+              >
+                Go to Register!
+              </span>
+            </Link>
           </Box>
         </CustomCard>
       </div>
