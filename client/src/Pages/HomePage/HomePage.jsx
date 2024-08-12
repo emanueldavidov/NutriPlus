@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import CustomMedia from '../../Components/CustomMedia/CustomMedia'
 import { useDispatch, useSelector } from 'react-redux'
 import { setRecipes } from '../store/slices/recipesSlice'
-import "./HomePage.css"
 import { setMeals } from '../store/slices/mealSlice'
 import { BACKEND_URL } from '../../config/config'
 
@@ -74,8 +73,8 @@ const user=useSelector((state)=>state.auth.user)
      <div className="flex justify-center mt-5 font-bold">
         Hello {user.username}!
       </div>
-      <div className="logo flex justify-center">
-        <img src="/logo.png" alt="Logo" />
+      <div className="mb-2.5 mt-2.5 flex justify-center">
+        <img className="max-w-[100px] h-auto" src="/logo.png" alt="Logo" />
       </div>
    <CustomMedia data={data}/>
     </>

@@ -1,7 +1,6 @@
 // App.jsx
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import "./App.css";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -114,7 +113,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className="app-container" >
+      <div className="h-screen relative" >
         {shouldRenderDrawer && auth.loggedIn && (
           <CustomDrawer
             list={[
@@ -126,7 +125,7 @@ function App() {
             links={["/recipe", "/meal", "/shopping", "/nutrition"]}
           />
         )}
-        <div className="main-content">
+        <div class="flex flex-1 flex-col max-w-full overflow-hidden">
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

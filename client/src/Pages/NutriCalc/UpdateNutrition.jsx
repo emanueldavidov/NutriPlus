@@ -13,7 +13,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"; // Import useSelector for accessing Redux state
 import { fetchAllNutrition } from "../store/slices/nutritionSlice";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
-import "./NutriCalc.css";
 import { BACKEND_URL } from "../../config/config";
 
 const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
@@ -65,7 +64,7 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
       }}
     >
       <div
-        className="modal-content"
+        className="p-5 w-4/5 max-w-[600px] mx-auto border-2 border-[#B81D33] rounded-lg max-h-[40rem] max-h-[90vh] min-h-[300px] overflow-y-auto"
         style={{
           position: "absolute",
           top: "50%",

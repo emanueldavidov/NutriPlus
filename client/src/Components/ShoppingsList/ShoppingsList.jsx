@@ -1,15 +1,4 @@
-import React, { useState, useEffect,useMemo } from "react";
-import axios from "axios";
-import Typography from "@mui/material/Typography";
-import {
-  Alert,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
-  Divider,
-} from "@mui/material";
+import React, { useState } from "react";
 
 export default function ShoppingsList({ items }) {
   const [fetchedRecipes, setFetchedRecipes] = useState([]);

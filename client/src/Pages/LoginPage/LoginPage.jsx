@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import CustomCard from "../../Components/CustomCard/CustomCard";
 import { Alert, Box, Button,  TextField, Typography } from "@mui/material";
-import "./LoginPage.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/slices/authSlice";
@@ -59,9 +58,9 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="login-page">
-        <div className="logo">
-          <img src="/logo.png" alt="Logo" />
+      <div className="flex justify-center items-center flex-col">
+        <div className="mb-2.5 mt-2.5">
+          <img className="max-w-[100px] h-auto" src="/logo.png" alt="Logo" />
         </div>
         <CustomCard
           title="Login"
@@ -75,7 +74,7 @@ const LoginPage = () => {
             noValidate
             autoComplete="off"
           >
-            <div className="input-group">
+            <div className="flex justify-center items-center flex-col w-full mt-2">
               <TextField
               required
                 id="username"

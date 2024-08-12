@@ -87,7 +87,7 @@ return (
           {mainCourse.map((dish, index) => (
             <React.Fragment key={index}>
               <li className="flex items-start mb-4">
-                <div className="mr-4">
+                <div className="mr-4 w-20">
                   <img
                     className="h-10 w-10 rounded-full object-cover"
                     src={dish.image}

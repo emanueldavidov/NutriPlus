@@ -52,10 +52,10 @@ export function RecipeCarousel({ recipes }) {
   };
 
 return (
-  <div className="flex flex-col items-center justify-center carousel-width flex-grow m-auto">
-    <div className="flex justify-between w-full carousel-width mb-2">
+  <div className="flex flex-col items-center justify-center max-w-[350px] md:max-w-[700px] flex-grow m-auto">
+    <div className="flex justify-between w-full max-w-[350px] md:max-w-[700px] mb-2">
       <button
-        className="text-[#B81D33] text-sm"
+        className="text-[#B81D33] text-sm disabled:opacity-50"
         onClick={handleBack}
         disabled={activeStep === 0}
       >
@@ -67,7 +67,7 @@ return (
         Back
       </button>
       <button
-        className="text-[#B81D33] text-sm"
+        className="text-[#B81D33] text-sm disabled:opacity-50"
         onClick={handleNext}
         disabled={activeStep === maxSteps - 1}
       >

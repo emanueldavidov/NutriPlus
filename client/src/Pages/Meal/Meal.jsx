@@ -18,7 +18,6 @@ import {
   Alert,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import "./Meal.css";
 import MealCarousel from "../../Components/MealCarousel/MealCarousel";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
 import { fetchAllMeals } from "../store/slices/mealSlice";
@@ -102,7 +101,7 @@ const Meal = () => {
   };
 
   return (
-    <div className="meal-container flex flex-col items-center justify-center p-5">
+    <div className=" flex flex-col items-center justify-center p-5">
       <Button
         type="button"
         variant="contained"

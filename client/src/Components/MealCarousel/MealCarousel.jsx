@@ -49,13 +49,13 @@ export function MealCarousel({ meals }) {
 
 return (
   <div
-    className={`max-w-${isMobile ? '350px' : '700px'} w-full flex flex-grow justify-center items-center flex-col mx-auto`}
+    className={`max-w-${isMobile ? '350px' : '700px'} min-w-${isMobile ? '350px' : '700px'} w-full flex flex-grow justify-center items-center flex-col mx-auto`}
   >
     <div
-      className="flex justify-between w-full max-w-[700px] mb-2"
+      className="flex justify-between w-full min-w-[350px] max-w-[350px] md:max-w-[600px] mb-2"
     >
       <button
-        className="text-[#B81D33] p-2"
+        className="text-[#B81D33] p-2 disabled:opacity-50"
         size="small"
         onClick={handleBack}
         disabled={activeStep === 0}
@@ -68,7 +68,7 @@ return (
         Back
       </button>
       <button
-        className="text-[#B81D33] p-2"
+        className="text-[#B81D33] p-2 disabled:opacity-50"
         size="small"
         onClick={handleNext}
         disabled={activeStep === maxSteps - 1}

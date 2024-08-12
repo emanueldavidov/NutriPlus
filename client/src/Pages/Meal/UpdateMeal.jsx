@@ -92,7 +92,7 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
       }}
     >
       <div
-        className="modal-content"
+        className="p-5 w-4/5 max-w-[600px] mx-auto border-2 border-[#B81D33] rounded-lg max-h-[40rem] max-h-[90vh] min-h-[300px] overflow-y-auto"
         style={{
           position: "absolute",
           top: "50%",
@@ -107,7 +107,7 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
           variant="h6"
           component="h2"
           gutterBottom
-          className="modal-title"
+         className="text-[#B81D33] text-center mb-5"
         >
           Update Meal
         </Typography>

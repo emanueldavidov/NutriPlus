@@ -19,10 +19,8 @@ const FormikTextField = ({ name, ...props }) => {
       fullWidth
       variant="outlined"
       margin="normal"
-      className="input-field"
-      sx={{
-        marginBottom: "10px",
-      }}
+      className="mb-2.5"
+     
       {...props}
     />
   );

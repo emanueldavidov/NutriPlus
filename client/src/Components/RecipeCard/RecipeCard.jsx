@@ -33,6 +33,8 @@ const ExpandMore = styled((props) => {
 
 export default function RecipeCard({ recipe, expanded, setExpanded }) {
   const theme = useTheme();
+  const darkMode = useSelector((state) => state.darkMode.darkMode); 
+
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -64,8 +66,8 @@ export default function RecipeCard({ recipe, expanded, setExpanded }) {
 return (
   <>
   <div
-  className={` bg-transparent m-2 p-4 shadow-lg rounded-lg`}
-    style={{ maxWidth: "700px", minWidth: "400px" }}
+  className={` ${darkMode ? "bg-black " : "bg-white "} m-2 p-4 shadow-lg rounded-lg min-w-[400px] max-w-[400px] md:max-w-[700px]`}
+    // style={{ maxWidth: "400px", minWidth: "400px" }}
 >
   <div className="flex items-center justify-between">
     <div className="flex items-center">

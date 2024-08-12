@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addRecipe, fetchAllRecipes } from "../store/slices/recipesSlice";
 import axios from "axios"; // Import Axios
 import RecipeCarousel from "../../Components/RecipeCarousel/RecipeCarousel";
-import "./Recipe.css";
 import { BACKEND_URL } from "../../config/config";
 const Recipe = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -136,7 +135,7 @@ const Recipe = () => {
   };
 
   return (
-<div className="recipe-container flex flex-col items-center justify-center">
+<div className=" flex flex-col items-center justify-center">
   <Button
     type="button"
     variant="contained"

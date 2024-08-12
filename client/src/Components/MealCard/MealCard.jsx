@@ -14,7 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Collapse, styled, Typography, useMediaQuery } from "@mui/material";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteMeal, fetchAllMeals } from "../../Pages/store/slices/mealSlice";
 import axios from "axios";
 
@@ -38,6 +38,7 @@ export default function MealCard({ meal }) {
   const [expanded, setExpanded] = React.useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const darkMode = useSelector((state) => state.darkMode.darkMode); 
   
   const handleDelete = async () => {
     try {
@@ -62,7 +63,7 @@ export default function MealCard({ meal }) {
 return (
   <>
     <div
-      className={`max-w-${isMobile ? '400px' : '700px'} min-w-${isMobile ? '400px' : '700px'} bg-transparent`}
+      className={` ${darkMode ? "bg-black " : "bg-white "} min-w-[350px] max-w-[350px] md:max-w-[600px]`}
     >
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center">
@@ -81,7 +82,7 @@ return (
         </div>
       </div>
 
-      <div className="p-4">
+      <div className="">
         <MealsList dishes={meal} />
       </div>
     </div>

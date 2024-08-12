@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from "react";
 import {
-  Button,
-  Modal,
-  TextField,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
+  Alert,
   FormControl,
-  Select,
   InputLabel,
   MenuItem,
-  Alert,
-  Card, CardContent,  Grid, Chip
+  Modal,
+  Select,
+  TextField,
+  Typography
 } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux"; // Import useSelector for accessing Redux state
-import "./NutriCalc.css";
-import { fetchAllRecipes } from "../store/slices/recipesSlice";
 import axios from "axios";
-import { fetchAllNutrition } from "../store/slices/nutritionSlice";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux"; // Import useSelector for accessing Redux state
 import NutritionCarousel from "../../Components/NutritionCarousel/NutritionCarousel";
-import NutritionCard from "../../Components/NutritionCard/NutritionCard";
 import { BACKEND_URL } from "../../config/config";
+import { fetchAllNutrition } from "../store/slices/nutritionSlice";
+import { fetchAllRecipes } from "../store/slices/recipesSlice";
 
 const NutritiCalc = () => {
   const [selectedFood, setSelectedFood] = useState("");
@@ -32,7 +25,7 @@ const NutritiCalc = () => {
   const [foodList, setFoodList] = useState([]);
   const dispatch = useDispatch();
   // Access darkMode state from Redux store
-  const darkMode = useSelector((state) => state.darkMode.darkMode);
+  const darkMode = useSelector((state) => state.darkMode.darkMode); 
   const recipes = useSelector((state) => state.recipes.recipes);
   const userID = useSelector((state) => state.auth.user._id);
   const nutrition = useSelector((state) => state.nutrition.nutrition);
@@ -193,7 +186,7 @@ return (
         </Modal>
       )}
 
-      <div className="w-full flex flex-wrap justify-center items-center">
+      <div className={`w-full flex flex-wrap justify-center items-center  ${darkMode ? "bg-black text-white" : "bg-white text-black"}`}>
         <NutritionCarousel />
       </div>
     </div>

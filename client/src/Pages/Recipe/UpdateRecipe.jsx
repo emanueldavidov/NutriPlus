@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import FormikSelect from "../../Components/Form/FormikSelectField";
 import FormikTextField from "../../Components/Form/FormikTextField";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
-import "./Recipe.css";
 import { BACKEND_URL } from "../../config/config";
 const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
   // const [openModal, setOpenModal] = useState(false);

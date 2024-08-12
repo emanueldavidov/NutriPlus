@@ -1,3 +1,5 @@
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Button,
   FormControl,
@@ -14,14 +16,9 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ShoppingCarousel from "../../Components/ShoppingCarousel/ShoppingCarousel";
-import { fetchAllRecipes } from "../store/slices/recipesSlice";
-import { fetchAllShoppingLists } from "../store/slices/shoppingSlice";
-import "./Shopping.css";
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
-import { fetchAllMeals } from "../store/slices/mealSlice";
 import { BACKEND_URL } from "../../config/config";
+import { fetchAllMeals } from "../store/slices/mealSlice";
+import { fetchAllShoppingLists } from "../store/slices/shoppingSlice";
 
 const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
   const [shoppingListName, setShoppingListName] = useState(shopping?.name);
@@ -93,7 +90,7 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
   }, []);
 
   const handleFoodSelection = () => {
-    if(!selectedFood) return;
+    if (!selectedFood) return;
     const tempList = [...selectedShoppingList];
     tempList.push(meals.find((meal) => meal._id === selectedFood));
     setSelectedShoppingList(tempList);
@@ -111,137 +108,145 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
     setIngredients(tempList);
   };
 
-return (
-  <Modal
-    open={openModal}
-    onClose={handleModalClose}
-    aria-labelledby="food-details-modal"
-    aria-describedby="modal-for-entering-food-details"
-    BackdropProps={{
-      invisible: true, // Hides the backdrop
-    }}
-  >
-    <div
-      className={`modal-content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${darkMode?"bg-black":"bg-white"} shadow-lg p-4`}
+  return (
+    <Modal
+      open={openModal}
+      onClose={handleModalClose}
+      aria-labelledby="food-details-modal"
+      aria-describedby="modal-for-entering-food-details"
+      BackdropProps={{
+        invisible: true, // Hides the backdrop
+      }}
     >
-      <Typography
-        variant="h6"
-        component="h2"
-        gutterBottom
-        className="modal-title"
+      <div
+        className={`p-5 w-4/5 max-w-[600px] mx-auto border-2 border-[#B81D33] rounded-lg max-h-[40rem] max-h-[90vh] min-h-[300px] overflow-y-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${
+          darkMode ? "bg-black" : "bg-white"
+        } shadow-lg p-4`}
       >
-        Update Shopping List Details
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          required
-          type="text"
-          value={shoppingListName}
-          onChange={(e) => setShoppingListName(e.target.value)}
-          label="Shopping List Name"
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          className="input-field"
-          sx={{
-            marginBottom: "10px",
-          }}
-        />
-        <div className="flex items-center">
-          <FormControl fullWidth variant="outlined" margin="normal">
-            <InputLabel id="food-label">Select Meal</InputLabel>
-            <Select
-              labelId="food-label"
-              id="food"
-              label="Select Food"
-              value={selectedFood}
-              onChange={(e) => setSelectedFood(e.target.value)}
-            >
-              {meals?.length > 0 &&
-                meals.map((r) => {
-                  return <MenuItem value={r._id}>{r.name}</MenuItem>;
-                })}
-            </Select>
-          </FormControl>
-          <AddIcon fontSize="large" onClick={handleFoodSelection} />
-        </div>
-        {selectedShoppingList?.length > 0 && (
-          <>
-            <Typography variant="h6">Selected Food:</Typography>
-            <List>
-              {selectedShoppingList.map((food, index) => (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={
-                      <div className="flex items-center justify-between">
-                        <span className={darkMode ? "text-white" : "text-black"}>
-                          {food.name}
-                        </span>
-                        <CloseIcon onClick={() => handleFoodRemove(index)} />
-                      </div>
-                    }
-                    secondary={
-                      <span className={darkMode ? "text-white" : "text-gray-500"}>
-                        {food.recipes.map(({ ingredients }) => {
-                          return ingredients.map((ing) => {
-                            return `${ing.ingredient} ${ing.quantity} ${ing.unit}`;
-                          });
-                        })}
-                      </span>
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </>
-        )}
-        {ingredients?.length > 0 && (
-          <>
-            <Typography variant="h6">Existing Ingredients:</Typography>
-            <List>
-              {ingredients.map((ing, index) => (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={
-                      <div className="flex items-center justify-between">
-                        <span className={darkMode ? "text-white" : "text-black"}>
-                          {ing.ingredient}
-                        </span>
-                        <CloseIcon onClick={() => handleIngredientRemove(index)} />
-                      </div>
-                    }
-                    secondary={
-                      <span className={darkMode ? "text-white" : "text-gray-500"}>
-                        {ing.quantity} {ing.unit}
-                      </span>
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </>
-        )}
-
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{
-            marginTop: "10px",
-            marginBottom: "10px",
-            backgroundColor: "#B81D33",
-            "&:hover": {
-              backgroundColor: "#B81D33",
-            },
-          }}
+        <Typography
+          variant="h6"
+          component="h2"
+          gutterBottom
+          className="text-[#B81D33] text-center mb-5"
         >
-          Update Shopping List
-        </Button>
-      </form>
-    </div>
-  </Modal>
-);
+          Update Shopping List Details
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            required
+            type="text"
+            value={shoppingListName}
+            onChange={(e) => setShoppingListName(e.target.value)}
+            label="Shopping List Name"
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            className="mb-2.5"
+          />
+          <div className="flex items-center">
+            <FormControl fullWidth variant="outlined" margin="normal">
+              <InputLabel id="food-label">Select Meal</InputLabel>
+              <Select
+                labelId="food-label"
+                id="food"
+                label="Select Food"
+                value={selectedFood}
+                onChange={(e) => setSelectedFood(e.target.value)}
+              >
+                {meals?.length > 0 &&
+                  meals.map((r) => {
+                    return <MenuItem value={r._id}>{r.name}</MenuItem>;
+                  })}
+              </Select>
+            </FormControl>
+            <AddIcon fontSize="large" onClick={handleFoodSelection} />
+          </div>
+          {selectedShoppingList?.length > 0 && (
+            <>
+              <Typography variant="h6">Selected Food:</Typography>
+              <List>
+                {selectedShoppingList.map((food, index) => (
+                  <ListItem key={index}>
+                    <ListItemText
+                      primary={
+                        <div className="flex items-center justify-between">
+                          <span
+                            className={darkMode ? "text-white" : "text-black"}
+                          >
+                            {food.name}
+                          </span>
+                          <CloseIcon onClick={() => handleFoodRemove(index)} />
+                        </div>
+                      }
+                      secondary={
+                        <span
+                          className={darkMode ? "text-white" : "text-gray-500"}
+                        >
+                          {food.recipes.map(({ ingredients }) => {
+                            return ingredients.map((ing) => {
+                              return `${ing.ingredient} ${ing.quantity} ${ing.unit}`;
+                            });
+                          })}
+                        </span>
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </>
+          )}
+          {ingredients?.length > 0 && (
+            <>
+              <Typography variant="h6">Existing Ingredients:</Typography>
+              <List>
+                {ingredients.map((ing, index) => (
+                  <ListItem key={index}>
+                    <ListItemText
+                      primary={
+                        <div className="flex items-center justify-between">
+                          <span
+                            className={darkMode ? "text-white" : "text-black"}
+                          >
+                            {ing.ingredient}
+                          </span>
+                          <CloseIcon
+                            onClick={() => handleIngredientRemove(index)}
+                          />
+                        </div>
+                      }
+                      secondary={
+                        <span
+                          className={darkMode ? "text-white" : "text-gray-500"}
+                        >
+                          {ing.quantity} {ing.unit}
+                        </span>
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </>
+          )}
 
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{
+              marginTop: "10px",
+              marginBottom: "10px",
+              backgroundColor: "#B81D33",
+              "&:hover": {
+                backgroundColor: "#B81D33",
+              },
+            }}
+          >
+            Update Shopping List
+          </Button>
+        </form>
+      </div>
+    </Modal>
+  );
 };
 
 export default UpdateShopping;

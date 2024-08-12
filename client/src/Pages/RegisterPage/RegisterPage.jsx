@@ -78,8 +78,8 @@ const RegisterPage = () => {
 
 return (
   <div className="register-page flex justify-center items-center flex-col">
-    <div className="logo">
-      <img src="/logo.png" alt="Logo" />
+    <div className="mb-2.5 mt-2.5">
+      <img className="max-w-[100px] h-auto" src="/logo.png" alt="Logo" />
     </div>
 
     <CustomCard
@@ -89,7 +89,7 @@ return (
        wrapperClasses="bg-white"
     >
       <form className="flex flex-col items-center" noValidate autoComplete="off">
-        <div className="input-group flex flex-col items-center mt-2">
+        <div className="flex justify-center items-center flex-col w-full">
           <TextField
             id="username"
             label="Username"
