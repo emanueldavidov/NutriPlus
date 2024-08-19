@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import { useSelector } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import ShoppingCard from "../ShoppingCard/ShoppingCard";
-import { useSelector } from "react-redux";
-import { useMediaQuery } from "@mui/material";
 
 export function ShoppingCarousel() {
-  const shoppings=useSelector(state=>state.shopping.shoppingList)
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const shoppings = useSelector((state) => state.shopping.shoppingList);
   const [activeStep, setActiveStep] = useState(0);
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
+
   useEffect(() => {
     setActiveStep(0);
   }, [shoppings]);
@@ -48,63 +41,51 @@ export function ShoppingCarousel() {
     setActiveStep(step);
   };
 
-return (
-  <div
-    className={`flex flex-col items-center justify-center mx-auto ${
-      isMobile ? "max-w-[350px]" : "max-w-[700px]"
-    }`}
-  >
-    <div className="flex justify-between w-full mb-2">
-      <button
-        className="text-[#B81D33] disabled:opacity-50"
-        onClick={handleBack}
-        disabled={activeStep === 0}
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight />
-        ) : (
-          <KeyboardArrowLeft />
-        )}
-        Back
-      </button>
-      <button
-        className="text-[#B81D33] disabled:opacity-50"
-        onClick={handleNext}
-        disabled={activeStep === maxSteps - 1}
-      >
-        Next
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft />
-        ) : (
-          <KeyboardArrowRight />
-        )}
-      </button>
+  return (
+    <div className="flex flex-col items-center justify-center mx-auto max-w-[350px] md:max-w-[700px]">
+      <div className="flex justify-between w-full mb-2">
+        <button
+          className={`${
+            darkMode ? "white" : "text-[#B81D33]"
+          } p-2 disabled:opacity-30`}
+          onClick={handleBack}
+          disabled={activeStep === 0}
+        >
+          {"<"} Back
+        </button>
+        <button
+          className={`${
+            darkMode ? "white" : "text-[#B81D33]"
+          } p-2 disabled:opacity-30`}
+          onClick={handleNext}
+          disabled={activeStep === maxSteps - 1}
+        >
+          Next {">"}
+        </button>
+      </div>
+
+      {shoppings?.length > 0 && (
+        <SwipeableViews
+          axis={"x"}
+          index={activeStep}
+          onChangeIndex={handleStepChange}
+          enableMouseEvents
+          className="flex justify-center items-center"
+        >
+          {shoppings.map((shoppingItem, index) => (
+            <div
+              className={`flex justify-center items-center ${
+                Math.abs(activeStep - index) <= 2 ? "" : "hidden"
+              }`}
+              key={index}
+            >
+              <ShoppingCard shoppingItem={shoppingItem} />
+            </div>
+          ))}
+        </SwipeableViews>
+      )}
     </div>
-
-    {shoppings?.length > 0 && (
-      <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-        className="flex justify-center items-center"
-      >
-        {shoppings.map((shoppingItem, index) => (
-          <div
-            className={`flex justify-center items-center ${
-              Math.abs(activeStep - index) <= 2 ? "" : "hidden"
-            }`}
-            key={index}
-          >
-            <ShoppingCard shoppingItem={shoppingItem} />
-          </div>
-        ))}
-      </SwipeableViews>
-    )}
-  </div>
-);
-
-
+  );
 }
 
 export default ShoppingCarousel;

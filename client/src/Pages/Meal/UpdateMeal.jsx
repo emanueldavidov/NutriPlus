@@ -1,29 +1,15 @@
-import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Modal,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Card,
-  CardMedia,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
-  TextField,
-  Alert,
-} from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import { Dialog } from "@headlessui/react";
 import axios from "axios";
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import AddIcon from "../../Components/Buttons/AddIcon";
+import SelectField from "../../Components/SelectField";
+import TextField from "../../Components/TextField";
+import { BACKEND_URL } from "../../config/config";
 import { fetchAllMeals } from "../store/slices/mealSlice";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
-import { BACKEND_URL } from "../../config/config";
+import DeleteIcon from "../../Components/Buttons/DeleteIcon";
+
 const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
   const userId = useSelector((state) => state.auth.user._id);
   const [errorMessage, setErrorMessage] = useState("");
@@ -45,7 +31,7 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if(food.recipes?.length === 0){
+      if (food.recipes?.length === 0) {
         return setErrorMessage("Please select atleast one recipe");
       }
       const payload = { ...food, recipes: food.recipes.map((f) => f._id) };
@@ -75,22 +61,13 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
     setFood(tempFood);
   };
   const handleAddNewRecipe = () => {
-    if(!selectedRecipe)return;
+    if (!selectedRecipe) return;
     const rec = allRecipes.find((r) => r._id === selectedRecipe);
     console.log(rec, selectedRecipe);
     setFood({ ...food, recipes: [...food.recipes, rec] });
-
   };
   return (
-    <Modal
-      open={openModal}
-      onClose={handleModalClose}
-      aria-labelledby="food-details-modal"
-      aria-describedby="modal-for-entering-food-details"
-      BackdropProps={{
-        invisible: true, // Hides the backdrop
-      }}
-    >
+    <Dialog open={openModal} onClose={handleModalClose}>
       <div
         className="p-5 w-4/5 max-w-[600px] mx-auto border-2 border-[#B81D33] rounded-lg max-h-[40rem] max-h-[90vh] min-h-[300px] overflow-y-auto"
         style={{
@@ -103,19 +80,33 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
           p: 4,
         }}
       >
-        <Typography
-          variant="h6"
-          component="h2"
-          gutterBottom
-         className="text-[#B81D33] text-center mb-5"
-        >
+        <h2 className="text-xl font-semibold text-[#B81D33] text-center mb-5">
           Update Meal
-        </Typography>
+        </h2>
+
         {errorMessage && (
-          <Alert severity="error" onClose={() => setErrorMessage("")}>
-            {errorMessage}
-          </Alert>
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            <span>{errorMessage}</span>
+            <button
+              onClick={() => setErrorMessage("")}
+              className="absolute top-0 bottom-0 right-0 px-4 py-3"
+            >
+              <svg
+                className="fill-current h-6 w-6 text-red-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 9a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm-3.293-2.293a1 1 0 011.414 0L10 7.414l1.879-1.879a1 1 0 111.414 1.414L11.414 9l1.879 1.879a1 1 0 01-1.414 1.414L10 10.414l-1.879 1.879a1 1 0 01-1.414-1.414L8.586 9 6.707 7.121a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
         )}
+
         <form onSubmit={handleSubmit}>
           <TextField
             label="Meal Name"
@@ -127,70 +118,52 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
             }}
           />
           <div style={{ display: "flex", alignItems: "center" }}>
-            <FormControl fullWidth variant="outlined" margin="normal">
-              <InputLabel id="food-name-label">Add Recipe</InputLabel>
-              <Select
-                value={selectedRecipe}
-                onChange={(e) => setSelectedRecipe(e.target.value)}
-                labelId="food-name-label"
-                label="Food Name"
-                
-              >
-                {allRecipes.map((dish) => (
-                  <MenuItem key={dish._id} value={dish._id}>
-                    {dish.recipeName}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <AddIcon fontSize="large" onClick={handleAddNewRecipe} />
+            <SelectField
+              value={selectedRecipe}
+              onChange={(e) => setSelectedRecipe(e.target.value)}
+              label="Recipe Name"
+            >
+              <option value="">Select Recipe</option>
+              {allRecipes.map((dish) => (
+                <option key={dish._id} value={dish._id}>
+                  {dish.recipeName}
+                </option>
+              ))}
+            </SelectField>
+            <div className="mt-5 ms-2">
+              <AddIcon onClick={handleAddNewRecipe} />
+            </div>
           </div>
-          <List sx={{ width: "100%" }}>
+          <ul className="w-full mt-2">
             {food?.recipes?.length > 0 &&
               food.recipes.map((dish, index) => (
-                <React.Fragment key={index}>
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar alt={dish.recipeName} src={dish.image} />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={dish.recipeName}
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            sx={{ display: "inline" }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
-                          >
-                            {dish.description}
-                          </Typography>
-                        </React.Fragment>
-                      }
+                <li key={index} className="flex items-start mb-4 border-b pb-4">
+                  <div className="flex-shrink-0 mr-4">
+                    <img
+                      className="w-10 h-10 rounded-full"
+                      alt={dish.recipeName}
+                      src={dish.image}
                     />
-                    <CloseIcon onClick={() => handleDeleteRecipe(index)} />
-                  </ListItem>
-                </React.Fragment>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-base font-medium">{dish.recipeName}</p>
+                    <p className="text-sm text-gray-700">{dish.description}</p>
+                  </div>
+
+                  <DeleteIcon onClick={() => handleDeleteRecipe(index)} />
+                </li>
               ))}
-          </List>
-          <Button
+          </ul>
+
+          <button
             type="submit"
-            variant="contained"
-            color="primary"
-            sx={{
-              marginTop: "10px",
-              marginBottom: "10px",
-              backgroundColor: "#B81D33",
-              "&:hover": {
-                backgroundColor: "#B81D33",
-              },
-            }}
+            className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"
           >
             Update Meal
-          </Button>
+          </button>
         </form>
       </div>
-    </Modal>
+    </Dialog>
   );
 };
 

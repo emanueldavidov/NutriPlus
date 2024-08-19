@@ -76,7 +76,7 @@ const user=useSelector((state)=>state.auth.user)
       <div className="mb-2.5 mt-2.5 flex justify-center">
         <img className="max-w-[100px] h-auto" src="/logo.png" alt="Logo" />
       </div>
-   <CustomMedia data={data}/>
+    <CustomMedia data={data}/>
     </>
   )
 }

@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
@@ -9,6 +7,8 @@ import recipeRoutes from './routes/recipeRoutes.js';
 import shoppingRoutes from './routes/shoppingRoutes.js';
 import mealRoutes from './routes/mealRoutes.js';
 import nutritionRoutes from './routes/nutritionRoutes.js';
+
+const port=3000
 
 const app = express()
 
@@ -27,10 +27,10 @@ app.use('/api/meal', mealRoutes);
 app.use('/api/nutrition', nutritionRoutes); 
 
 
-app.listen(process.env.PORT, async () => {
+app.listen(port, async () => {
     try {
-      await mongoose.connect(process.env.MONGODB_URI)
-      console.log(`Nutri+ app listening on port ${process.env.PORT}!`);
+      await mongoose.connect(connectionString)
+      console.log(`Nutri+ app listening on port ${port}!`);
     } catch (e) {
       console.log(e);
     }

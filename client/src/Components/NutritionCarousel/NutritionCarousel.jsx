@@ -1,22 +1,5 @@
 import { useEffect, useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import SwipeableViews from "react-swipeable-views";
-import ShoppingCard from "../ShoppingCard/ShoppingCard";
 import { useSelector } from "react-redux";
-import NutritionCard from "../NutritionCard/NutritionCard";
-import {
-  Card,
-  CardContent,
-  Chip,
-  Grid,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
 import NutritionRow from "../NutritionCard/NutritionRow";
 
 export function NutritionCarousel() {
@@ -29,7 +12,7 @@ export function NutritionCarousel() {
     }),
     { totalFats: 0, totalProtein: 0, totalCalories: 0 }
   );
-  const theme = useTheme();
+  
   const [activeStep, setActiveStep] = useState(0);
   useEffect(() => {
     setActiveStep(0);
@@ -60,15 +43,11 @@ export function NutritionCarousel() {
     setActiveStep(step);
   };
 
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const textColor = theme.palette.mode === "dark" ? "text-white" : "text-black";
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
+  const textColor = darkMode ? "text-white" : "text-black";
 
   return (
-    <div
-      className={`min-w-${isMobile ? "full" : "675px"} max-w-${
-        isMobile ? "full" : "800px"
-      } m-2 p-4 border rounded shadow-lg`}
-    >
+    <div className="min-w-full max-w-full md:min-w-[675px] md:max-w-[800px] m-2 p-4 border rounded shadow-lg">
       <div>
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="">
@@ -107,37 +86,25 @@ export function NutritionCarousel() {
           </thead>
           <tbody className=" divide-y divide-gray-200">
             {nutrition.map((nutritionItem, index) => (
-              <NutritionRow
-                key={index}
-                nutritionItem={nutritionItem}
-              />
+              <NutritionRow key={index} nutritionItem={nutritionItem} />
             ))}
           </tbody>
         </table>
 
-        <div
-          className={`mt-5 flex ${
-            isMobile ? "flex-col" : "flex-row"
-          } justify-between ${isMobile ? "items-start" : "items-center"}`}
-        >
+        <div className="mt-5 flex flex-col md:flex-row justify-between items-start md:items-center">
           <div
-            className={`chip bg-primary px-2 py-1 rounded ${textColor} ${
-              isMobile ? "my-2" : "my-0"
-            }`}
+            className={`chip bg-primary px-2 py-1 rounded ${textColor} my-2 md:my-0`}
           >
             Total Fats: {totals.totalFats}g
           </div>
           <div
-            className={`chip bg-primary px-2 py-1 rounded ${textColor} ${
-              isMobile ? "my-2" : "my-0"
-            }`}
+            className={`chip bg-primary px-2 py-1 rounded ${textColor} my-2 md:my-0`}
           >
             Total Protein: {totals.totalProtein}g
           </div>
+
           <div
-            className={`chip bg-primary px-2 py-1 rounded ${textColor} ${
-              isMobile ? "my-2" : "my-0"
-            }`}
+            className={`chip bg-primary px-2 py-1 rounded ${textColor} my-2 md:my-0`}
           >
             Total Calories: {totals.totalCalories}
           </div>

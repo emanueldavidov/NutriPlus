@@ -1,13 +1,5 @@
-import * as React from 'react';
 import PropTypes from 'prop-types';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import Skeleton from '@mui/material/Skeleton';
-import Link from '@mui/material/Link'; // Import Link component from MUI
+import * as React from 'react';
 import { Link as RouterLink } from 'react-router-dom'; // Import RouterLink from react-router-dom
 
 function Media(props) {
@@ -16,7 +8,7 @@ function Media(props) {
  return (
     <div className="flex flex-wrap -mx-2">
       {(loading ? Array.from(new Array(3)) : data).map((item, index) => (
-        <div key={index} className="w-1/2 px-2 mb-4 flex justify-center">
+        <div key={index} className="w-full md:w-1/2 px-2 mb-4 flex justify-center">
           <div className="w-64 text-center cursor-pointer transform transition-transform duration-300 hover:scale-105">
             {item ? (
               <RouterLink to={item.link} className="no-underline">

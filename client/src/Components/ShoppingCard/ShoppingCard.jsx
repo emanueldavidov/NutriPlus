@@ -1,37 +1,15 @@
-import * as React from "react";
-
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-import { useDispatch } from "react-redux";
 import axios from "axios";
-import ShoppingsList from "../ShoppingsList/ShoppingsList";
-import { fetchAllShoppingLists } from "../../Pages/store/slices/shoppingSlice";
-import UpdateShopping from "../../Pages/Shopping/UpdateShopping";
-import { Collapse, styled, Typography } from "@mui/material";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BACKEND_URL } from "../../config/config";
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+import UpdateShopping from "../../Pages/Shopping/UpdateShopping";
+import { fetchAllShoppingLists } from "../../Pages/store/slices/shoppingSlice";
+import EditIcon from "../Buttons/EditIcon";
+import TrashIcon from "../Buttons/TrashIcon";
+import ShoppingsList from "../ShoppingsList/ShoppingsList";
 
 export default function ShoppingCard({ shoppingItem }) {
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
   const dispatch = useDispatch();
   const [updateModal, setUpdateModal] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
@@ -55,65 +33,71 @@ export default function ShoppingCard({ shoppingItem }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-return (
-  <div className="max-w-md min-w-[350px] bg-transparent border border-gray-200 rounded-lg shadow-sm">
-    <div className="flex items-center p-4 border-b border-gray-200">
-      <div className="flex-shrink-0">
-        <div
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-[#B81D33] text-white text-lg font-bold"
-          aria-label="shopping"
-        >
-          {shoppingItem?.name?.charAt(0)}
+  return (
+    <div className={`${darkMode ? "bg-black " : "bg-white "
+      } max-w-md min-w-[350px] border border-gray-200 rounded-lg shadow-sm`}>
+      <div className="flex items-center p-4 border-b border-gray-200">
+        <div className="flex-shrink-0">
+          <div
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-[hashtag#B81D33] text-white text-lg font-bold"
+            aria-label="shopping"
+          >
+            {shoppingItem?.name?.charAt(0)}
+          </div>
+        </div>
+        <div className="flex-grow pl-4">
+          <div className="text-lg font-semibold">{shoppingItem?.name}</div>
+        </div>
+        <div className="flex space-x-2">
+          <EditIcon onClick={handleUpdate} />
+          <TrashIcon onClick={handleDelete} />
         </div>
       </div>
-      <div className="flex-grow pl-4">
-        <div className="text-lg font-semibold">{shoppingItem?.name}</div>
-      </div>
-      <div className="flex space-x-2">
+
+      <div className="flex items-center justify-center p-4 border-b border-gray-200">
+        <p>Show Ingredients</p>
         <button
-          className="text-[#B81D33] hover:text-[#B81D33]"
-          aria-label="edit"
-          onClick={handleUpdate}
+          className="ml-2 p-2 text-[hashtag#B81D33] hover:text-[hashtag#B81D33]"
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
         >
-          <EditIcon />
-        </button>
-        <button
-          className="text-[#B81D33] hover:text-[#B81D33]"
-          aria-label="delete"
-          onClick={handleDelete}
-        >
-          <DeleteIcon />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
         </button>
       </div>
-    </div>
 
-    <div className="flex items-center justify-center p-4 border-b border-gray-200">
-      <Typography>Show Ingredients</Typography>
-      <button
-        className="ml-2 p-2 text-[#B81D33] hover:text-[#B81D33]"
-        onClick={handleExpandClick}
-        aria-expanded={expanded}
-        aria-label="show more"
-      >
-        <ExpandMoreIcon />
-      </button>
-    </div>
-    
-    <Collapse in={expanded} timeout="auto" unmountOnExit>
-      <div className="p-4 border-b border-gray-200">
-        <ShoppingsList items={shoppingItem?.items} />
+      <div className={`${expanded ? 'block' : 'hidden'} transition-all duration-300 ease-in-out`}>
+        <div className="p-4 border-b border-gray-200">
+          <ShoppingsList items={shoppingItem?.items} />
+        </div>
       </div>
-    </Collapse>
-
-    {updateModal && (
-      <UpdateShopping
-        shopping={shoppingItem}
-        openModal={updateModal}
-        handleModalClose={() => setUpdateModal(!updateModal)}
-      />
-    )}
-  </div>
-);
+      {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
+ <div className="p-4 border-b border-gray-200">
+ <ShoppingsList items={shoppingItem?.items} />
+ </div>
+ </Collapse> */}
 
 
+      {updateModal && (
+        <UpdateShopping
+          shopping={shoppingItem}
+          openModal={updateModal}
+          handleModalClose={() => setUpdateModal(!updateModal)}
+        />
+      )}
+    </div>
+  );
 }

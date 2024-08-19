@@ -12,11 +12,19 @@ body {
   background-repeat: no-repeat;
   color: #000000; /* Default text color */
 }
+
+.modal-widths{
+  width: auto;
+}
 @media (max-width: 768px) {
   body {
     background-size: contain;
     background-position: center;
 
+  }
+
+  .modal-widths{
+    width: 90% !important;
   }
 }
 

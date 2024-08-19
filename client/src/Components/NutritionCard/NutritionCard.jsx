@@ -1,24 +1,11 @@
-import * as React from "react";
-
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-
 import axios from "axios";
+import * as React from "react";
 import { useDispatch } from "react-redux";
-import { fetchAllNutrition } from "../../Pages/store/slices/nutritionSlice";
-import NutritionsList from "../NutritionsList/NutritionsList";
-import UpdateNutrition from "../../Pages/NutriCalc/UpdateNutrition";
-import { Grid, Typography } from "@mui/material";
 import { BACKEND_URL } from "../../config/config";
+import UpdateNutrition from "../../Pages/NutriCalc/UpdateNutrition";
+import { fetchAllNutrition } from "../../Pages/store/slices/nutritionSlice";
+import EditIcon from "../Buttons/EditIcon";
+import TrashIcon from "../Buttons/TrashIcon";
 
 export default function NutritionCard({ nutritionItem }) {
   const dispatch = useDispatch();
@@ -40,53 +27,38 @@ export default function NutritionCard({ nutritionItem }) {
     }
   };
   const handleUpdate = () => setUpdateModal(true);
-return (
-  <>
-    <div className="grid grid-cols-12 gap-2 mb-1">
-      <div className="col-span-2">
-        <p className="text-base">
-          {nutritionItem.food.recipeName}
-        </p>
-      </div>
-      <div className="col-span-2">
-        <p className="text-base">{nutritionItem.fat}g</p>
-      </div>
-      <div className="col-span-2">
-        <p className="text-base">{nutritionItem.protein}g</p>
-      </div>
-      <div className="col-span-2">
-        <p className="text-base">{nutritionItem.calories}</p>
-      </div>
-      <div className="col-span-2 flex">
-        <div className="actions flex">
-          <button
-            onClick={handleUpdate}
-            style={{ color: "#B81D33" }}
-            aria-label="edit"
-          >
-            <EditIcon />
-          </button>
-          <button
-            onClick={handleDelete}
-            style={{ color: "#B81D33" }}
-            aria-label="delete"
-          >
-            <DeleteIcon />
-          </button>
+  return (
+    <>
+      <div className="grid grid-cols-12 gap-2 mb-1">
+        <div className="col-span-2">
+          <p className="text-base">{nutritionItem.food.recipeName}</p>
+        </div>
+        <div className="col-span-2">
+          <p className="text-base">{nutritionItem.fat}g</p>
+        </div>
+        <div className="col-span-2">
+          <p className="text-base">{nutritionItem.protein}g</p>
+        </div>
+        <div className="col-span-2">
+          <p className="text-base">{nutritionItem.calories}</p>
+        </div>
+        <div className="col-span-2 flex">
+          <div className="actions flex">
+          <EditIcon onClick={handleUpdate} />
+          <TrashIcon onClick={handleDelete} />
+          </div>
         </div>
       </div>
-    </div>
 
-    {updateModal && (
-      <UpdateNutrition
-        nutrition={nutritionItem}
-        openModal={updateModal}
-        handleModalClose={() => {
-          setUpdateModal(!updateModal);
-        }}
-      />
-    )}
-  </>
-);
-
+      {updateModal && (
+        <UpdateNutrition
+          nutrition={nutritionItem}
+          openModal={updateModal}
+          handleModalClose={() => {
+            setUpdateModal(!updateModal);
+          }}
+        />
+      )}
+    </>
+  );
 }

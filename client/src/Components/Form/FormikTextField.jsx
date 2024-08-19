@@ -1,7 +1,6 @@
 import React from "react";
 import { Field, useFormikContext } from "formik";
-import { TextField } from "@mui/material";
-
+import TextField from "../TextField";
 const FormikTextField = ({ name, ...props }) => {
   const formik = useFormikContext();
   return (
@@ -16,11 +15,6 @@ const FormikTextField = ({ name, ...props }) => {
       touched={formik.touched[name]}
       helperText={formik.touched[name] && formik.errors[name]}
       type="text"
-      fullWidth
-      variant="outlined"
-      margin="normal"
-      className="mb-2.5"
-     
       {...props}
     />
   );

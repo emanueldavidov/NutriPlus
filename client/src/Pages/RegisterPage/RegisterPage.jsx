@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import CustomCard from "../../Components/CustomCard/CustomCard";
-import { Alert, Box, Button, TextField } from "@mui/material";
 import axios from "axios";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import CustomCard from "../../Components/CustomCard/CustomCard";
+import TextField from "../../Components/TextField";
 import { BACKEND_URL } from "../../config/config";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Link, useNavigation } from "react-router-dom";
+
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +13,6 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,9 +52,8 @@ const RegisterPage = () => {
         setSuccess(true);
         // Registration successful
         setTimeout(() => {
-
           window.location.href = "/login"; // Navigate to login page
-        }, 1000)
+        }, 1000);
       } else {
         throw new Error("Registration failed");
       }
@@ -87,7 +85,11 @@ const RegisterPage = () => {
         color={"black"}
         wrapperClasses="bg-white"
       >
-        <form className="flex flex-col items-center" noValidate autoComplete="off">
+        <form
+          className="flex flex-col items-center"
+          noValidate
+          autoComplete="off"
+        >
           <div className="flex justify-center items-center flex-col w-full">
             <TextField
               id="username"
@@ -95,24 +97,6 @@ const RegisterPage = () => {
               variant="outlined"
               required
               onChange={(e) => setUsername(e.target.value)}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "black",
-                  fontWeight: "bold",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                },
-              }}
             />
             <TextField
               id="password"
@@ -121,24 +105,6 @@ const RegisterPage = () => {
               required
               variant="outlined"
               onChange={(e) => setPassword(e.target.value)}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "black",
-                  fontWeight: "bold",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                },
-              }}
             />
             <TextField
               id="passwordConfirm"
@@ -147,24 +113,6 @@ const RegisterPage = () => {
               variant="outlined"
               required
               onChange={(e) => setPasswordConfirm(e.target.value)}
-              sx={{
-                marginBottom: "10px",
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "black",
-                  fontWeight: "bold",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                },
-              }}
             />
             <TextField
               id="email"
@@ -175,64 +123,75 @@ const RegisterPage = () => {
                 setEmail(e.target.value);
               }}
               required
-              sx={{
-                marginBottom: "10px",
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "black",
-                  fontWeight: "bold",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#B81D33",
-                  },
-                },
-              }}
             />
             {errors.length > 0 &&
               errors.map((error, index) => (
-                <Alert
+                <div
                   key={index}
-                  severity="error"
-                  onClose={() => {
-                    let newErrors = [...errors];
-                    newErrors.splice(index, 1);
-                    setErrors(newErrors);
-                  }}
+                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 mt-2 w-full"
                 >
-                  {error}
-                </Alert>
+                  <span className="block sm:inline">{error}</span>
+                  <button
+                    onClick={() => {
+                      let newErrors = [...errors];
+                      newErrors.splice(index, 1);
+                      setErrors(newErrors);
+                    }}
+                    className="absolute top-0 bottom-0 right-0 px-4 py-3"
+                  >
+                    <svg
+                      className="fill-current h-6 w-6 text-red-500"
+                      role="button"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <title>Close</title>
+                      <path d="M14.348 5.652a1 1 0 10-1.414-1.414L10 7.172 7.066 4.238a1 1 0 10-1.414 1.414l2.934 2.934-2.934 2.934a1 1 0 101.414 1.414L10 10.828l2.934 2.934a1 1 0 101.414-1.414L11.828 10l2.934-2.934z" />
+                    </svg>
+                  </button>
+                </div>
               ))}
-            <Button
+
+            <button
               type="submit"
-              variant="contained"
-              color="primary"
               onClick={handleRegister}
-              sx={{
-                marginTop: "10px",
-                marginBottom: "10px",
-                backgroundColor: "#B81D33",
-                "&:hover": {
-                  backgroundColor: "#B81D33",
-                },
-              }}
+              className={`mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded flex items-center justify-center ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               disabled={loading}
-              endIcon={
-                loading ? (
-                  <CircularProgress sx={{ color: "white" }} size={24} />
-                ) : null
-              }
             >
-              {loading ? "Loading..." : "Register"}
-            </Button>
+              {loading ? (
+                <svg
+                  className="animate-spin h-5 w-5 text-white mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+              ) : (
+                "Register"
+              )}
+            </button>
 
             {success && (
-              <Alert severity={"success"}>Registered Successfully. Redirecting to login page...</Alert>
+              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                <span>
+                  Registered Successfully. Redirecting to login page...
+                </span>
+              </div>
             )}
           </div>
           <Link to="/" style={{ textDecoration: "none" }}>

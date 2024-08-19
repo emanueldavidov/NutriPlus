@@ -1,19 +1,12 @@
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"; // Import useSelector for accessing Redux state
+import SelectField from "../../Components/SelectField";
+import TextField from "../../Components/TextField";
+import { BACKEND_URL } from "../../config/config";
 import { fetchAllNutrition } from "../store/slices/nutritionSlice";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
-import { BACKEND_URL } from "../../config/config";
 
 const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
   const [selectedFood, setSelectedFood] = useState(nutrition?.food?._id);
@@ -54,14 +47,9 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
   };
 
   return (
-    <Modal
+    <Dialog
       open={openModal}
       onClose={handleModalClose}
-      aria-labelledby="food-details-modal"
-      aria-describedby="modal-for-entering-food-details"
-      BackdropProps={{
-        invisible: false, // Hides the backdrop
-      }}
     >
       <div
         className="p-5 w-4/5 max-w-[600px] mx-auto border-2 border-[#B81D33] rounded-lg max-h-[40rem] max-h-[90vh] min-h-[300px] overflow-y-auto"
@@ -75,55 +63,51 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
           p: 4,
         }}
       >
-        <Typography
-          variant="h6"
-          component="h2"
-          gutterBottom
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-            fontWeight: "bold",
-          }}
-        >
+        <h2 className="flex flex-col items-center font-bold text-xl mb-4">
           Update Nutritional Details
-        </Typography>
+        </h2>
+
         <form onSubmit={handleSubmit}>
-          <FormControl fullWidth variant="outlined" margin="normal" required>
-            <InputLabel id="food-label">Food</InputLabel>
-            <Select
-              disabled={true}
-              labelId="food-label"
-              id="food"
-              label="Select Food"
-              value={selectedFood}
-              onChange={(e) => {if(parseInt(e.target.value) >=0 || e.target.value=="")setSelectedFood(e.target.value)}}
-            >
-              {recipes?.length > 0 &&
-                recipes.map((r) => {
-                  return (
-                    <MenuItem key={r._id} value={r._id}>
-                      {r.recipeName}
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
+          <SelectField
+            disabled={true}
+            labelId="food-label"
+            id="food"
+            label="Select Food"
+            value={selectedFood}
+            onChange={(e) => {
+              setSelectedFood(e.target.value);
+            }}
+          >
+            {recipes?.length > 0 &&
+              recipes.map((r) => {
+                return (
+                  <option key={r._id} value={r._id}>
+                    {r.recipeName}
+                  </option>
+                );
+              })}
+          </SelectField>
           <TextField
             type="number"
             value={calories}
-            onChange={(e) => {if(parseInt(e.target.value) >=0 || e.target.value=="")setCalories(e.target.value)}}
+            onChange={(e) => {
+              if (parseInt(e.target.value) >= 0 || e.target.value == "")
+                setCalories(e.target.value);
+            }}
             label="Calories"
             fullWidth
             variant="outlined"
             margin="normal"
             required
-            min='0'
+            min="0"
           />
           <TextField
             type="number"
             value={totalFat}
-            onChange={(e) => {if(parseInt(e.target.value) >=0 || e.target.value=="")setTotalFat(e.target.value)}}
+            onChange={(e) => {
+              if (parseInt(e.target.value) >= 0 || e.target.value == "")
+                setTotalFat(e.target.value);
+            }}
             label="Total Fat"
             fullWidth
             variant="outlined"
@@ -133,31 +117,24 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
           <TextField
             type="number"
             value={protein}
-            onChange={(e) => {if(parseInt(e.target.value)>=0)setProtein(e.target.value)}}
+            onChange={(e) => {
+              if (parseInt(e.target.value) >= 0) setProtein(e.target.value);
+            }}
             label="Protein"
             fullWidth
             variant="outlined"
             margin="normal"
             required
           />
-          <Button
+          <button
             type="submit"
-            variant="contained"
-            color="primary"
-            sx={{
-              marginTop: "10px",
-              marginBottom: "10px",
-              backgroundColor: "#B81D33",
-              "&:hover": {
-                backgroundColor: "#B81D33",
-              },
-            }}
+            className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"
           >
             Update Nutritions
-          </Button>
+          </button>
         </form>
       </div>
-    </Modal>
+    </Dialog>
   );
 };
 

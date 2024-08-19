@@ -1,31 +1,17 @@
-import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Modal,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Card,
-  CardMedia,
-  TextField,
-  List,
-  ListItemText,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  Alert,
-} from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import MealCarousel from "../../Components/MealCarousel/MealCarousel";
-import { fetchAllRecipes } from "../store/slices/recipesSlice";
 import { fetchAllMeals } from "../store/slices/mealSlice";
-
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
+import { fetchAllRecipes } from "../store/slices/recipesSlice";
+import { Dialog } from "@headlessui/react";
 import axios from "axios"; // Import Axios
+import addImage from "../../assets/images/add.svg";
+import closeImage from "../../assets/images/close.svg";
+import SelectField from "../../Components/SelectField";
+import TextField from "../../Components/TextField";
 import { BACKEND_URL } from "../../config/config";
+import AddIcon from "../../Components/Buttons/AddIcon";
+import DeleteIcon from "../../Components/Buttons/DeleteIcon";
 
 const Meal = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -102,47 +88,41 @@ const Meal = () => {
 
   return (
     <div className=" flex flex-col items-center justify-center p-5">
-      <Button
+      <button
         type="button"
-        variant="contained"
-        color="primary"
-        style={{
-          marginTop: "0.5rem",
-          marginBottom: "0.5rem",
-          backgroundColor: "#B81D33",
-          color: "#fff", // Ensure text color is visible
-        }}
+        className="mt-2 mb-2 bg-[#B81D33] text-white hover:bg-[#A71B2F] py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-[#B81D33] focus:ring-opacity-50"
         onClick={handleModalOpen}
       >
         Add Meal
-      </Button>
+      </button>
 
-      <Modal
-        open={openModal}
-        onClose={handleModalClose}
-        aria-labelledby="food-details-modal"
-        aria-describedby="modal-for-entering-food-details"
-        BackdropProps={{
-          invisible: true, // Hides the backdrop
-        }}
-      >
+      <Dialog open={openModal} onClose={handleModalClose}>
         <div
-          className={`absolute w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 shadow-xl rounded-lg ${
+          className={`absolute w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 shadow-xl rounded-lg modal-widths ${
             darkMode ? "bg-black text-white" : "bg-white text-black"
           } max-h-[90vh] min-h-[300px] overflow-y-auto border-2 border-[#B81D33]`}
         >
-          <Typography
-            variant="h6"
-            component="h2"
-            gutterBottom
-            className="text-[#B81D33] text-center mb-5"
-          >
+          <h2 className="text-xl font-semibold text-[#B81D33] text-center mb-5">
             Add Meal
-          </Typography>
+          </h2>
           {errorMessage && (
-            <Alert severity="error" onClose={() => setErrorMessage("")}>
-              {errorMessage}
-            </Alert>
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+              <span className="block sm:inline">{errorMessage}</span>
+              <button
+                onClick={() => setErrorMessage("")}
+                className="absolute top-0 bottom-0 right-0 px-4 py-3"
+              >
+                <svg
+                  className="fill-current h-6 w-6 text-red-500"
+                  role="button"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <title>Close</title>
+                  <path d="M14.348 5.652a1 1 0 10-1.414-1.414L10 7.172 7.066 4.238a1 1 0 10-1.414 1.414l2.934 2.934-2.934 2.934a1 1 0 101.414 1.414L10 10.828l2.934 2.934a1 1 0 101.414-1.414L11.828 10l2.934-2.934z" />
+                </svg>
+              </button>
+            </div>
           )}
           <form onSubmit={handleSubmit}>
             <TextField
@@ -153,70 +133,62 @@ const Meal = () => {
               className="mb-2"
             />
             <div className="flex items-center mb-2">
-              <FormControl fullWidth variant="outlined" margin="normal">
-                <InputLabel id="food-name-label">Add Recipe</InputLabel>
-                <Select
-                  value={selectedRecipe}
-                  onChange={(e) => setSelectedRecipe(e.target.value)}
-                  labelId="food-name-label"
-                  label="Food Name"
-                  required
-                >
-                  {dishes.map((dish) => (
-                    <MenuItem key={dish._id} value={dish._id}>
+              <SelectField
+                value={selectedRecipe}
+                onChange={(e) => setSelectedRecipe(e.target.value)}
+                label="Recipe Name"
+                required
+              >
+                <option value="">Select Recipe</option>
+
+                {dishes &&
+                  dishes?.map((dish) => (
+                    <option key={dish._id} value={dish._id}>
                       {dish.recipeName}
-                    </MenuItem>
+                    </option>
                   ))}
-                </Select>
-              </FormControl>
-              <AddIcon
-                fontSize="large"
-                onClick={handleAddNewRecipe}
-                className="ml-2"
-              />
+              </SelectField>
+              <div className="mt-5 ms-2">
+                <AddIcon onClick={handleAddNewRecipe} />
+              </div>
             </div>
-            <List className="w-full">
+            <ul className="w-full mt-2">
               {recipes?.length > 0 &&
                 recipes.map((dish, index) => (
                   <React.Fragment key={index}>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar alt={dish.recipeName} src={dish.image} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={dish.recipeName}
-                        secondary={
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className="text-primary"
-                          >
-                            {dish.description}
-                          </Typography>
-                        }
-                      />
-                      <CloseIcon
-                        onClick={() => handleDeleteRecipe(index)}
-                        className="cursor-pointer"
-                      />
-                    </ListItem>
+                    <li className="flex items-start py-4 border-b">
+                      <div className="flex-shrink-0 mr-4">
+                        <img
+                          className="w-10 h-10 rounded-full"
+                          alt={dish.recipeName}
+                          src={dish.image}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-base font-medium">
+                          {dish.recipeName}
+                        </p>
+                        123
+                        <span className="text-sm text-primary">
+                          {dish.description}
+                        </span>
+                      </div>
+
+                      <DeleteIcon onClick={() => handleDeleteRecipe(index)} />
+                    </li>
                   </React.Fragment>
                 ))}
-            </List>
-            <Button
+            </ul>
+
+            <button
               type="submit"
-              variant="contained"
-              color="primary"
-              className="mt-2 mb-2 bg-custom-red hover:bg-custom-red text-white"
-              // onClick={handleModalOpen}
-              style={{ backgroundColor: "#B81D33" }}
+              className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"
             >
               Add Meal
-            </Button>
-            
+            </button>
           </form>
         </div>
-      </Modal>
+      </Dialog>
 
       <div className="meal-list">
         <MealCarousel meals={meals} />

@@ -1,26 +1,16 @@
-import AddIcon from "@mui/icons-material/Add";
-import CloseIcon from "@mui/icons-material/Close";
-import {
-  Alert,
-  Button,
-  FormControl,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemText,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import closeImage from "../../assets/images/close.svg";
+import AddIcon from "../../Components/Buttons/AddIcon";
+import SelectField from "../../Components/SelectField";
 import ShoppingCarousel from "../../Components/ShoppingCarousel/ShoppingCarousel";
+import TextField from "../../Components/TextField";
 import { BACKEND_URL } from "../../config/config";
 import { fetchAllMeals } from "../store/slices/mealSlice";
 import { fetchAllShoppingLists } from "../store/slices/shoppingSlice";
+import DeleteIcon from "../../Components/Buttons/DeleteIcon";
 
 const Shopping = () => {
   const [shoppingListName, setShoppingListName] = useState("");
@@ -115,32 +105,15 @@ const Shopping = () => {
 
   return (
     <div className="flex flex-col items-center p-5">
-      <Button
+      <button
         type="button"
-        variant="contained"
-        color="primary"
-        sx={{
-          marginTop: "10px",
-          marginBottom: "10px",
-          backgroundColor: "#B81D33",
-          "&:hover": {
-            backgroundColor: "#B81D33",
-          },
-        }}
+        className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"
         onClick={handleModalOpen}
       >
         Add Shopping List
-      </Button>
+      </button>
 
-      <Modal
-        open={openModal}
-        onClose={handleModalClose}
-        aria-labelledby="food-details-modal"
-        aria-describedby="modal-for-entering-food-details"
-        BackdropProps={{
-          invisible: true, // Hides the backdrop
-        }}
-      >
+      <Dialog open={openModal} onClose={handleModalClose}>
         <div
           className="p-5 w-4/5 max-w-[600px] mx-auto border-2 border-[#B81D33] rounded-lg max-h-[40rem] max-h-[90vh] min-h-[300px] overflow-y-auto"
           style={{
@@ -153,19 +126,30 @@ const Shopping = () => {
             p: 4,
           }}
         >
-          <Typography
-            variant="h6"
-            component="h2"
-            gutterBottom
-            className="text-[#B81D33] text-center mb-5"
-          >
+          <h2 className="text-xl font-semibold text-[#B81D33] text-center mb-5">
             Enter Shopping List Details
-          </Typography>
+          </h2>
+
           {errorMessage && (
-            <Alert severity="error" onClose={() => setErrorMessage("")}>
-              {errorMessage}
-            </Alert>
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+              <span className="block sm:inline">{errorMessage}</span>
+              <button
+                onClick={() => setErrorMessage("")}
+                className="absolute top-0 bottom-0 right-0 px-4 py-3"
+              >
+                <svg
+                  className="fill-current h-6 w-6 text-red-500"
+                  role="button"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <title>Close</title>
+                  <path d="M14.348 5.652a1 1 0 10-1.414-1.414L10 7.172 7.066 4.238a1 1 0 10-1.414 1.414l2.934 2.934-2.934 2.934a1 1 0 101.414 1.414L10 10.828l2.934 2.934a1 1 0 101.414-1.414L11.828 10l2.934-2.934z" />
+                </svg>
+              </button>
+            </div>
           )}
+
           <form onSubmit={handleSubmit}>
             <TextField
               required
@@ -179,74 +163,67 @@ const Shopping = () => {
               className="mb-2.5"
             />
             <div className="flex items-center">
-              <FormControl
-                fullWidth
-                variant="outlined"
-                margin="normal"
-                required
+              <SelectField
+                label="Select Meal"
+                value={selectedFood}
+                onChange={(e) => setSelectedFood(e.target.value)}
               >
-                <InputLabel id="food-label">Select Meal</InputLabel>
-                <Select
-                  labelId="food-label"
-                  id="food"
-                  label="Select Food"
-                  value={selectedFood}
-                  onChange={(e) => setSelectedFood(e.target.value)}
-                >
-                  {meals?.length > 0 &&
-                    meals.map((r) => {
-                      return <MenuItem value={r._id}>{r.name}</MenuItem>;
-                    })}
-                </Select>
-              </FormControl>
-              <AddIcon fontSize="large" onClick={handleFoodSelection} />
+                <option value="">Select Meal</option>
+                {meals?.length > 0 &&
+                  meals.map((r) => {
+                    return <option value={r._id}>{r.name}</option>;
+                  })}
+              </SelectField>
+              <div className="mt-5 ms-2">
+                <AddIcon onClick={handleFoodSelection} />
+              </div>
             </div>
             {selectedShoppingList?.length > 0 && (
-              <List className="w-full">
+              <ul className="w-full mt-4">
                 {selectedShoppingList.map((food, index) => (
-                  <ListItem key={index} className="mb-2 border-none">
-                    <ListItemText
-                      primary={
-                        <div className="flex items-center justify-between">
-                          <span style={{ color: darkMode ? "#fff" : "black" }}>
-                            {food.name}
-                          </span>
-                          <CloseIcon onClick={() => handleFoodRemove(index)} />
-                        </div>
-                      }
-                      secondary={
-                        <span style={{ color: darkMode ? "white" : "grey" }}>
-                          {food.recipes.map(({ ingredients }) => {
-                            return ingredients.map((ing) => {
-                              return `${ing.ingredient} ${ing.quantity} ${ing.unit}`;
-                            });
-                          })}
-                        </span>
-                      }
-                    />
-                  </ListItem>
+                  <li
+                    key={index}
+                    className="mb-4 border-b border-gray-300 pb-4"
+                  >
+                    <div className="flex items-center justify-between">
+                      {/* Food Name */}
+                      <span
+                        className={`text-lg ${
+                          darkMode ? "text-white" : "text-black"
+                        }`}
+                      >
+                        {food.name}
+                      </span>
+                      {/* Remove Button */}
+                      <DeleteIcon onClick={() => handleFoodRemove(index)} />
+                    </div>
+                    {/* Ingredients List */}
+                    <div
+                      className={`mt-2 text-sm ${
+                        darkMode ? "text-white" : "text-gray-500"
+                      }`}
+                    >
+                      {food.recipes.flatMap(({ ingredients }) =>
+                        ingredients.map((ing, i) => (
+                          <div key={i} className="ml-4">
+                            {`${ing.ingredient}: ${ing.quantity} ${ing.unit}`}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </li>
                 ))}
-              </List>
+              </ul>
             )}
-
-            <Button
+            <button
               type="submit"
-              variant="contained"
-              color="primary"
-              sx={{
-                marginTop: "10px",
-                marginBottom: "10px",
-                backgroundColor: "#B81D33",
-                "&:hover": {
-                  backgroundColor: "#B81D33",
-                },
-              }}
+              className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"
             >
               Add to Shopping List
-            </Button>
+            </button>
           </form>
         </div>
-      </Modal>
+      </Dialog>
 
       <div className="shopping-list w-full flex justify-center items-center">
         <ShoppingCarousel />

@@ -1,47 +1,23 @@
 import * as React from "react";
-
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Collapse, styled, Typography, useMediaQuery } from "@mui/material";
-
-import { useDispatch, useSelector } from "react-redux";
-import { deleteMeal, fetchAllMeals } from "../../Pages/store/slices/mealSlice";
 import axios from "axios";
-
-import MealsList from "../MealsList/MealsList";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllMeals } from "../../Pages/store/slices/mealSlice";
+import { useTheme } from "@emotion/react";
 import UpdateMeal from "../../Pages/Meal/UpdateMeal";
 import { BACKEND_URL } from "../../config/config";
-import { useTheme } from "@emotion/react";
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+import MealsList from "../MealsList/MealsList";
+import EditIcon from "../Buttons/EditIcon";
+import TrashIcon from "../Buttons/TrashIcon";
 export default function MealCard({ meal }) {
   const dispatch = useDispatch();
   const [updateModal, setUpdateModal] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const darkMode = useSelector((state) => state.darkMode.darkMode); 
-  
+  const darkMode = useSelector((state) => state.darkMode.darkMode);
+
   const handleDelete = async () => {
     try {
+      if(!confirm('Are you sure you want to delete?')) return;
       const response = await axios.delete(
         `${BACKEND_URL}/api/meal/meals/${meal._id}`,
         {
@@ -56,46 +32,39 @@ export default function MealCard({ meal }) {
       console.error("Error deleting meal:", err);
     }
   };
-  const handleUpdate=()=>setUpdateModal(true);
+  const handleUpdate = () => setUpdateModal(true);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-return (
-  <>
-    <div
-      className={` ${darkMode ? "bg-black " : "bg-white "} min-w-[350px] max-w-[350px] md:max-w-[600px]`}
-    >
-      <div className="flex items-center justify-between p-4">
-        <div className="flex items-center">
-          <div className="bg-[#B81D33] text-white rounded-full w-10 h-10 flex items-center justify-center">
-            {meal.name.charAt(0)}
+  return (
+    <>
+      <div className={`min-w-[350px] max-w-[350px] md:max-w-[600px]`}>
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center">
+            <div className="bg-[#B81D33] text-white rounded-full w-10 h-10 flex items-center justify-center">
+              {meal.name.charAt(0)}
+            </div>
+            <h2 className="ml-4">{meal.name}</h2>
           </div>
-          <h2 className="ml-4">{meal.name}</h2>
+          <div className="flex space-between">
+            <EditIcon onClick={handleUpdate} />
+            <TrashIcon onClick={handleDelete} />
+          </div>
         </div>
-        <div className="flex">
-          <button className="text-[#B81D33] p-2" aria-label="edit" onClick={handleUpdate}>
-            <EditIcon />
-          </button>
-          <button className="text-[#B81D33] p-2" aria-label="delete" onClick={handleDelete}>
-            <DeleteIcon />
-          </button>
+
+        <div className="">
+          <MealsList dishes={meal} />
         </div>
       </div>
-
-      <div className="">
-        <MealsList dishes={meal} />
-      </div>
-    </div>
-    {updateModal && (
-      <UpdateMeal
-        meal={meal}
-        openModal={updateModal}
-        handleModalClose={() => {
-          setUpdateModal(!updateModal);
-        }}
-      />
-    )}
-  </>
-);
-
+      {updateModal && (
+        <UpdateMeal
+          meal={meal}
+          openModal={updateModal}
+          handleModalClose={() => {
+            setUpdateModal(!updateModal);
+          }}
+        />
+      )}
+    </>
+  );
 }

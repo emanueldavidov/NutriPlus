@@ -1,26 +1,18 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  Alert,
-  Button,
-  FormControl,
-  Grid,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Dialog } from '@headlessui/react';
 import axios from "axios"; // Import Axios
 import { Field, FieldArray, Form, FormikProvider, useFormik } from "formik";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import closeImage from "../../assets/images/close.svg";
 import FormikSelect from "../../Components/Form/FormikSelectField";
 import FormikTextField from "../../Components/Form/FormikTextField";
-import { fetchAllRecipes } from "../store/slices/recipesSlice";
+import SelectField from "../../Components/SelectField";
+import TextField from "../../Components/TextField";
 import { BACKEND_URL } from "../../config/config";
+import { fetchAllRecipes } from "../store/slices/recipesSlice";
+
 const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
+  const user = useSelector((state) => state.auth.user);
   // const [openModal, setOpenModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [recipeName, setRecipeName] = useState("");
@@ -37,10 +29,10 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
 
   const initialValues = {
     recipeName: recipe?.recipeName ?? "",
-    unit: recipe?.unit ?? "",
-    quantity: recipe?.quantity ?? "",
-    ingredients: recipe?.ingredients ?? [],
-    instructions: recipe?.instructions ?? [],
+    ingredients: recipe?.ingredients ?? [
+      { quantity: 1, unit: "", ingredient: "" },
+    ],
+    instructions: recipe?.instructions ?? [""],
     image: recipe?.image ?? "",
     description: recipe?.description ?? "",
     category: recipe?.category ?? "",
@@ -51,7 +43,6 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
     enableReinitialize: true,
     onSubmit: handleSubmit,
   });
-  console.log(formik.values.ingredients);
 
   const handleModalClose = () => {
     setOpenModal(false);
@@ -87,12 +78,18 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
   // Form submission
   async function handleSubmit(values) {
     try {
-      // Send POST request to server
-      const response = await axios.put(
-        `${BACKEND_URL}/api/recipe/recipes/${recipe._id}`,
-        { ...values, user: recipe?.user }
-      );
-
+      if (recipe) {
+        // Send PUT request to server
+        const response = await axios.put(
+          `${BACKEND_URL}/api/recipe/recipes/${recipe._id}`,
+          { ...values, user: recipe?.user }
+        );
+      } else {
+        const response = await axios.post(`${BACKEND_URL}/api/recipe/recipes`, {
+          ...values,
+          user: user?._id,
+        });
+      }
       // Dispatch action to update Redux store
       dispatch(fetchAllRecipes());
 
@@ -103,63 +100,76 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
       setErrorMessage("Failed to save recipe. Please try again later.");
     }
   }
-  const handleIngredientUpdate = (index, ingredient) => {};
-  const handleIngredientDelete = (index) => {};
+  
   const darkMode = useSelector((state) => state.darkMode.darkMode);
 
   return (
-<Modal
-  open={openModal}
-  onClose={handleModalClose}
-  aria-labelledby="recipe-details-modal"
-  aria-describedby="modal-for-entering-recipe-details"
-  BackdropProps={{
-    invisible: false, // Hides the backdrop
-  }}
->
+    // <Dialog
+    //   open={openModal}
+    //   onClose={handleModalClose}
+    //   aria-labelledby="recipe-details-modal"
+    //   aria-describedby="modal-for-entering-recipe-details"
+    //   BackdropProps={{
+    //     invisible: false, // Hides the backdrop
+    //   }}
+    // >
+     <Dialog open={openModal} onClose={handleModalClose}>
   <div
-    className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl p-4 border-2 rounded-lg ${
-      darkMode ? 'bg-black text-white border-[#B81D33]' : 'bg-white text-black border-[#B81D33]'
-    } max-h-[90vh] min-h-[300px] overflow-y-auto`}
-  >
-    <Typography
-      variant="h6"
-      component="h2"
-      gutterBottom
-      className="text-[#B81D33] text-center mb-5"
-    >
-      Update Recipe Details
-    </Typography>
+  className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl p-4 border-2 rounded-lg modal-widths ${
+    darkMode
+      ? "bg-black text-white border-[#B81D33]"
+      : "bg-white text-black border-[#B81D33]"
+  } max-h-[90vh] min-h-[300px] overflow-y-auto`}
+>
+
+    <h2 className="text-xl font-semibold text-[#B81D33] text-center mb-5">
+      {recipe ? "Update" : "Add"} Recipe Details
+    </h2>
     {errorMessage && (
-      <Alert severity="error" onClose={() => setErrorMessage("")}>
-        {errorMessage}
-      </Alert>
+      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+        <span className="block sm:inline">{errorMessage}</span>
+        <button
+          onClick={() => setErrorMessage("")}
+          className="absolute top-0 bottom-0 right-0 px-4 py-3"
+        >
+          <svg
+            className="fill-current h-6 w-6 text-red-500"
+            role="button"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <title>Close</title>
+            <path d="M14.348 5.652a1 1 0 10-1.414-1.414L10 7.172 7.066 4.238a1 1 0 10-1.414 1.414l2.934 2.934-2.934 2.934a1 1 0 101.414 1.414L10 10.828l2.934 2.934a1 1 0 101.414-1.414L11.828 10l2.934-2.934z" />
+          </svg>
+        </button>
+      </div>
     )}
+
     <FormikProvider value={formik}>
       <Form>
         <FormikTextField
           name="recipeName"
           label="Recipe Name"
           required
-          className="mb-2"
+          className="mb-2 w-full"
         />
         <FormikTextField
           name="image"
           label="Recipe Image URL"
           required
-          className="mb-2"
+          className="mb-2 w-full"
         />
         <FormikTextField
           name="description"
           label="Recipe Description"
           required
-          className="mb-2"
+          className="mb-2 w-full"
         />
         <FormikSelect
           name="category"
           label="Category"
           options={["starter", "main course", "dessert"]}
-          className="mb-2"
+          className="mb-2 w-full"
         />
 
         <div className="space-y-2">
@@ -167,8 +177,8 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
             {({ push, remove }) => (
               <>
                 {formik.values.ingredients.map((ing, index) => (
-                  <Grid container spacing={2} key={index}>
-                    <Grid item xs={4}>
+                  <div className="grid grid-cols-12 gap-2" key={index}>
+                    <div className="col-span-5">
                       <Field
                         required
                         component={TextField}
@@ -187,41 +197,33 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
                         margin="normal"
                         className="mb-2"
                       />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <FormControl
+                    </div>
+                    <div className="col-span-4">
+                      <SelectField
                         required
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                      >
-                        <InputLabel id="unit-label">Unit</InputLabel>
-                        <Select
-                          labelId="unit-label"
-                          id="unit"
-                          label="Unit"
-                          name={`ingredients[${index}].unit`}
-                          value={ing.unit}
-                          onChange={(e) =>
-                            formik.setFieldValue(
-                              `ingredients[${index}].unit`,
-                              e.target.value
-                            )
-                          }
-                        >
-                          <MenuItem value="piece(s)">piece(s)</MenuItem>
-                          <MenuItem value="g">g</MenuItem>
-                          <MenuItem value="kg">kg</MenuItem>
-                          <MenuItem value="ml">ml</MenuItem>
-                          <MenuItem value="l">l</MenuItem>
-                          <MenuItem value="pcs">pcs</MenuItem>
-                          <MenuItem value="tsp">tsp</MenuItem>
-                          <MenuItem value="tbsp">tbsp</MenuItem>
-                          <MenuItem value="cup">cup</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={3}>
+                        options={[
+                          "piece(s)",
+                          "g",
+                          "kg",
+                          "ml",
+                          "l",
+                          "pcs",
+                          "tsp",
+                          "tbsp",
+                          "cup",
+                        ]}
+                        label="Unit"
+                        name={`ingredients[${index}].unit`}
+                        value={ing.unit}
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            `ingredients[${index}].unit`,
+                            e.target.value
+                          )
+                        }
+                      />
+                    </div>
+                    <div className="col-span-2">
                       <Field
                         required
                         component={TextField}
@@ -229,7 +231,10 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
                         name={`ingredients[${index}].quantity`}
                         value={ing.quantity}
                         onChange={(e) => {
-                          if (parseInt(e.target.value) >= 0 || e.target.value === "")
+                          if (
+                            parseInt(e.target.value) >= 0 ||
+                            e.target.value === ""
+                          )
                             formik.setFieldValue(
                               `ingredients[${index}].quantity`,
                               parseInt(e.target.value)
@@ -241,25 +246,25 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
                         margin="normal"
                         className="mb-2"
                       />
-                    </Grid>
-                    <Grid item xs={2}>
-                      <IconButton onClick={() => remove(index)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
+                    </div>
+                    <div className="col-span-1 flex items-center justify-center">
+                      <img
+                        onClick={() => remove(index)}
+                        className="cursor-pointer w-[20px]"
+                        src={closeImage}
+                        alt="Remove"
+                      />
+                    </div>
+                  </div>
                 ))}
-                <Button
-                  variant="contained"
-                  color="primary"
+                <button
                   onClick={() =>
                     push({ ingredient: "", unit: "", quantity: "" })
                   }
-                  className="mt-5 mb-2 "
-                  style={{ backgroundColor: "#B81D33" }}
+                  className="mt-5 mb-2 bg-[#B81D33] hover:bg-[#A4162E] text-white py-2 px-4 rounded w-full"
                 >
                   Add Ingredient
-                </Button>
+                </button>
               </>
             )}
           </FieldArray>
@@ -269,8 +274,8 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
           {({ push, remove }) => (
             <>
               {formik.values.instructions.map((inst, index) => (
-                <Grid container spacing={2} key={index}>
-                  <Grid item xs={10} className="mb-2">
+                <div className="flex flex-wrap mb-2" key={index}>
+                  <div className="w-5/6 mb-2">
                     <TextField
                       required
                       type="text"
@@ -285,43 +290,41 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
                       name={`instructions[${index}]`}
                       fullWidth
                     />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <IconButton onClick={() => remove(index)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
+                  </div>
+                  <div className="w-1/6 flex items-center justify-center">
+                    <img
+                      onClick={() => remove(index)}
+                      className="cursor-pointer w-[20px]"
+                      src={closeImage}
+                      alt="Remove"
+                    />
+                  </div>
+                </div>
               ))}
-              <Button
-                variant="contained"
-                color="primary"
+              <button
                 onClick={() => push("")}
-                className="my-5 mb-2 "
-                style={{ backgroundColor: "#B81D33" }}
+                className="my-5 mb-2 bg-[#B81D33] hover:bg-[#A4162E] text-white py-2 px-4 rounded w-full"
               >
                 Add Instruction
-              </Button>
+              </button>
             </>
           )}
         </FieldArray>
 
         <div>
-          <Button
+          <button
             type="submit"
-            variant="contained"
-            color="primary"
-            className="my-5 "
-            style={{ backgroundColor: "#B81D33" }}
+            className="my-5 bg-[#B81D33] hover:bg-[#A4162E] text-white py-2 px-4 rounded w-full"
           >
-            Update Recipe
-          </Button>
+            {recipe ? "Update" : "Add"} Recipe
+          </button>
         </div>
       </Form>
     </FormikProvider>
   </div>
-</Modal>
+</Dialog>
 
+    // </Modal>
   );
 };
 
