@@ -10,6 +10,7 @@ import SelectField from "../../Components/SelectField";
 import TextField from "../../Components/TextField";
 import { BACKEND_URL } from "../../config/config";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
+import DeleteIcon from '../../Components/Buttons/DeleteIcon';
 
 const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
   const user = useSelector((state) => state.auth.user);
@@ -94,11 +95,13 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
           `${BACKEND_URL}/api/recipe/recipes/${recipe._id}`,
           { ...values, user: recipe?.user }
         );
+        alert("Recipe updated successfully")
       } else {
         const response = await axios.post(`${BACKEND_URL}/api/recipe/recipes`, {
           ...values,
           user: user?._id,
         });
+        alert("Recipe added successfully")
       }
       // Dispatch action to update Redux store
       dispatch(fetchAllRecipes());
@@ -249,11 +252,8 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
                       />
                     </div>
                     <div className="col-span-1 flex items-center justify-center">
-                      <img
+                      <DeleteIcon
                         onClick={() => remove(index)}
-                        className="cursor-pointer w-[20px]"
-                        src={closeImage}
-                        alt="Remove"
                       />
                     </div>
                   </div>
@@ -293,11 +293,8 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
                     />
                   </div>
                   <div className="w-1/6 flex items-center justify-center">
-                    <img
+                    <DeleteIcon
                       onClick={() => remove(index)}
-                      className="cursor-pointer w-[20px]"
-                      src={closeImage}
-                      alt="Remove"
                     />
                   </div>
                 </div>

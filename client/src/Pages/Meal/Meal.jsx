@@ -57,6 +57,10 @@ const Meal = () => {
       );
       dispatch(fetchAllMeals());
       setOpenModal(false); // Close the modal
+      setFoodName("");
+      setRecipes([]);
+      setSelectedRecipe();
+      setErrorMessage("");
     } catch (error) {
       console.log("Error occured", error);
       if (error.response) {

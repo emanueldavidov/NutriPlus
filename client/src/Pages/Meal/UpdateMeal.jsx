@@ -147,7 +147,7 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
                   </div>
                   <div className="flex-1">
                     <p className="text-base font-medium">{dish.recipeName}</p>
-                    <p className="text-sm text-gray-700">{dish.description}</p>
+                    <p className="text-sm">{dish.description}</p>
                   </div>
 
                   <DeleteIcon onClick={() => handleDeleteRecipe(index)} />

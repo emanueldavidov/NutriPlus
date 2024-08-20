@@ -40,7 +40,7 @@ export default function RecipeCard({ recipe, expanded, setExpanded }) {
     <>
       <div
         className={` ${
-          darkMode ? "bg-[#535353]" : "bg-white "
+          darkMode ? "bg-black" : "bg-white "
         } m-2 p-4 shadow-lg rounded-lg min-w-[300px] max-w-[300px] md:max-w-[700px]`}
         // style={{ maxWidth: "400px", minWidth: "400px" }}
       >

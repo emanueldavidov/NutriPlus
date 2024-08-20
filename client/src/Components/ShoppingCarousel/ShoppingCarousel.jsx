@@ -31,7 +31,7 @@ export function ShoppingCarousel() {
   };
 
   return (
-    <div className={`flex flex-col items-center justify-center mx-auto max-w-[350px] md:max-w-[700px] ${darkMode ? 'bg-black' : 'bg-white'}`}>
+    <div className="flex flex-col items-center justify-center mx-auto max-w-[350px] md:max-w-[700px]">
       <div className="flex justify-between w-full mb-2">
         <button
           className={`p-2 disabled:opacity-30 ${
