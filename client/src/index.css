@@ -10,18 +10,12 @@ body {
   background-image: url("./background.png");
   background-position: right;
   background-repeat: no-repeat;
-  color: #000000;
-  /* Default text color */
+  color: #000000; /* Default text color */
 }
 
-.carousel-width {
-  max-width: 600px;
-}
-
-.modal-widths {
+.modal-widths{
   width: auto;
 }
-
 @media (max-width: 768px) {
   body {
     background-size: contain;
@@ -29,18 +23,15 @@ body {
 
   }
 
-  .modal-widths {
+  .modal-widths{
     width: 90% !important;
   }
 }
 
 body.dark-mode {
-  background-color: #535353;
-  /* Dark mode background color */
-  color: hashtag#ffffff;
-  /* Dark mode text color */
+  background-color: #535353; /* Dark mode background color */
+  color: #ffffff; /* Dark mode text color */
 }
-
 /* Responsive styles for the entire application */
 @media (max-width: 1200px) {
   body {
@@ -59,20 +50,12 @@ body.dark-mode {
     font-size: 12px;
   }
 
-  .carousel-width {
-    max-width: 75%;
-  }
-
-
+  
 }
 
 @media (max-width: 576px) {
   body {
     font-size: 11px;
-  }
-
-  .carousel-width {
-    max-width: 90%;
   }
 }
 
@@ -82,9 +65,9 @@ body.dark-mode {
   }
 }
 
-
+ 
 table {
-  border: 1px solid hashtag#ccc;
+  border: 1px solid #ccc;
   border-collapse: collapse;
   margin: 0;
   padding: 0;
@@ -98,8 +81,8 @@ table caption {
 }
 
 table tr {
-
-  border: 1px solid hashtag#ddd;
+ 
+  border: 1px solid #ddd;
   padding: .35em;
 }
 
@@ -123,7 +106,7 @@ table th {
   table caption {
     font-size: 1.3em;
   }
-
+  
   table thead {
     border: none;
     clip: rect(0 0 0 0);
@@ -134,27 +117,27 @@ table th {
     position: absolute;
     width: 1px;
   }
-
+  
   table tr {
-    border-bottom: 3px solid hashtag#ddd;
+    border-bottom: 3px solid #ddd;
     display: block;
     margin-bottom: .625em;
   }
-
+  
   table td {
-    border-bottom: 1px solid hashtag#ddd;
+    border-bottom: 1px solid #ddd;
     display: block;
     font-size: .8em;
     text-align: right;
-  }
-
+  } 
+  
   table td::before {
     content: attr(data-label);
     float: left;
     font-weight: bold;
     text-transform: uppercase;
   }
-
+  
   table td:last-child {
     border-bottom: 0;
   }
