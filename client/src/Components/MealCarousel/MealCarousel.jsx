@@ -6,33 +6,19 @@ import MealCard from "../MealCard/MealCard";
 export function MealCarousel({ meals }) {
   const darkMode = useSelector((state) => state.darkMode.darkMode);
   const [activeStep, setActiveStep] = useState(0);
+
   useEffect(() => {
     setActiveStep(0);
   }, [meals]);
-  const maxSteps = meals.length; // Corrected to use meals.length instead of recipes.length
+
+  const maxSteps = meals.length;
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => {
-      // Check if there's a next card to move to
-      if (prevActiveStep + 1 < maxSteps && meals[prevActiveStep + 1]) {
-        return prevActiveStep + 1;
-      } else {
-        // Move to the previous card if next is undefined
-        return Math.max(prevActiveStep - 1, 0);
-      }
-    });
+    setActiveStep((prevActiveStep) => Math.min(prevActiveStep + 1, maxSteps - 1));
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => {
-      // Check if there's a previous card to move to
-      if (prevActiveStep - 1 >= 0 && meals[prevActiveStep - 1]) {
-        return prevActiveStep - 1;
-      } else {
-        // Move to the next card if previous is undefined
-        return Math.min(prevActiveStep + 1, maxSteps - 1);
-      }
-    });
+    setActiveStep((prevActiveStep) => Math.max(prevActiveStep - 1, 0));
   };
 
   const handleStepChange = (step) => {
@@ -44,19 +30,17 @@ export function MealCarousel({ meals }) {
       <div className="flex justify-between w-full min-w-[350px] max-w-[350px] md:max-w-[600px] mb-2">
         <button
           className={`${
-            darkMode ? "white" : "text-[#B81D33]"
+            darkMode ? "text-white" : "text-[#B81D33]"
           } p-2 disabled:opacity-30`}
-          size="small"
           onClick={handleBack}
           disabled={activeStep === 0}
         >
-          {"<"}Back
+          {"<"} Back
         </button>
         <button
           className={`${
-            darkMode ? "white" : "text-[#B81D33]"
+            darkMode ? "text-white" : "text-[#B81D33]"
           } p-2 disabled:opacity-30`}
-          size="small"
           onClick={handleNext}
           disabled={activeStep === maxSteps - 1}
         >
@@ -66,18 +50,20 @@ export function MealCarousel({ meals }) {
 
       {meals?.length > 0 && (
         <SwipeableViews
-          axis={"x"}
+          axis="x"
           index={activeStep}
           onChangeIndex={handleStepChange}
           enableMouseEvents
-          className={`carousel-width flex justify-center items-center  `}
+          className="w-full flex justify-center items-center"
+          style={{ overflow: "hidden" }} // Ensures the carousel does not overflow horizontally
         >
           {meals.map((meal, index) => (
             <div
               className={`flex justify-center items-center rounded ${
-                darkMode ? "bg-black " : "bg-white "
+                darkMode ? "bg-black text-white" : "bg-white text-black"
               } `}
               key={index}
+              style={{ width: "100%" }} // Ensures the meal card takes full width of the container
             >
               {Math.abs(activeStep - index) <= 2 ? (
                 <MealCard meal={meal} />

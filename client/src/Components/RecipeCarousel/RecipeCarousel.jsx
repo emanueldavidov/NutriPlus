@@ -44,45 +44,44 @@ export function RecipeCarousel({ recipes }) {
   };
 
   return (
-<div className="flex flex-col items-center justify-center w-full max-w-[90%] md:max-w-[700px] m-auto">
-  <div className="flex justify-between w-full mb-2">
-    <button
-      className={`${darkMode ? "text-white" : "text-[#B81D33]"} p-2 disabled:opacity-30`}
-      onClick={handleBack}
-      disabled={activeStep === 0}
-    >
-      {"<"} Back
-    </button>
-    <button
-      className={`${darkMode ? "text-white" : "text-[#B81D33]"} p-2 disabled:opacity-30`}
-      onClick={handleNext}
-      disabled={activeStep === maxSteps - 1}
-    >
-      Next {">"}
-    </button>
-  </div>
-
-  <SwipeableViews
-    axis={"x"}
-    index={activeStep}
-    onChangeIndex={handleStepChange}
-    enableMouseEvents
-    className="carousel-width w-full flex items-center justify-center"
-  >
-    {recipes.map((recipe, index) => (
-      <div key={index} className="w-full flex items-center justify-center">
-        {Math.abs(activeStep - index) <= 2 ? (
-          <RecipeCard
-            recipe={recipe}
-            expanded={expandedState}
-            setExpanded={setExpandedState}
-          />
-        ) : null}
+    <div className="flex flex-col items-center justify-center w-full max-w-[90%] md:max-w-[700px] m-auto">
+      <div className="flex justify-between w-full mb-2">
+        <button
+          className={`${darkMode ? "text-white" : "text-[#B81D33]"} p-2 disabled:opacity-30`}
+          onClick={handleBack}
+          disabled={activeStep === 0}
+        >
+          {"<"} Back
+        </button>
+        <button
+          className={`${darkMode ? "text-white" : "text-[#B81D33]"} p-2 disabled:opacity-30`}
+          onClick={handleNext}
+          disabled={activeStep === maxSteps - 1}
+        >
+          Next {">"}
+        </button>
       </div>
-    ))}
-  </SwipeableViews>
-</div>
 
+      <SwipeableViews
+        axis={"x"}
+        index={activeStep}
+        onChangeIndex={handleStepChange}
+        enableMouseEvents
+        className="w-full flex items-center justify-center"
+      >
+        {recipes.map((recipe, index) => (
+          <div key={index} className="w-full flex items-center justify-center">
+            {Math.abs(activeStep - index) <= 2 ? (
+              <RecipeCard
+                recipe={recipe}
+                expanded={expandedState}
+                setExpanded={setExpandedState}
+              />
+            ) : null}
+          </div>
+        ))}
+      </SwipeableViews>
+    </div>
   );
 }
 

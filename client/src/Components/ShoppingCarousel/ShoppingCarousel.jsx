@@ -11,30 +11,19 @@ export function ShoppingCarousel() {
   useEffect(() => {
     setActiveStep(0);
   }, [shoppings]);
-  const maxSteps = shoppings.length; // Corrected to use shoppings.length instead of recipes.length
+
+  const maxSteps = shoppings.length;
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => {
-      // Check if there's a next card to move to
-      if (prevActiveStep + 1 < maxSteps && shoppings[prevActiveStep + 1]) {
-        return prevActiveStep + 1;
-      } else {
-        // Move to the previous card if next is undefined
-        return Math.max(prevActiveStep - 1, 0);
-      }
-    });
+    setActiveStep((prevActiveStep) =>
+      Math.min(prevActiveStep + 1, maxSteps - 1)
+    );
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => {
-      // Check if there's a previous card to move to
-      if (prevActiveStep - 1 >= 0 && shoppings[prevActiveStep - 1]) {
-        return prevActiveStep - 1;
-      } else {
-        // Move to the next card if previous is undefined
-        return Math.min(prevActiveStep + 1, maxSteps - 1);
-      }
-    });
+    setActiveStep((prevActiveStep) =>
+      Math.max(prevActiveStep - 1, 0)
+    );
   };
 
   const handleStepChange = (step) => {
@@ -42,21 +31,21 @@ export function ShoppingCarousel() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mx-auto max-w-[350px] md:max-w-[700px]">
+    <div className={`flex flex-col items-center justify-center mx-auto max-w-[350px] md:max-w-[700px] ${darkMode ? 'bg-black' : 'bg-white'}`}>
       <div className="flex justify-between w-full mb-2">
         <button
-          className={`${
-            darkMode ? "white" : "text-[#B81D33]"
-          } p-2 disabled:opacity-30`}
+          className={`p-2 disabled:opacity-30 ${
+            darkMode ? "text-white" : "text-[#B81D33]"
+          }`}
           onClick={handleBack}
           disabled={activeStep === 0}
         >
           {"<"} Back
         </button>
         <button
-          className={`${
-            darkMode ? "white" : "text-[#B81D33]"
-          } p-2 disabled:opacity-30`}
+          className={`p-2 disabled:opacity-30 ${
+            darkMode ? "text-white" : "text-[#B81D33]"
+          }`}
           onClick={handleNext}
           disabled={activeStep === maxSteps - 1}
         >
@@ -66,11 +55,12 @@ export function ShoppingCarousel() {
 
       {shoppings?.length > 0 && (
         <SwipeableViews
-          axis={"x"}
+          axis="x"
           index={activeStep}
           onChangeIndex={handleStepChange}
           enableMouseEvents
-          className="carousel-width flex justify-center items-center"
+          className="w-full flex justify-center items-center"
+          style={{ overflow: "hidden" }} // Ensures no overflow in horizontal direction
         >
           {shoppings.map((shoppingItem, index) => (
             <div
@@ -78,6 +68,7 @@ export function ShoppingCarousel() {
                 Math.abs(activeStep - index) <= 2 ? "" : "hidden"
               }`}
               key={index}
+              style={{ width: "100%" }} // Ensure the ShoppingCard takes full width
             >
               <ShoppingCard shoppingItem={shoppingItem} />
             </div>

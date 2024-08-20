@@ -7,46 +7,51 @@ import darkMenu from "../../assets/images/menu-dark.svg";
 import lightMenu from "../../assets/images/menu.svg";
 import moon from "../../assets/images/moon.svg";
 import sun from "../../assets/images/sun.svg";
+
 const CustomDrawer = ({ list, links }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const darkMode = useSelector((state) => state.darkMode.darkMode);
+
   const toggleDrawer = (newOpen) => {
     setOpen(newOpen);
   };
+
   const openDrawer = () => {
     setOpen(true);
   };
+
   const toggleDarkMode = () => {
     dispatch(toggleDarkModeState());
   };
+
   const handleLogout = () => {
     dispatch(logout()); // Dispatch the logout action
     setOpen(false); // Close the drawer after logout
     if (darkMode) dispatch(toggleDarkModeState());
   };
+
   const DrawerList = (
-    <div class="w-64" role="presentation" onClick={() => toggleDrawer(false)}>
-      <button class={`mt-2 ${darkMode ? "text-white" : "text-black"}`}>
+    <div className="w-64" role="presentation" onClick={() => toggleDrawer(false)}>
+      <button className={`mt-2 ${darkMode ? "text-white" : "text-black"}`}>
         {darkMode ? (
-            <img src={sun} onClick={toggleDarkMode} className="w-[25px]" />
+          <img src={sun} onClick={toggleDarkMode} className="w-[25px]" />
         ) : (
-            <img src={moon} onClick={toggleDarkMode} className="w-[20px]" />
-          
+          <img src={moon} onClick={toggleDarkMode} className="w-[20px]" />
         )}
       </button>
       <RouterLink to="/home">
-        <div className="mt-2 w-full ">
-          <img class="mt-2 w-full rounded-full" src="logo2.png" alt="Avatar" />
+        <div className="mt-2 w-full">
+          <img className="mt-2 w-full rounded-full" src="logo2.png" alt="Avatar" />
         </div>
       </RouterLink>
-      <ul class="list-none">
+      <ul className="list-none">
         {list.map((text, index) => (
           <li key={text}>
             <RouterLink
               to={links[index]}
-              class={`block px-4 py-2 font-medium ${
-                darkMode ? "white" : "text-gray-700"
+              className={`block px-4 py-2 font-medium ${
+                darkMode ? "text-white" : "text-gray-700"
               } hover:bg-gray-100 hover:text-gray-900 no-underline`}
             >
               {text}
@@ -57,8 +62,8 @@ const CustomDrawer = ({ list, links }) => {
         <li>
           <button
             onClick={handleLogout}
-            class={`block w-full px-4 py-2 text-left font-medium ${
-              darkMode ? "white" : "text-gray-700"
+            className={`block w-full px-4 py-2 text-left font-medium ${
+              darkMode ? "text-white" : "text-gray-700"
             } hover:bg-gray-100 hover:text-gray-900`}
           >
             Logout
@@ -67,24 +72,23 @@ const CustomDrawer = ({ list, links }) => {
       </ul>
     </div>
   );
+
   return (
     <div>
       <div className="fixed top-0 left-0 z-50 mt-2 ml-4 cursor-pointer focus:outline-none">
-      {darkMode && (
-        <img
-          src={darkMenu}
-          onClick={openDrawer}
-          className="focus:outline-none w-[20px] mt-2 ml-4 rounded cursor-pointer"
-        />
-      )}
-      {!darkMode && (
-        <img
-          src={lightMenu}
-          onClick={openDrawer}
-          className="focus:outline-none w-[20px] mt-2 ml-4 rounded cursor-pointer"
-        />
-      )}
-      {/* <Drawer open={open} onClose={toggleDrawer(false)}> */}
+        {darkMode ? (
+          <img
+            src={darkMenu}
+            onClick={openDrawer}
+            className="focus:outline-none w-[20px] mt-2 ml-4 rounded cursor-pointer"
+          />
+        ) : (
+          <img
+            src={lightMenu}
+            onClick={openDrawer}
+            className="focus:outline-none w-[20px] mt-2 ml-4 rounded cursor-pointer"
+          />
+        )}
       </div>
       <aside
         className={`fixed z-50 w-full h-screen transition-transform duration-500 ease-in-out flex inset-y-0 ${
@@ -116,9 +120,8 @@ const CustomDrawer = ({ list, links }) => {
           {DrawerList}
         </nav>
       </aside>
-
-      {/* </Drawer> */}
     </div>
   );
 };
+
 export default CustomDrawer;
