@@ -70,7 +70,7 @@ export function MealCarousel({ meals }) {
           index={activeStep}
           onChangeIndex={handleStepChange}
           enableMouseEvents
-          className={`max-w-[600px] flex justify-center items-center  `}
+          className={`carousel-width flex justify-center items-center  `}
         >
           {meals.map((meal, index) => (
             <div

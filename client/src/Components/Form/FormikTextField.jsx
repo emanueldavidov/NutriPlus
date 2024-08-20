@@ -4,19 +4,24 @@ import TextField from "../TextField";
 const FormikTextField = ({ name, ...props }) => {
   const formik = useFormikContext();
   return (
-    <Field
-      name={name}
-      component={TextField}
-      value={formik.values[name]}
-      onChange={(e) => {
-        formik.setFieldValue(name, e.target.value);
-      }}
-      error={formik.errors[name]}
-      touched={formik.touched[name]}
-      helperText={formik.touched[name] && formik.errors[name]}
-      type="text"
-      {...props}
-    />
+    <>
+      <Field
+        name={name}
+        component={TextField}
+        value={formik.values[name]}
+        onChange={(e) => {
+          formik.setFieldValue(name, e.target.value);
+        }}
+        error={formik.errors[name]}
+        touched={formik.touched[name]}
+        helperText={formik.touched[name] && formik.errors[name]}
+        type="text"
+        {...props}
+      />
+      {formik.errors[name] && formik.touched[name] && (
+        <div className="text-red-500">{formik.errors[name]}</div>
+      )}
+    </>
   );
 };
 

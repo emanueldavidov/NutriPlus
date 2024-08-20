@@ -70,7 +70,7 @@ export function ShoppingCarousel() {
           index={activeStep}
           onChangeIndex={handleStepChange}
           enableMouseEvents
-          className="flex justify-center items-center"
+          className="carousel-width flex justify-center items-center"
         >
           {shoppings.map((shoppingItem, index) => (
             <div

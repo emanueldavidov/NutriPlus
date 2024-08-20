@@ -72,7 +72,7 @@ const NutritiCalc = () => {
   };
 
   return (
-    <div className="flex flex-col items-center h-screen">
+    <div className="flex flex-col items-center">
       <div className="flex flex-col items-center">
         <button
           type="submit"

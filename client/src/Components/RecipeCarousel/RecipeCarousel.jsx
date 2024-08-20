@@ -67,7 +67,7 @@ export function RecipeCarousel({ recipes }) {
     index={activeStep}
     onChangeIndex={handleStepChange}
     enableMouseEvents
-    className="w-full flex items-center justify-center"
+    className="carousel-width w-full flex items-center justify-center"
   >
     {recipes.map((recipe, index) => (
       <div key={index} className="w-full flex items-center justify-center">

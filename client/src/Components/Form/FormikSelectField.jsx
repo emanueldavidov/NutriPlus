@@ -7,18 +7,23 @@ const FormikSelect = ({ name, ...props }) => {
   const formik = useFormikContext();
   const darkMode = useSelector((state) => state.darkMode.darkMode);
   return (
-    <Field
-      name={name}
-      component={SelectField}
-      value={formik.values[name]}
-      onChange={(e) => {
-        formik.setFieldValue(name, e.target.value);
-      }}
-      error={formik.errors[name]}
-      touched={formik.touched[name]}
-      helperText={formik.touched[name] && formik.errors[name]}
-      {...props}
-    />
+    <>
+      <Field
+        name={name}
+        component={SelectField}
+        value={formik.values[name]}
+        onChange={(e) => {
+          formik.setFieldValue(name, e.target.value);
+        }}
+        error={formik.errors[name]}
+        touched={formik.touched[name]}
+        helperText={formik.touched[name] && formik.errors[name]}
+        {...props}
+      />
+      {formik.errors[name] && formik.touched[name] && (
+        <div className="text-red-500">{formik.errors[name]}</div>
+      )}
+    </>
   );
 };
 

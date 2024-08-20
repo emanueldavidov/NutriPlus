@@ -13,18 +13,7 @@ import { fetchAllRecipes } from "../store/slices/recipesSlice";
 
 const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
   const user = useSelector((state) => state.auth.user);
-  // const [openModal, setOpenModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [recipeName, setRecipeName] = useState("");
-  const [ingredient, setIngredient] = useState("");
-  const [unit, setUnit] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [ingredients, setIngredients] = useState([]);
-  const [instruction, setInstruction] = useState("");
-  const [instructions, setInstructions] = useState([]);
-  const [image, setImage] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState(""); // Added category state
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -37,43 +26,64 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
     description: recipe?.description ?? "",
     category: recipe?.category ?? "",
   };
+  const validate = (values) => {
+    const errors = {};
+
+    if (!values.recipeName) {
+      errors.recipeName = "Recipe Name is required";
+    }
+
+    if (!values.image) {
+      errors.image = "Recipe Image URL is required";
+    } 
+
+    if (!values.description) {
+      errors.description = "Description is required";
+    }
+
+    if (!values.category) {
+      errors.category = "Category is required";
+    }
+
+    // Ingredients validation
+    values.ingredients.forEach((ing, index) => {
+      if (!ing.ingredient) {
+        errors.ingredients = errors.ingredients || [];
+        errors.ingredients[index] = { ...errors.ingredients[index], ingredient: "Ingredient is required" };
+      }
+      if (!ing.unit) {
+        errors.ingredients = errors.ingredients || [];
+        errors.ingredients[index] = { ...errors.ingredients[index], unit: "Unit is required" };
+      }
+      if (!ing.quantity || ing.quantity <= 0) {
+        errors.ingredients = errors.ingredients || [];
+        errors.ingredients[index] = { ...errors.ingredients[index], quantity: "Quantity must be greater than 0" };
+      }
+    });
+
+    // Instructions validation
+    values.instructions.forEach((inst, index) => {
+      if (!inst) {
+        errors.instructions = errors.instructions || [];
+        errors.instructions[index] = "Instruction is required";
+      }
+    });
+
+    return errors;
+  };
 
   const formik = useFormik({
     initialValues,
     enableReinitialize: true,
     onSubmit: handleSubmit,
+    validate
   });
 
   const handleModalClose = () => {
     setOpenModal(false);
-    resetForm();
   };
 
-  // Form reset function
-  const resetForm = () => {
-    setRecipeName("");
-    setIngredient("");
-    setUnit("");
-    setQuantity("");
-    setIngredients([]);
-    setInstruction("");
-    setInstructions([]);
-    setImage("");
-    setDescription("");
-    setErrorMessage("");
-    setCategory("");
-  };
 
-  // Add instruction to list
-  const handleAddInstruction = () => {
-    if (instruction.trim() !== "") {
-      formik.setFieldValue("instructions", [
-        ...formik.values.instructions,
-        instruction,
-      ]);
-      setInstruction("");
-    }
-  };
 
   // Form submission
   async function handleSubmit(values) {
@@ -104,15 +114,6 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
   const darkMode = useSelector((state) => state.darkMode.darkMode);
 
   return (
-    // <Dialog
-    //   open={openModal}
-    //   onClose={handleModalClose}
-    //   aria-labelledby="recipe-details-modal"
-    //   aria-describedby="modal-for-entering-recipe-details"
-    //   BackdropProps={{
-    //     invisible: false, // Hides the backdrop
-    //   }}
-    // >
      <Dialog open={openModal} onClose={handleModalClose}>
   <div
   className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl p-4 border-2 rounded-lg modal-widths ${
@@ -324,7 +325,6 @@ const UpdateRecipe = ({ recipe, openModal, setOpenModal }) => {
   </div>
 </Dialog>
 
-    // </Modal>
   );
 };
 
