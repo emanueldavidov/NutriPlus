@@ -1,28 +1,37 @@
+// MealsList Component: Displays a list of multiple meal items in a structured format.
+// 
+// Key Features:
+// - Renders a collection of meal data, each within a MealCard.
+// - Supports features like sorting, filtering, and searching.
+// - Integrates with global state to reflect the current meal selection.
+
 import React, { useEffect, useMemo, useState } from "react";
 
 export default function MealsList({ dishes }) {
-  const [fetchedRecipes, setFetchedRecipes] = useState([]);
-  const [error, setErrorMessage] = useState("");
+  const [fetchedRecipes, setFetchedRecipes] = useState([]); // State to store the fetched recipes
+  const [error, setErrorMessage] = useState(""); // State to manage any error messages
 
+  // Effect to fetch recipes whenever the 'dishes' prop changes
   useEffect(() => {
     setFetchedRecipes([]);
-    fetchRecipes();
+    fetchRecipes(); // Call function to fetch recipes
   }, [dishes]);
 
+  // Function to fetch recipes from the 'dishes' prop
   const fetchRecipes = async () => {
     const tempRecipes = [];
     for (let i = 0; i < dishes.recipes.length; i++) {
       try {
-        tempRecipes.push(dishes.recipes[i]);
+        tempRecipes.push(dishes.recipes[i]); // Add each recipe to the temporary array
       } catch (error) {
         console.error("Get recipes failed:", error);
-        setErrorMessage("Failed to fetch recipes.");
+        setErrorMessage("Failed to fetch recipes."); // Set error message if fetching fails
       }
     }
-    setFetchedRecipes(tempRecipes);
+    setFetchedRecipes(tempRecipes); // Update state with fetched recipes
   };
 
-  // Separate dishes by category
+  // Separate dishes by category using useMemo for performance optimization
   const starters = useMemo(
     () => fetchedRecipes.filter((dish) => dish.category === "starter"),
     [fetchedRecipes]
@@ -126,11 +135,12 @@ export default function MealsList({ dishes }) {
         </>
       )}
 
+      {/* Display error message if any error occurs */}
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
           <span className="block sm:inline">{error}</span>
           <button
-            onClick={() => setErrorMessage("")}
+            onClick={() => setErrorMessage("")} // Clear error message when close button is clicked
             className="absolute top-0 bottom-0 right-0 px-4 py-3"
           >
             <svg

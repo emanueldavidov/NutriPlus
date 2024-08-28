@@ -1,4 +1,9 @@
-// recipeRoutes.js
+// API routes for recipe-related operations
+// - POST /recipes: Creates a new recipe
+// - GET /recipes: Retrieves all recipes
+// - GET /recipes/:recipeId: Retrieves a specific recipe by its ID
+// - DELETE /recipes/:recipeId: Deletes a recipe by its ID
+// - PUT /recipes/:recipeId: Updates a recipe's details by its ID
 
 import express from 'express';
 import { createRecipe, deleteRecipe, getAllRecipes, getRecipeById, updateRecipe } from '../controllers/recipeControllers.js';

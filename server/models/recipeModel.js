@@ -1,3 +1,7 @@
+// Mongoose schema for the Recipe collection
+// - Defines the structure of the Recipe documents
+// - Includes fields for user, name, ingredients, instructions, category, and timestamps
+
 import mongoose from "mongoose";
 
 const recipeSchema = new mongoose.Schema({

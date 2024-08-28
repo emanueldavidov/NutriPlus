@@ -1,32 +1,43 @@
 import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux"; // Import useSelector for accessing Redux state
+import { useDispatch, useSelector } from "react-redux";
 import SelectField from "../../Components/SelectField";
 import TextField from "../../Components/TextField";
 import { BACKEND_URL } from "../../config/config";
 import { fetchAllNutrition } from "../store/slices/nutritionSlice";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
 
+// UpdateNutrition Component: Form component for updating nutritional information.
+//
+// Key Aspects:
+// - Includes form validation and submission handling.
+// - Interacts with backend services to update nutritional data.
+
 const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
+  // State management for form inputs.
   const [selectedFood, setSelectedFood] = useState(nutrition?.food?._id);
   const [calories, setCalories] = useState(nutrition?.calories);
   const [totalFat, setTotalFat] = useState(nutrition?.fat);
   const [protein, setProtein] = useState(nutrition?.protein);
+  
   const dispatch = useDispatch();
-  // Access darkMode state from Redux store
+
+  // Access Redux store data for dark mode, recipes, and user ID.
   const darkMode = useSelector((state) => state.darkMode.darkMode);
   const recipes = useSelector((state) => state.recipes.recipes);
   const userID = useSelector((state) => state.auth.user._id);
 
+  // Fetch all recipes and nutrition data on component mount.
   useEffect(() => {
     dispatch(fetchAllRecipes());
     dispatch(fetchAllNutrition());
-  }, []);
+  }, [dispatch]);
 
+  // Handles form submission to update the nutritional information.
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add the entered food details to the list
+
     const updatedItem = {
       food: selectedFood,
       calories: calories,
@@ -34,23 +45,19 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
       protein: protein,
     };
     try {
-      const res = await axios.put(
+      await axios.put(
         `${BACKEND_URL}/api/nutrition/${userID}/nutritions/${nutrition._id}`,
         updatedItem
       );
       handleModalClose();
       dispatch(fetchAllNutrition());
     } catch (e) {
-      console.error("Error updating nutrional details:", e);
+      console.error("Error updating nutritional details:", e);
     }
-    // Clear form fields after updating to the list
   };
 
   return (
-    <Dialog
-      open={openModal}
-      onClose={handleModalClose}
-    >
+    <Dialog open={openModal} onClose={handleModalClose}>
       <div
         className="p-5 w-4/5 max-w-[600px] mx-auto border-2 border-[#B81D33] rounded-lg max-h-[40rem] max-h-[90vh] min-h-[300px] overflow-y-auto"
         style={{
@@ -67,6 +74,7 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
           Update Nutritional Details
         </h2>
 
+        {/* Form for updating nutritional details */}
         <form onSubmit={handleSubmit}>
           <SelectField
             disabled={true}
@@ -74,24 +82,21 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
             id="food"
             label="Select Food"
             value={selectedFood}
-            onChange={(e) => {
-              setSelectedFood(e.target.value);
-            }}
+            onChange={(e) => setSelectedFood(e.target.value)}
           >
             {recipes?.length > 0 &&
-              recipes.map((r) => {
-                return (
-                  <option key={r._id} value={r._id}>
-                    {r.recipeName}
-                  </option>
-                );
-              })}
+              recipes.map((r) => (
+                <option key={r._id} value={r._id}>
+                  {r.recipeName}
+                </option>
+              ))}
           </SelectField>
+
           <TextField
             type="number"
             value={calories}
             onChange={(e) => {
-              if (parseInt(e.target.value) >= 0 || e.target.value == "")
+              if (parseInt(e.target.value) >= 0 || e.target.value === "")
                 setCalories(e.target.value);
             }}
             label="Calories"
@@ -101,11 +106,12 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
             required
             min="0"
           />
+
           <TextField
             type="number"
             value={totalFat}
             onChange={(e) => {
-              if (parseInt(e.target.value) >= 0 || e.target.value == "")
+              if (parseInt(e.target.value) >= 0 || e.target.value === "")
                 setTotalFat(e.target.value);
             }}
             label="Total Fat"
@@ -114,6 +120,7 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
             margin="normal"
             required
           />
+
           <TextField
             type="number"
             value={protein}
@@ -126,11 +133,12 @@ const UpdateNutrition = ({ nutrition, openModal, handleModalClose }) => {
             margin="normal"
             required
           />
+
           <button
             type="submit"
             className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"
           >
-            Update Nutritions
+            Update Nutrition
           </button>
         </form>
       </div>

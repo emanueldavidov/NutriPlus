@@ -1,3 +1,10 @@
+// AddIcon Component: Renders an add icon that changes color based on dark mode state.
+// 
+// Key Features:
+// - Uses Redux state to determine whether dark mode is active.
+// - Changes the fill color of the icon based on the dark mode state.
+// - Includes an onClick handler to trigger actions when the icon is clicked.
+
 import { useSelector } from "react-redux";
 
 const AddIcon = ({ onClick }) => {

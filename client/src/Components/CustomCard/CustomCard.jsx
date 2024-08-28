@@ -1,3 +1,10 @@
+// CustomCard Component: Custom card component to display various types of content in a card layout.
+// 
+// Key Features:
+// - Accepts children props to render dynamic content inside the card.
+// - Designed with Tailwind CSS for consistent spacing and layout.
+// - Can be extended to support different themes or modes (e.g., dark mode).
+
 
 export default function CustomCard({ title, text, children, color,wrapperClasses }) {
   return (

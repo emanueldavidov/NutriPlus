@@ -1,3 +1,9 @@
+// Footer Component: Footer component displayed at the bottom of the app, containing navigation links or other information.
+// 
+// Key Features:
+// - Styled using Tailwind CSS for consistent design.
+// - Responsive layout adjusts for different screen sizes and devices.
+
 import React from 'react';
 const Footer = () => {
   return (

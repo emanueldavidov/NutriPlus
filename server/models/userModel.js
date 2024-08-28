@@ -1,3 +1,8 @@
+// Mongoose schema for the User collection
+// - Defines the structure of the User documents
+// - Includes fields for username, email, password, and timestamps
+// - Includes methods for password hashing and validation
+
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({

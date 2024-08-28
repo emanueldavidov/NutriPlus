@@ -1,3 +1,7 @@
+// Mongoose schema for the Shopping List collection
+// - Defines the structure of the Shopping List documents
+// - Includes fields for user, name, items, and timestamps
+
 import mongoose from "mongoose";
 
 const ShoppingItemSchema = new mongoose.Schema({

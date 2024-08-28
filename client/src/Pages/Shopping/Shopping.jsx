@@ -2,7 +2,6 @@ import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import closeImage from "../../assets/images/close.svg";
 import AddIcon from "../../Components/Buttons/AddIcon";
 import SelectField from "../../Components/SelectField";
 import ShoppingCarousel from "../../Components/ShoppingCarousel/ShoppingCarousel";
@@ -12,17 +11,26 @@ import { fetchAllMeals } from "../store/slices/mealSlice";
 import { fetchAllShoppingLists } from "../store/slices/shoppingSlice";
 import DeleteIcon from "../../Components/Buttons/DeleteIcon";
 
+// Shopping Component: Main page component for displaying shopping list details.
+//
+// Key Aspects:
+// - Displays detailed information about shopping items.
+// - Supports actions like adding, editing, or removing items.
+
 const Shopping = () => {
+  // State management for form inputs, modal visibility, and error messages.
   const [shoppingListName, setShoppingListName] = useState("");
   const [selectedFood, setSelectedFood] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [selectedShoppingList, setSelectedShoppingList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const darkMode = useSelector((state) => state.darkMode.darkMode);
   const userID = useSelector((state) => state.auth.user._id);
   const meals = useSelector((state) => state.meals.meals);
-  const [errorMessage, setErrorMessage] = useState("");
 
   const dispatch = useDispatch();
+
   // Modal handlers
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -32,13 +40,15 @@ const Shopping = () => {
     setOpenModal(false);
   };
 
-  // Handle form submission
+  // Handle form submission for adding a new shopping list
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (selectedShoppingList.length == 0) {
-        return setErrorMessage("Please add atleast one meal");
+      if (selectedShoppingList.length === 0) {
+        return setErrorMessage("Please add at least one meal");
       }
+
+      // Aggregating ingredients across selected meals
       const ingredientMap = new Map();
 
       selectedShoppingList.forEach((meal) => {
@@ -65,13 +75,15 @@ const Shopping = () => {
 
       const items = Array.from(ingredientMap.values());
 
-      const res = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/api/shopping/${userID}/shoppingLists`,
         {
           name: shoppingListName,
           items: items.flat(),
         }
       );
+
+      // Reset form fields after submission
       setShoppingListName("");
       setSelectedFood("");
       setSelectedShoppingList([]);
@@ -83,13 +95,13 @@ const Shopping = () => {
     }
   };
 
-  // Fetch all shopping lists for the user
+  // Fetch all meals and shopping lists for the user
   useEffect(() => {
-    // dispatch(fetchAllRecipes());
     dispatch(fetchAllMeals());
     dispatch(fetchAllShoppingLists());
-  }, []);
+  }, [dispatch]);
 
+  // Handle the selection of a meal to add to the shopping list
   const handleFoodSelection = () => {
     if (!selectedFood) return;
     const tempList = [...selectedShoppingList];
@@ -97,6 +109,7 @@ const Shopping = () => {
     setSelectedShoppingList(tempList);
   };
 
+  // Handle the removal of a meal from the shopping list
   const handleFoodRemove = (index) => {
     const tempList = [...selectedShoppingList];
     tempList.splice(index, 1);
@@ -105,6 +118,7 @@ const Shopping = () => {
 
   return (
     <div className="flex flex-col items-center p-5">
+      {/* Button to open modal for adding a new shopping list */}
       <button
         type="button"
         className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"
@@ -113,6 +127,7 @@ const Shopping = () => {
         Add Shopping List
       </button>
 
+      {/* Modal for adding a new shopping list */}
       <Dialog open={openModal} onClose={handleModalClose}>
         <div
           className="p-5 w-4/5 max-w-[600px] mx-auto border-2 border-[#B81D33] rounded-lg max-h-[40rem] max-h-[90vh] min-h-[300px] overflow-y-auto"
@@ -130,6 +145,7 @@ const Shopping = () => {
             Enter Shopping List Details
           </h2>
 
+          {/* Display any error messages */}
           {errorMessage && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
               <span className="block sm:inline">{errorMessage}</span>
@@ -151,17 +167,20 @@ const Shopping = () => {
           )}
 
           <form onSubmit={handleSubmit}>
+            {/* Shopping List Name input */}
             <TextField
               required
               type="text"
               value={shoppingListName}
               onChange={(e) => setShoppingListName(e.target.value)}
-              label="Shooping List Name"
+              label="Shopping List Name"
               fullWidth
               variant="outlined"
               margin="normal"
               className="mb-2.5"
             />
+
+            {/* Meal selection dropdown and add button */}
             <div className="flex items-center">
               <SelectField
                 label="Select Meal"
@@ -171,13 +190,15 @@ const Shopping = () => {
                 <option value="">Select Meal</option>
                 {meals?.length > 0 &&
                   meals.map((r) => {
-                    return <option value={r._id}>{r.name}</option>;
+                    return <option key={r._id} value={r._id}>{r.name}</option>;
                   })}
               </SelectField>
               <div className="mt-5 ms-2">
                 <AddIcon onClick={handleFoodSelection} />
               </div>
             </div>
+
+            {/* Display selected meals */}
             {selectedShoppingList?.length > 0 && (
               <ul className="w-full mt-4">
                 {selectedShoppingList.map((food, index) => (
@@ -186,7 +207,7 @@ const Shopping = () => {
                     className="mb-4 border-b border-gray-300 pb-4"
                   >
                     <div className="flex items-center justify-between">
-                      {/* Food Name */}
+                      {/* Meal Name */}
                       <span
                         className={`text-lg ${
                           darkMode ? "text-white" : "text-black"
@@ -197,6 +218,7 @@ const Shopping = () => {
                       {/* Remove Button */}
                       <DeleteIcon onClick={() => handleFoodRemove(index)} />
                     </div>
+
                     {/* Ingredients List */}
                     <div
                       className={`mt-2 text-sm ${
@@ -215,6 +237,8 @@ const Shopping = () => {
                 ))}
               </ul>
             )}
+
+            {/* Submit button for adding the shopping list */}
             <button
               type="submit"
               className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"
@@ -225,6 +249,7 @@ const Shopping = () => {
         </div>
       </Dialog>
 
+      {/* Display shopping lists using ShoppingCarousel */}
       <div className="shopping-list w-full flex justify-center items-center">
         <ShoppingCarousel />
       </div>

@@ -1,3 +1,14 @@
+// App Component: Main application component handling the routing and layout of the app.
+// Key Aspects:
+// - Handles the overall structure of the application.
+// - Uses React Router for managing navigation between pages.
+// - Wraps the app in necessary providers, such as Redux and Theme providers.
+
+// Function and Block Explanations:
+// - useEffect: Initializes and sets up any necessary configurations on component mount.
+// - Routes: Defines the main routes and components associated with each path.
+
+
 // App.jsx
 import React from "react";
 import { useSelector } from "react-redux";

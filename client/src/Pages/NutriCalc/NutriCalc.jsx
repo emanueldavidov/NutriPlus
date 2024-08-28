@@ -1,7 +1,7 @@
 import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux"; // Import useSelector for accessing Redux state
+import { useDispatch, useSelector } from "react-redux";
 import NutritionCarousel from "../../Components/NutritionCarousel/NutritionCarousel";
 import SelectField from "../../Components/SelectField";
 import TextField from "../../Components/TextField";
@@ -9,41 +9,52 @@ import { BACKEND_URL } from "../../config/config";
 import { fetchAllNutrition } from "../store/slices/nutritionSlice";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
 
+// NutriCalc Component: Nutritional calculator page, allowing users to calculate their dietary intake.
+//
+// Key Aspects:
+// - Calculates nutritional intake based on user inputs.
+// - Displays results with detailed breakdowns of nutrients.
+
 const NutritiCalc = () => {
+  // State management for form inputs, modal visibility, error messages, and food list.
   const [selectedFood, setSelectedFood] = useState("");
   const [calories, setCalories] = useState("");
   const [totalFat, setTotalFat] = useState("");
   const [protein, setProtein] = useState("");
   const [openModal, setOpenModal] = useState(false);
-  const [foodList, setFoodList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const dispatch = useDispatch();
-  // Access darkMode state from Redux store
+
+  // Access data and dark mode state from the Redux store.
   const darkMode = useSelector((state) => state.darkMode.darkMode);
   const recipes = useSelector((state) => state.recipes.recipes);
   const userID = useSelector((state) => state.auth.user._id);
   const nutrition = useSelector((state) => state.nutrition.nutrition);
-  const [errorMessage, setErrorMessage] = useState("");
+
+  // Fetch all recipes and nutrition data on component mount.
   useEffect(() => {
     dispatch(fetchAllRecipes());
     dispatch(fetchAllNutrition());
-  }, []);
+  }, [dispatch]);
 
+  // Function to open the modal for adding nutrition details.
   const handleModalOpen = () => {
     setOpenModal(true);
   };
 
+  // Function to close the modal and reset form fields.
   const handleModalClose = () => {
     setOpenModal(false);
-    // Reset form fields when modal is closed
     setSelectedFood("");
     setCalories("");
     setTotalFat("");
     setProtein("");
   };
 
+  // Function to handle form submission and add nutrition details.
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add the entered food details to the list
     const newFoodItem = {
       food: selectedFood,
       calories: calories,
@@ -51,16 +62,12 @@ const NutritiCalc = () => {
       protein: protein,
     };
     try {
-      const res = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/api/nutrition/${userID}/nutritions`,
         newFoodItem
       );
       dispatch(fetchAllNutrition());
-      setSelectedFood("");
-      setCalories("");
-      setTotalFat("");
-      setProtein("");
-      setOpenModal(false);
+      handleModalClose();
     } catch (e) {
       if (e.name === "AxiosError") {
         setErrorMessage(e?.response?.data?.error);
@@ -68,12 +75,12 @@ const NutritiCalc = () => {
         setErrorMessage("Error saving nutrition");
       }
     }
-    // Clear form fields after adding to the list
   };
 
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-col items-center">
+        {/* Button to open the modal for adding nutrition details */}
         <button
           type="submit"
           className="mt-2 mb-2 bg-[#B81D33] text-white py-2 px-4 rounded hover:bg-[#B81D33]"
@@ -82,11 +89,9 @@ const NutritiCalc = () => {
           Add Nutrition
         </button>
 
+        {/* Modal for entering nutrition details */}
         {openModal && (
-          <Dialog
-            open={openModal}
-            onClose={handleModalClose}
-          >
+          <Dialog open={openModal} onClose={handleModalClose}>
             <div
               className={`w-11/12 lg:w-1/2 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 shadow-lg ${
                 darkMode ? "bg-black text-white" : "bg-white text-black"
@@ -95,6 +100,7 @@ const NutritiCalc = () => {
               <h2 className="text-xl font-bold text-center mb-4">
                 Enter Nutritional Details
               </h2>
+              {/* Display error message if any */}
               {errorMessage && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
                   <span className="block sm:inline">{errorMessage}</span>
@@ -115,6 +121,7 @@ const NutritiCalc = () => {
                 </div>
               )}
 
+              {/* Form for entering nutrition details */}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <SelectField
                   label="Select Recipe"
@@ -181,6 +188,7 @@ const NutritiCalc = () => {
           </Dialog>
         )}
 
+        {/* Display the nutrition carousel */}
         <div
           className={`w-full flex flex-wrap justify-center items-center  ${
             darkMode ? "bg-black text-white" : "bg-white text-black"

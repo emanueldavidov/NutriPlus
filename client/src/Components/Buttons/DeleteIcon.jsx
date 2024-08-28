@@ -1,5 +1,11 @@
+// DeleteIcon Component: Renders a delete icon that adapts its color based on the dark mode state.
+// 
+// Key Features:
+// - Uses Redux to toggle between dark and light mode.
+// - The icon’s color is dynamically updated based on the dark mode state.
+// - Includes an onClick event handler for performing delete operations.
+
 import { useSelector } from "react-redux";
-import closeImage from "../../assets/images/close.svg";
 
 const DeleteIcon = ({ onClick }) => {
   const darkMode = useSelector((state) => state.darkMode.darkMode);

@@ -1,3 +1,7 @@
+// Mongoose schema for the Nutrition collection
+// - Defines the structure of the Nutrition documents
+// - Includes fields for user, food, calories, fat, protein, and timestamps
+
 import mongoose from "mongoose";
 
 const nutritionSchema = new mongoose.Schema({

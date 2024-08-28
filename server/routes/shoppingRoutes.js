@@ -1,4 +1,9 @@
-// shoppingListRoutes.js
+// API routes for shopping list-related operations
+// - POST /shoppingLists: Creates a new shopping list
+// - GET /shoppingLists/:userId: Retrieves all shopping lists for a specific user
+// - GET /shoppingLists/:userId/:shoppingListId: Retrieves a specific shopping list by its ID
+// - DELETE /shoppingLists/:userId/:shoppingListId: Deletes a shopping list by its ID
+// - PUT /shoppingLists/:userId/:shoppingListId: Updates a shopping list's details by its ID
 
 import express from 'express';
 import { createShoppingListController, deleteShoppingListController, getAllShoppingListsByUserController, getShoppingListByIdController, updateShoppingListController } from '../controllers/shoppingListControllers.js';

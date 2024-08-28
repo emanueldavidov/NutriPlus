@@ -1,3 +1,9 @@
+// Controllers for handling user-related operations
+// - registerUserController: Handles user registration
+// - loginUserController: Handles user login
+// - getUserProfileController: Retrieves the profile of a logged-in user
+// - updateUserProfileController: Updates the profile details of a logged-in user
+
 import { serverResponse } from "../utils/serverResponse.js";
 import { hashPassword } from "../utils/passwordHashing.js";
 import { compareHashedPassword } from "../utils/compareHashedPasswords.js";

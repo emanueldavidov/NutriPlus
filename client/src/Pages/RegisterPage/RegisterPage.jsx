@@ -5,7 +5,14 @@ import CustomCard from "../../Components/CustomCard/CustomCard";
 import TextField from "../../Components/TextField";
 import { BACKEND_URL } from "../../config/config";
 
+// RegisterPage Component: Handles user registration, rendering the registration form and processing user data.
+//
+// Key Aspects:
+// - Includes form validation and error handling.
+// - Interacts with backend services to register new users.
+
 const RegisterPage = () => {
+  // State management for form inputs, errors, loading status, and success status.
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -14,19 +21,23 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  // Email validation function using a regular expression.
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
 
+  // Handles the form submission for user registration.
   const handleRegister = async (e) => {
     e.preventDefault();
     let newErrors = [];
 
+    // Validate email format.
     if (!validateEmail(email)) {
       newErrors.push("Invalid email format");
     }
 
+    // Check if passwords match and are not empty.
     if (
       password !== passwordConfirm ||
       password === "" ||
@@ -35,6 +46,7 @@ const RegisterPage = () => {
       newErrors.push("Passwords do not match");
     }
 
+    // If there are any validation errors, update the state and return.
     if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
@@ -50,9 +62,9 @@ const RegisterPage = () => {
 
       if (response.status === 201) {
         setSuccess(true);
-        // Registration successful
+        // Redirect to login page after successful registration.
         setTimeout(() => {
-          window.location.href = "/login"; // Navigate to login page
+          window.location.href = "/login";
         }, 1000);
       } else {
         throw new Error("Registration failed");
@@ -91,6 +103,7 @@ const RegisterPage = () => {
           autoComplete="off"
         >
           <div className="flex justify-center items-center flex-col w-full">
+            {/* Username input field */}
             <TextField
               id="username"
               label="Username"
@@ -98,6 +111,8 @@ const RegisterPage = () => {
               required
               onChange={(e) => setUsername(e.target.value)}
             />
+
+            {/* Password input field */}
             <TextField
               id="password"
               type="password"
@@ -106,6 +121,8 @@ const RegisterPage = () => {
               variant="outlined"
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            {/* Password confirmation input field */}
             <TextField
               id="passwordConfirm"
               type="password"
@@ -114,16 +131,18 @@ const RegisterPage = () => {
               required
               onChange={(e) => setPasswordConfirm(e.target.value)}
             />
+
+            {/* Email input field */}
             <TextField
               id="email"
               type="email"
               label="Email"
               variant="outlined"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
+
+            {/* Display validation errors */}
             {errors.length > 0 &&
               errors.map((error, index) => (
                 <div
@@ -152,6 +171,7 @@ const RegisterPage = () => {
                 </div>
               ))}
 
+            {/* Register button with loading state */}
             <button
               type="submit"
               onClick={handleRegister}
@@ -186,6 +206,7 @@ const RegisterPage = () => {
               )}
             </button>
 
+            {/* Success message after successful registration */}
             {success && (
               <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
                 <span>
@@ -194,6 +215,8 @@ const RegisterPage = () => {
               </div>
             )}
           </div>
+
+          {/* Link to the login page for users who are already registered */}
           <Link to="/" style={{ textDecoration: "none" }}>
             Already registered?{" "}
             <span

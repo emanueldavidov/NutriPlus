@@ -1,3 +1,10 @@
+// FormikSelectField Component: Formik-based select field component for forms.
+// 
+// Key Features:
+// - Integrates with Formik for form management.
+// - Supports validation and error handling as part of a Formik form.
+// - Customizable options and layout, suitable for dynamic form content.
+
 import React from "react";
 import { Field, useFormikContext } from "formik";
 import { useSelector } from "react-redux";

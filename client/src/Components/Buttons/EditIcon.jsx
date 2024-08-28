@@ -1,7 +1,11 @@
-import { useSelector } from "react-redux";
+// EditIcon Component: Renders an edit icon that is styled with Tailwind CSS.
+
+// Key Aspects:
+// - The icon is clickable and triggers an onClick event handler passed as a prop.
+// - Uses an SVG for the icon graphic, with Tailwind classes for styling.
+// - The icon's fill color is set to a specific shade of red (#B81D33).
 
 const EditIcon = ({ onClick }) => {
-  const darkMode = useSelector((state) => state.darkMode.darkMode);
 
   return (
     <svg

@@ -1,3 +1,10 @@
+// Business logic for nutrition-related operations
+// - createNutrition: Creates a new nutrition record in the database
+// - getAllNutritionByUserService: Retrieves all nutrition records associated with a specific user
+// - getNutritionById: Retrieves a nutrition record by its ID
+// - deleteNutrition: Deletes a nutrition record by its ID
+// - updateNutrition: Updates the details of a nutrition record by its ID
+
 import { NutritionModel } from "../models/nutritionModel.js";
 
 export const createNutrition = (nutrition) => NutritionModel.create(nutrition);

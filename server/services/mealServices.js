@@ -1,3 +1,11 @@
+// Business logic for meal-related operations
+// - createMeal: Creates a new meal in the database
+// - getAllMealsByUserService: Retrieves all meals associated with a specific user
+// - getMealById: Retrieves a meal by its ID
+// - deleteMeal: Deletes a meal by its ID
+// - updateMeal: Updates the details of a meal by its ID
+// - getMealByName: Checks if a meal with the same name and recipes exists for the user
+
 import { MealModel } from "../models/mealModel.js";
 
 export const createMeal = (meal) => MealModel.create(meal);

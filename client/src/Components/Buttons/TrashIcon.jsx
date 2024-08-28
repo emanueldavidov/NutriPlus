@@ -1,3 +1,11 @@
+// TrashIcon Component: Renders a trash icon with support for onClick events and Tailwind CSS styling.
+// 
+// Key Features:
+// - Includes an onClick handler for actions related to deleting items.
+// - Styled with Tailwind CSS for consistent design and responsiveness.
+// - The icon is implemented as an SVG for scalability and clarity.
+
+
 const TrashIcon = ({ onClick }) => {
   return (
     <>

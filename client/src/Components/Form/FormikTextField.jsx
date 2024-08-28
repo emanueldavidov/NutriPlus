@@ -1,3 +1,11 @@
+// FormikTextField Component: Formik-based text field component for forms.
+// 
+// Key Features:
+// - Integrates seamlessly with Formik’s form state management.
+// - Handles validation and displays error messages.
+// - Styled for consistency with other form elements in the application.
+
+
 import React from "react";
 import { Field, useFormikContext } from "formik";
 import TextField from "../TextField";

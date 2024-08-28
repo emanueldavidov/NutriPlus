@@ -1,3 +1,7 @@
+// Mongoose schema for the Meal collection
+// - Defines the structure of the Meal documents
+// - Includes fields for user, name, recipes, and timestamps
+
 import mongoose from "mongoose";
 
 const mealSchema = new mongoose.Schema({

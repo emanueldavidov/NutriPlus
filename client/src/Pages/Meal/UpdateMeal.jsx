@@ -10,62 +10,81 @@ import { fetchAllMeals } from "../store/slices/mealSlice";
 import { fetchAllRecipes } from "../store/slices/recipesSlice";
 import DeleteIcon from "../../Components/Buttons/DeleteIcon";
 
+// UpdateMeal Component: Form component for updating meal details.
+//
+// Key Features:
+// - Fetches and displays the current meal details in a form for editing.
+// - Allows users to update the meal's name and associated recipes.
+// - Handles form submission with validation and error messaging.
+// - Supports dark mode styling and integrates with the Redux store for data management.
+
 const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
+  // State management for the component.
   const userId = useSelector((state) => state.auth.user._id);
   const [errorMessage, setErrorMessage] = useState("");
   const allRecipes = useSelector((state) => state.recipes.recipes);
-  const dispatch = useDispatch();
   const [food, setFood] = useState({});
   const [selectedRecipe, setSelectedRecipe] = useState();
   const darkMode = useSelector((state) => state.darkMode.darkMode);
+  const dispatch = useDispatch();
+
+  // Fetches the current meal data based on the meal ID provided.
   const fetchMeal = async () => {
-    const meals = await axios.get(
-      `${BACKEND_URL}/api/meal/${userId}/meals/${meal._id}`
-    );
-    setFood(meals.data);
+    try {
+      const meals = await axios.get(
+        `${BACKEND_URL}/api/meal/${userId}/meals/${meal._id}`
+      );
+      setFood(meals.data);
+    } catch (error) {
+      console.error("Error fetching meal data:", error);
+    }
   };
 
+  // Handles changes to the meal name in the form.
   const handleFoodNameChange = (e) => {
     setFood({ ...food, name: e.target.value });
   };
+
+  // Submits the updated meal data to the backend and handles responses.
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (food.recipes?.length === 0) {
-        return setErrorMessage("Please select atleast one recipe");
+        return setErrorMessage("Please select at least one recipe");
       }
       const payload = { ...food, recipes: food.recipes.map((f) => f._id) };
-      const response = await axios.put(
-        `${BACKEND_URL}/api/meal/userId/meals/${meal._id}`,
-        payload
-      );
+      await axios.put(`${BACKEND_URL}/api/meal/${userId}/meals/${meal._id}`, payload);
       dispatch(fetchAllMeals());
       handleModalClose();
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 409) {
-          setErrorMessage("Meal already exists. Please try again.");
-        }
+      if (error.response && error.response.status === 409) {
+        setErrorMessage("Meal already exists. Please try again.");
       } else {
         setErrorMessage("An error occurred. Please try again later.");
       }
     }
   };
+
+  // Fetches the meal data and available recipes when the component mounts.
   useEffect(() => {
     fetchMeal();
     dispatch(fetchAllRecipes());
-  }, []);
+  }, [dispatch]);
+
+  // Removes a selected recipe from the meal's recipe list.
   const handleDeleteRecipe = (index) => {
     const tempFood = { ...food };
     tempFood.recipes.splice(index, 1);
     setFood(tempFood);
   };
+
+  // Adds a new recipe to the meal's recipe list.
   const handleAddNewRecipe = () => {
     if (!selectedRecipe) return;
     const rec = allRecipes.find((r) => r._id === selectedRecipe);
-    console.log(rec, selectedRecipe);
     setFood({ ...food, recipes: [...food.recipes, rec] });
   };
+
   return (
     <Dialog open={openModal} onClose={handleModalClose}>
       <div
@@ -84,6 +103,7 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
           Update Meal
         </h2>
 
+        {/* Error message display */}
         {errorMessage && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
             <span>{errorMessage}</span>
@@ -107,6 +127,7 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
           </div>
         )}
 
+        {/* Form to update the meal */}
         <form onSubmit={handleSubmit}>
           <TextField
             label="Meal Name"
@@ -134,6 +155,8 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
               <AddIcon onClick={handleAddNewRecipe} />
             </div>
           </div>
+
+          {/* List of selected recipes */}
           <ul className="w-full mt-2">
             {food?.recipes?.length > 0 &&
               food.recipes.map((dish, index) => (
@@ -155,6 +178,7 @@ const UpdateMeal = ({ openModal, handleModalClose, meal }) => {
               ))}
           </ul>
 
+          {/* Submit button for updating the meal */}
           <button
             type="submit"
             className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"

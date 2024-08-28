@@ -1,4 +1,10 @@
-// shoppingListRoutes.js
+// API routes for nutrition-related operations
+// - POST /nutrition: Creates a new nutrition record
+// - GET /nutrition/:userId: Retrieves all nutrition records for a specific user
+// - GET /nutrition/:userId/:nutritionId: Retrieves a specific nutrition record by its ID
+// - DELETE /nutrition/:userId/:nutritionId: Deletes a nutrition record by its ID
+// - PUT /nutrition/:userId/:nutritionId: Updates a nutrition record's details by its ID
+
 
 import express from 'express';
 import { createNutritionController, deleteNutritionController, getAllNutritionForUserController, getNutritionByIdController, updateNutritionController } from '../controllers/nutritionControllers.js';

@@ -2,7 +2,6 @@ import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import closeImage from "../../assets/images/close.svg";
 import AddIcon from "../../Components/Buttons/AddIcon";
 import SelectField from "../../Components/SelectField";
 import TextField from "../../Components/TextField";
@@ -10,33 +9,41 @@ import { BACKEND_URL } from "../../config/config";
 import { fetchAllMeals } from "../store/slices/mealSlice";
 import { fetchAllShoppingLists } from "../store/slices/shoppingSlice";
 import DeleteIcon from "../../Components/Buttons/DeleteIcon";
+
+// UpdateShopping Component: Form component for updating shopping item details.
+//
+// Key Aspects:
+// - Includes form validation and submission handling.
+// - Interacts with backend services to update shopping item information.
+
 const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
+  // State management for form inputs and the selected items
   const [shoppingListName, setShoppingListName] = useState(shopping?.name);
   const [selectedFood, setSelectedFood] = useState();
   const [selectedShoppingList, setSelectedShoppingList] = useState([]);
-  const [ingredients, setIngredients] = useState(shopping?.items); //contains all ingredients
+  const [ingredients, setIngredients] = useState(shopping?.items); // contains all ingredients
+
   const darkMode = useSelector((state) => state.darkMode.darkMode);
   const userID = useSelector((state) => state.auth.user._id);
-  const recipes = useSelector((state) => state.recipes.recipes);
   const meals = useSelector((state) => state.meals.meals);
 
   const dispatch = useDispatch();
 
-  // Handle form submission
+  // Handle form submission for updating a shopping list
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Aggregate ingredients from selected meals
       const ingredientMap = new Map(
         ingredients.map((ing) => [`${ing.ingredient}-${ing.unit}`, ing])
       );
 
-      // Iterate over each meal and their recipes' ingredients
+      // Iterate over each meal and aggregate their ingredients
       selectedShoppingList.forEach((meal) => {
         meal?.recipes.forEach((recipe) => {
           recipe?.ingredients.forEach((ingredient) => {
             const key = `${ingredient.ingredient}-${ingredient.unit}`;
             if (ingredientMap.has(key)) {
-              // If ingredient already exists, add to its quantity
               const existing = ingredientMap.get(key);
               ingredientMap.set(key, {
                 ingredient: ingredient.ingredient,
@@ -44,7 +51,6 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
                 unit: ingredient.unit,
               });
             } else {
-              // Otherwise, add the new ingredient to the Map
               ingredientMap.set(key, {
                 ingredient: ingredient.ingredient,
                 quantity: ingredient.quantity,
@@ -55,16 +61,19 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
         });
       });
 
-      // Convert the Map back to an array
+      // Convert the Map back to an array of ingredients
       const items = Array.from(ingredientMap.values());
 
-      const res = await axios.put(
+      // Make a PUT request to update the shopping list
+      await axios.put(
         `${BACKEND_URL}/api/shopping/${userID}/shoppingLists/${shopping._id}`,
         {
           name: shoppingListName,
           items: items.flat(),
         }
       );
+
+      // Close the modal and refresh the shopping lists
       handleModalClose();
       dispatch(fetchAllShoppingLists());
     } catch (err) {
@@ -72,13 +81,13 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
     }
   };
 
-  // Fetch all shopping lists for the user
+  // Fetch all meals and shopping lists for the user on component mount
   useEffect(() => {
-    // dispatch(fetchAllRecipes());
     dispatch(fetchAllMeals());
     dispatch(fetchAllShoppingLists());
-  }, []);
+  }, [dispatch]);
 
+  // Handle the selection of a meal to add to the shopping list
   const handleFoodSelection = () => {
     if (!selectedFood) return;
     const tempList = [...selectedShoppingList];
@@ -86,12 +95,14 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
     setSelectedShoppingList(tempList);
   };
 
+  // Handle the removal of a meal from the selected shopping list
   const handleFoodRemove = (index) => {
     const tempList = [...selectedShoppingList];
     tempList.splice(index, 1);
     setSelectedShoppingList(tempList);
   };
 
+  // Handle the removal of an ingredient from the shopping list
   const handleIngredientRemove = (index) => {
     const tempList = [...ingredients];
     tempList.splice(index, 1);
@@ -110,6 +121,7 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
         </h2>
 
         <form onSubmit={handleSubmit}>
+          {/* Shopping List Name input */}
           <TextField
             required
             type="text"
@@ -121,6 +133,8 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
             margin="normal"
             className="mb-2.5"
           />
+
+          {/* Meal selection dropdown and add button */}
           <div className="flex items-center">
             <SelectField
               label="Select Meal"
@@ -130,13 +144,15 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
               <option value="">Select Meal</option>
               {meals?.length > 0 &&
                 meals.map((r) => {
-                  return <option value={r._id}>{r.name}</option>;
+                  return <option key={r._id} value={r._id}>{r.name}</option>;
                 })}
             </SelectField>
             <div className="mt-5 ms-2">
               <AddIcon onClick={handleFoodSelection} />
             </div>
           </div>
+
+          {/* Display selected meals */}
           {selectedShoppingList?.length > 0 && (
             <>
               <h6 className="text-xl font-semibold mb-4">Selected Food:</h6>
@@ -151,7 +167,7 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
                     </div>
                     <div className={darkMode ? "text-white" : "text-gray-500"}>
                       {food.recipes.map(({ ingredients }) => (
-                        <div>
+                        <div key={ingredients._id}>
                           {ingredients.map((ing, i) => (
                             <div key={i}>
                               {`${ing.ingredient} ${ing.quantity} ${ing.unit}`}
@@ -165,6 +181,8 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
               </ul>
             </>
           )}
+
+          {/* Display existing ingredients */}
           {ingredients?.length > 0 && (
             <>
               <h6 className="text-xl font-semibold mb-4">
@@ -190,6 +208,7 @@ const UpdateShopping = ({ openModal, handleModalClose, shopping }) => {
             </>
           )}
 
+          {/* Submit button for updating the shopping list */}
           <button
             type="submit"
             className="mt-2 mb-2 bg-[#B81D33] hover:bg-[#B81D33] text-white py-2 px-4 rounded"

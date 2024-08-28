@@ -1,3 +1,11 @@
+
+// Controllers for handling meal-related operations
+// - createMealController: Handles the creation of new meals
+// - getAllMealsByUserController: Retrieves all meals for a specific user
+// - getMealByIdController: Retrieves a specific meal by its ID
+// - deleteMealController: Deletes a meal by its ID
+// - updateMealController: Updates a meal's details by its ID
+
 import {
   createMeal,
   getAllMealsByUserService,

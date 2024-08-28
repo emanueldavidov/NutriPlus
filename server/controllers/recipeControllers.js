@@ -1,4 +1,9 @@
-// recipeController.js
+// Controllers for handling recipe-related operations
+// - createRecipeController: Handles the creation of new recipes
+// - getAllRecipesController: Retrieves all recipes
+// - getRecipeByIdController: Retrieves a specific recipe by its ID
+// - deleteRecipeController: Deletes a recipe by its ID
+// - updateRecipeController: Updates a recipe's details by its ID
 
 
 import { createRecipeService, deleteRecipeService, getAllRecipesService, getRecipeByIdService, updateRecipeService } from "../services/recipeServices.js";

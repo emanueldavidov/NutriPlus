@@ -1,3 +1,11 @@
+
+// Controllers for handling nutrition-related operations
+// - createNutritionController: Handles the creation of nutrition records
+// - getAllNutritionByUserController: Retrieves all nutrition records for a specific user
+// - getNutritionByIdController: Retrieves a specific nutrition record by its ID
+// - deleteNutritionController: Deletes a nutrition record by its ID
+// - updateNutritionController: Updates a nutrition record's details by its ID
+
 import {
   createNutrition,
   getAllNutritionByUserService,

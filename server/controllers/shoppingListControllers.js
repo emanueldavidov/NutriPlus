@@ -1,3 +1,10 @@
+// Controllers for handling shopping list-related operations
+// - createShoppingListController: Handles the creation of new shopping lists
+// - getAllShoppingListsByUserController: Retrieves all shopping lists for a specific user
+// - getShoppingListByIdController: Retrieves a specific shopping list by its ID
+// - deleteShoppingListController: Deletes a shopping list by its ID
+// - updateShoppingListController: Updates a shopping list's details by its ID
+
 import {
     createShoppingList,
     getAllShoppingListByUserService,

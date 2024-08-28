@@ -1,3 +1,10 @@
+// NutritionsList Component: Displays a list of nutritional items in a structured format.
+// 
+// Key Features:
+// - Renders multiple NutritionCard components in a list or grid.
+// - Supports sorting and filtering based on nutritional criteria.
+// - Styled for readability and accessibility.
+
 import React from "react";
 
 function NutritionList({ item }) {

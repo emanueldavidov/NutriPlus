@@ -1,3 +1,9 @@
+// Entry point of the application
+// - Sets up the Express server
+// - Connects to the database
+// - Configures middlewares and routes
+// - Starts listening on the specified port
+
 import dotenv from 'dotenv'; 
 dotenv.config(); // Load environment variables from .env file
 import express from 'express'

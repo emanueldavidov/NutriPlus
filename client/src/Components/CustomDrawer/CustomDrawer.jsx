@@ -1,3 +1,10 @@
+// CustomDrawer Component: Component for rendering a drawer that can be toggled open or closed.
+// 
+// Key Features:
+// - Handles open/close state internally or via props.
+// - Supports conditional rendering of content based on drawer state.
+// - Styled using Tailwind CSS for smooth animations and transitions.
+
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
@@ -9,30 +16,37 @@ import moon from "../../assets/images/moon.svg";
 import sun from "../../assets/images/sun.svg";
 
 const CustomDrawer = ({ list, links }) => {
+  // State to manage whether the drawer is open or closed
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
-  const darkMode = useSelector((state) => state.darkMode.darkMode);
+  const dispatch = useDispatch();  // To dispatch actions to the Redux store
+  const darkMode = useSelector((state) => state.darkMode.darkMode);  // Get the current dark mode state from Redux
 
+  // Function to toggle the drawer open or closed
   const toggleDrawer = (newOpen) => {
     setOpen(newOpen);
   };
 
+  // Function to open the drawer
   const openDrawer = () => {
     setOpen(true);
   };
 
+  // Function to toggle dark mode (light/dark theme)
   const toggleDarkMode = () => {
     dispatch(toggleDarkModeState());
   };
 
+  // Function to handle user logout, closes the drawer and toggles dark mode if necessary
   const handleLogout = () => {
     dispatch(logout()); // Dispatch the logout action
     setOpen(false); // Close the drawer after logout
-    if (darkMode) dispatch(toggleDarkModeState());
+    if (darkMode) dispatch(toggleDarkModeState()); // Revert dark mode to default after logout
   };
 
+  // JSX structure for the drawer's list of links and the logout button
   const DrawerList = (
     <div className="w-64" role="presentation" onClick={() => toggleDrawer(false)}>
+      {/* Dark mode toggle button */}
       <button className={`mt-2 ${darkMode ? "text-white" : "text-black"}`}>
         {darkMode ? (
           <img src={sun} onClick={toggleDarkMode} className="w-[25px]" />
@@ -40,11 +54,15 @@ const CustomDrawer = ({ list, links }) => {
           <img src={moon} onClick={toggleDarkMode} className="w-[20px]" />
         )}
       </button>
+      
+      {/* Link to the homepage */}
       <RouterLink to="/home">
         <div className="mt-2 w-full">
           <img className="mt-2 w-full rounded-full" src="logo2.png" alt="Avatar" />
         </div>
       </RouterLink>
+      
+      {/* List of navigation links passed as props */}
       <ul className="list-none">
         {list.map((text, index) => (
           <li key={text}>
@@ -75,6 +93,7 @@ const CustomDrawer = ({ list, links }) => {
 
   return (
     <div>
+      {/* Menu button to open the drawer */}
       <div className="fixed top-0 left-0 z-50 mt-2 ml-4 cursor-pointer focus:outline-none">
         {darkMode ? (
           <img
@@ -90,6 +109,8 @@ const CustomDrawer = ({ list, links }) => {
           />
         )}
       </div>
+      
+      {/* The drawer itself, with transition and transform for open/close animation */}
       <aside
         className={`fixed z-50 w-full h-screen transition-transform duration-500 ease-in-out flex inset-y-0 ${
           open ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
@@ -98,9 +119,9 @@ const CustomDrawer = ({ list, links }) => {
         id="menu"
         aria-labelledby="openmenu"
         aria-hidden={!open}
-        tabIndex={open ? 0 : -1} // Accessibility
+        tabIndex={open ? 0 : -1} // Accessibility: Ensures the drawer is focusable when open
       >
-        {/* Backdrop */}
+        {/* Backdrop: a semi-transparent overlay behind the drawer */}
         <div
           className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-500 ${
             open ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -117,7 +138,7 @@ const CustomDrawer = ({ list, links }) => {
             open ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          {DrawerList}
+          {DrawerList} {/* The DrawerList content defined earlier */}
         </nav>
       </aside>
     </div>
